@@ -8,6 +8,7 @@ import {basicObjectList} from "./js/TBasicObject";
 import {LightsList} from "./js/Tlights";
 import {helperList} from "./js/THelper";
 import {gltfPromise} from "./js/TLoader";
+import Event from "./js/TObjectClick";
 
 export default {
   name: "three1",
@@ -32,23 +33,24 @@ export default {
         res[0].scale.y = 5
         res[0].scale.z = 5
          const renderFun = () => {
-        basicObjectList[1].position.x += -0.02
-        basicObjectList[1].rotation.y += 0.001
-        TE.camera.position.x += -0.01
+        // basicObjectList[1].position.x += -0.02
+        // basicObjectList[1].rotation.y += 0.001
+        // TE.camera.position.x += -0.01
 
         const time = - performance.now() / 1000;
 				for ( let i = 0; i < res[1].length; i ++ ) {
 					res[1][ i ].rotation.x = time * Math.PI;
 				}
-
-				helperList[1].position.z = - ( time ) % 100;
+           res[0].position.z -=0.02
+				// helperList[1].position.z = - ( time ) % 100;
         TE.renderer.render(TE.scene, TE.camera)
         requestAnimationFrame(renderFun)
       }
-      
+
       renderFun()
+        Event(TE)
       })
-     
+
     }
   },
 

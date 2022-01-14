@@ -21,7 +21,7 @@ const stage = new Mesh(
   new BoxBufferGeometry(200, 10, 200),
   new MeshStandardMaterial({color: 'rgb(0, 75, 75)'})
 )
-
+stage.name = 'floor'
 stage.castShadow = true
 stage.receiveShadow = true
 
@@ -40,7 +40,7 @@ const box = new Mesh(
     roughness: 0.3
   })
 )
-
+box.name='Box1'
 box.castShadow = true
 box.receiveShadow = true
 
