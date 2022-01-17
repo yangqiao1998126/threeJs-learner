@@ -1,30 +1,31 @@
 import * as THREE from "three";
-export default function Event(TE){
+
+export default function Event(TE) {
   let SELECTED;
   var raycaster = new THREE.Raycaster()
   var mouse = new THREE.Vector2()
 
-  function onMouseClick(event){
+  function onMouseClick(event) {
 
     //将鼠标点击位置的屏幕坐标转换成threejs中的标准坐标
 
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1
-    mouse.y = -(event.clientY/window.innerHeight) *2 + 1
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
 
     // 通过鼠标点的位置和当前相机的矩阵计算出raycaster
-    raycaster.setFromCamera( mouse, TE.camera );
+    raycaster.setFromCamera(mouse, TE.camera);
 
     // 获取raycaster直线和所有模型相交的数组集合
-    var intersects = raycaster.intersectObjects( TE.scene.children ,true);
+    var intersects = raycaster.intersectObjects(TE.scene.children, true);
     console.log(intersects);
-    console.log(intersects[0].object.name);
+    console.log(intersects[0]&&intersects[0].object.name);
     // if(intersects.length && intersects[0].object.name === 'Box1'){
     //
     //   intersects[0].object.material.color.set('green');
     // }else {
     //   intersects[0].object.material.color.set('yellow');
     // }
-    if ( intersects.length > 0 ) {
+    if (intersects.length > 0) {
 
       //获取第一个物体
       if (SELECTED !== intersects[0].object) {
@@ -37,13 +38,20 @@ export default function Event(TE){
         SELECTED.currentHex = SELECTED.material.color.getHex();//记录当前选择的颜色
         //改变物体的颜色(红色)
         SELECTED.material.color.set('yellow');
-      TE.outlinePass.selectedObjects = [intersects[0].object]
+        TE.outlinePass.selectedObjects = [intersects[0].object]
+        if (SELECTED.name) {
+          let position = TE.getPosition(intersects[0].point)
+          window._event.emit('showTip', SELECTED.name,position)
+        } else {
+          window._event.emit('showTip')
+        }
       }
     } else {
       // document.body.style.cursor= 'auto';
       if (SELECTED) SELECTED.material.color.set(SELECTED.currentHex);//恢复选择前的默认颜色
       SELECTED = null;
       TE.outlinePass.selectedObjects = []
+      window._event.emit('showTip')
     }
 
     //将所有的相交的模型的颜色设置为红色for ( var i = 0; i < intersects.length; i++ ) {
@@ -53,5 +61,5 @@ export default function Event(TE){
   }
 
 
-window.addEventListener( 'click', onMouseClick, false );
+  window.addEventListener('click', onMouseClick, false);
 }

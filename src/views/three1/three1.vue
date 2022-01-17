@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%" class="three-canvas" ref="threeTarget"></div>
+  <div style="height: 100%;position: absolute;top:0;bottom: 0;left: 0;right: 0;" class="three-canvas" ref="threeTarget"></div>
 </template>
 
 <script>
@@ -32,7 +32,7 @@ export default {
         res[0].scale.x = 5
         res[0].scale.y = 5
         res[0].scale.z = 5
-         const renderFun = () => {
+/*         const renderFun = () => {
         // basicObjectList[1].position.x += -0.02
         // basicObjectList[1].rotation.y += 0.001
         // TE.camera.position.x += -0.01
@@ -48,7 +48,7 @@ export default {
         requestAnimationFrame(renderFun)
       }
 
-      renderFun()
+      renderFun()*/
 
       })
       Event(TE)

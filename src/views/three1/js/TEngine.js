@@ -94,6 +94,12 @@ export class TEngine {
     this.outlinePass = outlinePass
     composer.addPass(outlinePass)
   }
+  getPosition(point){
+    const halfWidth = window.innerWidth / 2
+    const halfHeight = window.innerHeight / 2
+    const vector1 = point.project(this.camera)
+    return [vector1.x * halfWidth + halfWidth, -vector1.y * halfHeight + halfHeight]
+  }
   addObject (...object) {
     object.forEach(elem => {
       this.scene.add(elem)

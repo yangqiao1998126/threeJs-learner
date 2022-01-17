@@ -3,6 +3,8 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import dataV from '@jiaminghi/data-view';
+import EventEmitter from "events";
+window._event = new EventEmitter()
 // 引入全局css
 import './assets/scss/style.scss';
 // 按需引入vue-awesome图标

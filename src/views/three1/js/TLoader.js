@@ -11,6 +11,7 @@ const bodyMaterial = new THREE.MeshPhysicalMaterial( {
   color: 0xff0000, metalness: 0.6, roughness: 0.4, clearcoat: 0.05, clearcoatRoughness: 0.05
 } );
 
+
 const detailsMaterial = new THREE.MeshStandardMaterial( {
   color: 0xffffff, metalness: 1.0, roughness: 0.5
 } );

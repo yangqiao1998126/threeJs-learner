@@ -21,7 +21,7 @@ const stage = new Mesh(
   new BoxBufferGeometry(200, 10, 200),
   new MeshStandardMaterial({color: 'rgb(0, 75, 75)'})
 )
-stage.name = 'floor'
+// stage.name = 'floor'
 stage.castShadow = true
 stage.receiveShadow = true
 
@@ -53,7 +53,7 @@ const plane = new Mesh(
     map: pictureTexture
   })
 )
-
+plane.name = '镁伽'
 plane.position.y = 45
 plane.scale.set(0.3, 0.3, 0.3)
 
