@@ -17,8 +17,8 @@ export default function Event(TE) {
 
     // 获取raycaster直线和所有模型相交的数组集合
     var intersects = raycaster.intersectObjects(TE.scene.children, true);
-    console.log(intersects);
-    console.log(intersects[0]&&intersects[0].object.name);
+    // console.log(intersects);
+    // console.log(intersects[0]&&intersects[0].object.name);
     // if(intersects.length && intersects[0].object.name === 'Box1'){
     //
     //   intersects[0].object.material.color.set('green');
@@ -40,10 +40,13 @@ export default function Event(TE) {
         SELECTED.material.color.set('yellow');
         TE.outlinePass.selectedObjects = [intersects[0].object]
         if (SELECTED.name) {
+          console.log(intersects[0]&&intersects[0].object.name);
           let position = TE.getPosition(intersects[0].point)
+          window.modelPoint = intersects[0].point
           window._event.emit('showTip', SELECTED.name,position)
         } else {
           window._event.emit('showTip')
+          window.modelPoint = null
         }
       }
     } else {
@@ -52,6 +55,7 @@ export default function Event(TE) {
       SELECTED = null;
       TE.outlinePass.selectedObjects = []
       window._event.emit('showTip')
+      window.modelPoint = null
     }
 
     //将所有的相交的模型的颜色设置为红色for ( var i = 0; i < intersects.length; i++ ) {

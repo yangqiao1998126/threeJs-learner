@@ -25,7 +25,8 @@ export default {
       currentComponent:'',
       style:'',
       desc:'',
-      hidden:false
+      hidden:false,
+      position :''
     }
   },
   components:{
@@ -36,6 +37,7 @@ export default {
     window._event.on('showTip',(name,position) => {
      if(name){
        console.log(name,position)
+       this.position = position
        this.style = `top:${position[1]}px;left:${position[0] + 20}px`
        this.desc = name
        this.hidden = true
@@ -43,7 +45,20 @@ export default {
      }else{
        this.currentComponent = ''
        this.hidden = false
+       this.position = ''
      }
+    })
+    window._event.on('rePosition',position => {
+      if(this.currentComponent ){
+        this.style = `top:${position[1]}px;left:${position[0] + 20}px`
+        // if(this.position[0] == position[0] &&  this.position[1] == position[1]){
+        //
+        // }else{
+        //
+        // }
+
+
+      }
     })
   }
 }

@@ -7,7 +7,7 @@ import {TEngine} from "./js/TEngine";
 import {basicObjectList} from "./js/TBasicObject";
 import {LightsList} from "./js/Tlights";
 import {helperList} from "./js/THelper";
-import {gltfPromise} from "./js/TLoader";
+import {gltfPromise,fontModel} from "./js/TLoader";
 import Event from "./js/TObjectClick";
 
 export default {
@@ -50,6 +50,9 @@ export default {
 
       renderFun()*/
 
+      })
+      fontModel.then(res => {
+        TE.scene.add(res)
       })
       Event(TE)
 
