@@ -9,6 +9,10 @@
       >
 
       </component>
+      <div v-show="hidden" class="dialog">
+        <h2 >{{desc}}</h2>
+        <div class="close" @click="hidden = false"></div>
+      </div>
     </section>
   </div>
 </template>
@@ -21,6 +25,7 @@ export default {
       currentComponent:'',
       style:'',
       desc:'',
+      hidden:false
     }
   },
   components:{
@@ -33,9 +38,11 @@ export default {
        console.log(name,position)
        this.style = `top:${position[1]}px;left:${position[0] + 20}px`
        this.desc = name
+       this.hidden = true
        this.currentComponent ="tip"
      }else{
        this.currentComponent = ''
+       this.hidden = false
      }
     })
   }
@@ -54,6 +61,33 @@ export default {
   ul,
   li {
     text-decoration: none;
+  }
+}
+.dialog{
+  text-align: center;padding-top: 35px;
+  color: white;
+  box-sizing: border-box;
+  font-size: 14px;
+  position: absolute;
+  top: 40vh;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  margin: 0 auto;
+  width: 640px;
+  height: auto;
+  min-height: 500px;
+  background: url(./assets/main_bg.png) center/100% 100% no-repeat;
+  .close {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 30px;
+    top: 24px;
+    background: url(./assets/close_normal.png) center/100% 100% no-repeat;
+    &:hover {
+      cursor: pointer;
+      background: url(./assets/close_hover.png) center/100% 100% no-repeat;
+    }
   }
 }
 .infoContainer {
