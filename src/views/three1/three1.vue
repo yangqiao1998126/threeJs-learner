@@ -44,12 +44,14 @@ export default {
            res[0].position.z -=0.02
 				// helperList[1].position.z = - ( time ) % 100;
         TE.renderer.render(TE.scene, TE.camera)
+           TE.composer.render()
         requestAnimationFrame(renderFun)
       }
 
       renderFun()
-        Event(TE)
+
       })
+      Event(TE)
 
     }
   },
