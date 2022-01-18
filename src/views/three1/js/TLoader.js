@@ -3,7 +3,9 @@ import {DRACOLoader} from 'three/examples/jsm/loaders/DRACOLoader.js'
 import {GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import {FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
 import {TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
-import {Mesh} from "_three@0.133.1@three";
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
+import {Mesh} from "three";
 import {shadow} from "./TTextures";
 // import a from 'three/examples/js/libs/draco/gltf/'
 const dracoLoader = new DRACOLoader();
@@ -84,3 +86,50 @@ export let fontModel = new Promise((resolve,reject) => {
     resolve(fontModel)
   })
 })
+
+//加载模型
+// import { MTLLoader, OBJLoader } from 'three-obj-mtl-loader'
+export const modelPromise = obj => {
+  const objLoader = new OBJLoader()
+  const mtlLoader = new MTLLoader()
+  return new Promise(resolve => {
+    mtlLoader.loadAsync(obj.mtlUrl).then(materialCreator => {
+      objLoader
+        .setMaterials(materialCreator)
+        .loadAsync(obj.objUrl)
+        .then(res => {
+          resolve(res)
+        })
+    })
+  })
+
+  // let objLoader = new OBJLoader() //obj加载器
+  // let mtlLoader = new MTLLoader() //材质文件let
+  // return new Promise(res => {
+  //   this.mtlLoader.load(`${obj.mtlUrl}`, materials => {
+  //     this.objLoader.setMaterials(materials)
+  //     this.objLoader.load(
+  //       `${path}.obj`,
+  //       obj => {
+  //         obj.scale.set(
+  //           scale || Config.obj.globalScale,
+  //           scale || Config.obj.globalScale,
+  //           scale || Config.obj.globalScale
+  //         )
+  //         this.self.scene.add(obj)
+  //         obj.userData.childName = childName
+  //         obj.userData.level = level
+  //         this.self.setCastShadowAndReceiveShadow(obj)
+  //         window.__HMF__[path] = obj
+  //         res(obj)
+  //       },
+  //       xhr => {
+  //         if (xhr.lengthComputable) {
+  //           var percentComplete = (xhr.loaded / xhr.total) * 100
+  //           // console.log('loading...', percentComplete.toFixed(1))
+  //         }
+  //       }
+  //     )
+  //   })
+  // })
+}

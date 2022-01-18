@@ -20,16 +20,17 @@ pointLight.position.set(20, 20, 20)
 
 export const spotLight = new SpotLight(
   'rgb(255, 255, 255)',
-  1,
-  200,
-  Math.PI / 180 * 30,
-  0,
-  0
+  2,
+  8000,
+  104.05,
+  0.05,
+  2
 )
 
 spotLight.castShadow = true
 
 spotLight.position.set(-50, 50, -50)
+spotLight.position.set(0,600,-800)
 
 
 

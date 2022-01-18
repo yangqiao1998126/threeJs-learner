@@ -19,8 +19,14 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
+import {modelPromise} from "./TLoader";
 
-
+const modelObjs = {
+  floorModel:{
+    mtlUrl:'/model/obj/layout/layout.mtl',
+    objUrl:'/model/obj/layout/layout.obj'
+  }
+}
 export class TEngine {
 
 
@@ -60,6 +66,7 @@ export class TEngine {
       RIGHT: MOUSE.ROTATE
     }
 
+    //加载obj模型
     const renderFun = () => {
       orbitControls.update()
 
@@ -76,6 +83,7 @@ export class TEngine {
     }
 
     renderFun()
+    this.loadObjModel()
 
     dom.appendChild(this.renderer.domElement)
     dom.appendChild(statsDom)
@@ -105,6 +113,15 @@ export class TEngine {
     const halfHeight = window.innerHeight / 2
     const vector1 = point.project(this.camera)
     return [vector1.x * halfWidth + halfWidth, -vector1.y * halfHeight + halfHeight]
+  }
+  loadObjModel(){
+    modelPromise(modelObjs.floorModel).then(res => {
+      console.log(res,'模型')
+      res.children[0].name = ''
+      this.scene.add(res)
+      res.position.set(0,0,0)
+      res.scale.set(0.2,0.2,0.2)
+    })
   }
   addObject (...object) {
     object.forEach(elem => {

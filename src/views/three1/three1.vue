@@ -8,6 +8,7 @@ import {basicObjectList} from "./js/TBasicObject";
 import {LightsList} from "./js/Tlights";
 import {helperList} from "./js/THelper";
 import {gltfPromise,fontModel} from "./js/TLoader";
+import {modelPromise} from "./js/TLoader";
 import Event from "./js/TObjectClick";
 
 export default {
@@ -27,8 +28,8 @@ export default {
       gltfPromise.then(res => {
         console.log(res)
         TE.scene.add(res[0])
-        res[0].position.x = 20
-        res[0].position.z = -5
+        res[0].position.x = 30
+        res[0].position.z = -9
         res[0].scale.x = 5
         res[0].scale.y = 5
         res[0].scale.z = 5
@@ -54,6 +55,15 @@ export default {
       fontModel.then(res => {
         TE.scene.add(res)
       })
+      // modelPromise({
+      //   mtlUrl:'/model/obj/layout/layout.mtl',
+      //   objUrl:'/model/obj/layout/layout.mtl'
+      // }).then(res => {
+      //   console.log(res,'模型')
+      //  TE.scene.add(res)
+      //   res.position.set(0,0,0)
+      //   res.scale.set(0.2,0.2,0.2)
+      // })
       Event(TE)
 
     }

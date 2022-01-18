@@ -45,6 +45,7 @@ box.castShadow = true
 box.receiveShadow = true
 
 box.position.y = 10
+box.position.x = -20
 
 
 const plane = new Mesh(

@@ -33,11 +33,11 @@ export default function Event(TE) {
         // document.body.style.cursor='pointer';
         /*intersects[ 0 ].object.material.transparent=true;//透明度的变化
          intersects[ 0 ].object.material.opacity=0.5;*/
-        if (SELECTED) SELECTED.material.color.setHex(SELECTED.currentHex);
+        if (SELECTED) SELECTED.material.color && SELECTED.material.color.setHex(SELECTED.currentHex);
         SELECTED = intersects[0].object;
-        SELECTED.currentHex = SELECTED.material.color.getHex();//记录当前选择的颜色
+        SELECTED.currentHex = SELECTED.material.color&&SELECTED.material.color.getHex();//记录当前选择的颜色
         //改变物体的颜色(红色)
-        SELECTED.material.color.set('yellow');
+        SELECTED.material.color && SELECTED.material.color.set('yellow');
         TE.outlinePass.selectedObjects = [intersects[0].object]
         if (SELECTED.name) {
           console.log(intersects[0]&&intersects[0].object.name);
@@ -51,7 +51,7 @@ export default function Event(TE) {
       }
     } else {
       // document.body.style.cursor= 'auto';
-      if (SELECTED) SELECTED.material.color.set(SELECTED.currentHex);//恢复选择前的默认颜色
+      if (SELECTED) SELECTED.material.color&&SELECTED.material.color.set(SELECTED.currentHex);//恢复选择前的默认颜色
       SELECTED = null;
       TE.outlinePass.selectedObjects = []
       window._event.emit('showTip')
