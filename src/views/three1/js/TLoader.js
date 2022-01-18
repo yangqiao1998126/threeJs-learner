@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import {DRACOLoader} from 'three/examples/jsm/loaders/DRACOLoader.js'
 import {GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import {FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
+import {TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
 import {Mesh} from "_three@0.133.1@three";
 import {shadow} from "./TTextures";
 // import a from 'three/examples/js/libs/draco/gltf/'
@@ -53,5 +55,32 @@ export let gltfPromise = new Promise((resolve,reject) => {
     mesh.renderOrder = 2;
     carModel.add( mesh );
     resolve([carModel,wheels])
+  })
+})
+export let fontModel = new Promise((resolve,reject) => {
+  new FontLoader().loadAsync('/model/font.json').then(font => {
+    let geometry = new TextGeometry( 'three.js', {
+      font: font,
+      size: 50,
+      height: 20,
+      // curveSegments: 20,
+      // bevelEnabled: true,
+      // bevelThickness: 8,
+      // bevelSize: 6,
+      // bevelSegments: 4
+    } );
+    let fontMaterial = new THREE.MeshLambertMaterial({
+      color: '#f3f3f3'
+    });
+
+    let fontModel = new THREE.Mesh(geometry,fontMaterial);
+    fontModel.position.z = 45
+    fontModel.position.x = -20
+    fontModel.position.y = 5
+    fontModel.scale.set(0.2,0.2,0.2)
+    fontModel.castShadow = true
+    fontModel.receiveShadow = true
+    fontModel.name = 'three.js'
+    resolve(fontModel)
   })
 })

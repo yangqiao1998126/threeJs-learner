@@ -63,6 +63,12 @@ export class TEngine {
     const renderFun = () => {
       orbitControls.update()
 
+      // if(window.modelPoint){
+      //
+      //   let position = this.getPosition(window.modelPoint)
+      //   console.log(',,,,,,,,',position)
+      //   window._event.emit('rePosition',position)
+      // }
       this.renderer.render(this.scene, this.camera)
       this.composer.render()
       stats.update()
