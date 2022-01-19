@@ -39,7 +39,7 @@ export class TEngine {
     this.renderer.shadowMap.enabled = true
 
     this.scene = new Scene()
-    this.scene.background = new Color( 0xeeeeee );
+    this.scene.background = new Color( 0,0,0 );
     this.camera = new PerspectiveCamera(45, dom.offsetWidth / dom.offsetHeight, 1, 1000)
 
     this.camera.position.set(20, 20 ,20)
@@ -48,6 +48,8 @@ export class TEngine {
 
 
     this.renderer.setSize(dom.offsetWidth, dom.offsetHeight, true)
+    //自适应窗口
+    this.resize()
     //初始线条渲染
     this.useEffectComposer()
     // 初始性能监视器
@@ -113,6 +115,13 @@ export class TEngine {
     const halfHeight = window.innerHeight / 2
     const vector1 = point.project(this.camera)
     return [vector1.x * halfWidth + halfWidth, -vector1.y * halfHeight + halfHeight]
+  }
+  resize(){
+    window.addEventListener('resize',() => {
+      this.camera.aspect = this.renderer.domElement.width/this.renderer.domElement.height
+      this.camera.updateProjectionMatrix()
+      this.renderer.setSize(this.dom.offsetWidth, this.dom.offsetHeight, true)
+    },false)
   }
   loadObjModel(){
     modelPromise(modelObjs.floorModel).then(res => {
