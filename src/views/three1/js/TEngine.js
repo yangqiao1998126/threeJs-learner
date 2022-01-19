@@ -43,13 +43,15 @@ let guiObj = {
     "环境光颜色":'#fff',
     "环境光强度":0.6,
   },
-  "是否显示光源辅助线":true
+  "是否显示光源辅助线":true,
+  "轨道控制器旋转":false
 }
 gui.domElement.style="position:absolute;top:0px;left:0px"
 gui.domElement.onclick = function (e){
   e.stopPropagation()
 }
 gui.add(guiObj,"是否显示光源辅助线")
+gui.add(guiObj,"轨道控制器旋转")
 let spotLightGui = gui.addFolder('聚合光')
 spotLightGui.add(guiObj.spotLightGui,'x',-1000,1000)
 spotLightGui.addColor(guiObj.spotLightGui,'聚光灯颜色')
@@ -71,9 +73,9 @@ export class TEngine {
 
     this.scene = new Scene()
     this.scene.background = new Color( 0,0,0 );
-    this.camera = new PerspectiveCamera(45, dom.offsetWidth / dom.offsetHeight, 1, 1000)
+    this.camera = new PerspectiveCamera(45, dom.offsetWidth / dom.offsetHeight, 20, 999)
 
-    this.camera.position.set(20, 20 ,20)
+    this.camera.position.set(-10, 60 ,100)
     this.camera.lookAt(new Vector3(0, 0, 0))
     this.camera.up = new Vector3(0, 1, 0)
 
@@ -92,8 +94,8 @@ export class TEngine {
     statsDom.style.left = 'unset'
 
     // 初始orbitControls
-    const orbitControls = new OrbitControls(this.camera, this.renderer.domElement)
-    orbitControls.mouseButtons = {
+     this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement)
+    this.orbitControls.mouseButtons = {
       LEFT: null,
       MIDDLE: MOUSE.DOLLY,
       RIGHT: MOUSE.ROTATE
@@ -101,24 +103,8 @@ export class TEngine {
 
     //加载obj模型
     const renderFun = () => {
-      spotLight.position.x = guiObj.spotLightGui.x
-      spotLight.intensity =  guiObj.spotLightGui['聚光灯强度']
-      spotLight.color =  new Color(guiObj.spotLightGui['聚光灯颜色'])
-
-      ambientLight.intensity =  guiObj.ambientLightGui['环境光强度']
-      ambientLight.color =  new Color(guiObj.ambientLightGui['环境光颜色'])
-      if(guiObj['是否显示光源辅助线']){
-        spotLightHelper.visible = true
-        pointLightHelper.visible = true
-        // this.scene.add(spotLightHelper,pointLightHelper)
-      }else{
-        // console.log('false')
-        // spotLightHelper.dispose()
-        // pointLightHelper.dispose()
-        spotLightHelper.visible = false
-        pointLightHelper.visible = false
-      }
-      orbitControls.update()
+      this.GUI()
+      this.orbitControls.update()
 
       // if(window.modelPoint){
       //
@@ -179,6 +165,28 @@ export class TEngine {
       res.position.set(0,0,0)
       res.scale.set(0.2,0.2,0.2)
     })
+  }
+  GUI(){
+    //光源相关GUI
+    spotLight.position.x = guiObj.spotLightGui.x
+    spotLight.intensity =  guiObj.spotLightGui['聚光灯强度']
+    spotLight.color =  new Color(guiObj.spotLightGui['聚光灯颜色'])
+
+    ambientLight.intensity =  guiObj.ambientLightGui['环境光强度']
+    ambientLight.color =  new Color(guiObj.ambientLightGui['环境光颜色'])
+    if(guiObj['是否显示光源辅助线']){
+      spotLightHelper.visible = true
+      pointLightHelper.visible = true
+      // this.scene.add(spotLightHelper,pointLightHelper)
+    }else{
+      // console.log('false')
+      // spotLightHelper.dispose()
+      // pointLightHelper.dispose()
+      spotLightHelper.visible = false
+      pointLightHelper.visible = false
+    }
+    //轨道
+    if(guiObj['轨道控制器旋转']){this.orbitControls.autoRotate = true }else{this.orbitControls.autoRotate = false}
   }
   addObject (...object) {
     object.forEach(elem => {
