@@ -1,3 +1,4 @@
+import dat from "dat.gui/src/dat";
 import {
   AmbientLight,
   AxesHelper,
@@ -20,6 +21,9 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
 import {modelPromise} from "./TLoader";
+import {spotLight,ambientLight} from "./Tlights";
+import {pointLightHelper,spotLightHelper} from './THelper'
+import Three1 from "../three1";
 
 const modelObjs = {
   floorModel:{
@@ -27,6 +31,33 @@ const modelObjs = {
     objUrl:'/model/obj/layout/layout.obj'
   }
 }
+//图形界面控制器
+let gui = new dat.GUI()
+let guiObj = {
+  spotLightGui:{
+    x:0,
+    "聚光灯颜色":'#fff',
+    "聚光灯强度":2,
+  },
+  ambientLightGui:{
+    "环境光颜色":'#fff',
+    "环境光强度":0.6,
+  },
+  "是否显示光源辅助线":true
+}
+gui.domElement.style="position:absolute;top:0px;left:0px"
+gui.domElement.onclick = function (e){
+  e.stopPropagation()
+}
+gui.add(guiObj,"是否显示光源辅助线")
+let spotLightGui = gui.addFolder('聚合光')
+spotLightGui.add(guiObj.spotLightGui,'x',-1000,1000)
+spotLightGui.addColor(guiObj.spotLightGui,'聚光灯颜色')
+spotLightGui.add(guiObj.spotLightGui,'聚光灯强度',0,2)
+
+let ambientLightGui = gui.addFolder('环境光')
+ambientLightGui.addColor(guiObj.ambientLightGui,'环境光颜色')
+ambientLightGui.add(guiObj.ambientLightGui,'环境光强度',0,2)
 export class TEngine {
 
 
@@ -70,6 +101,23 @@ export class TEngine {
 
     //加载obj模型
     const renderFun = () => {
+      spotLight.position.x = guiObj.spotLightGui.x
+      spotLight.intensity =  guiObj.spotLightGui['聚光灯强度']
+      spotLight.color =  new Color(guiObj.spotLightGui['聚光灯颜色'])
+
+      ambientLight.intensity =  guiObj.ambientLightGui['环境光强度']
+      ambientLight.color =  new Color(guiObj.ambientLightGui['环境光颜色'])
+      if(guiObj['是否显示光源辅助线']){
+        spotLightHelper.visible = true
+        pointLightHelper.visible = true
+        // this.scene.add(spotLightHelper,pointLightHelper)
+      }else{
+        // console.log('false')
+        // spotLightHelper.dispose()
+        // pointLightHelper.dispose()
+        spotLightHelper.visible = false
+        pointLightHelper.visible = false
+      }
       orbitControls.update()
 
       // if(window.modelPoint){

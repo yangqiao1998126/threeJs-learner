@@ -15,8 +15,8 @@ const gridHelper = new GridHelper(500, 20, 'rgb(200, 200, 200)', 'rgb(100, 100, 
 
 
 
-const pointLightHelper = new PointLightHelper(pointLight, pointLight.distance, pointLight.color)
+export const pointLightHelper = new PointLightHelper(pointLight, pointLight.distance, pointLight.color)
 
-const spotLightHelper = new SpotLightHelper(spotLight, spotLight.color)
+export const spotLightHelper = new SpotLightHelper(spotLight, spotLight.color)
 
 helperList.push(axesHelper, gridHelper, pointLightHelper, spotLightHelper)

@@ -7,7 +7,7 @@ import {
 
 export const LightsList= []
 
-const ambientLight = new AmbientLight('rgb(255, 255, 255)', 0.6)
+export const ambientLight = new AmbientLight('rgb(255, 255, 255)', 0.6)
 
 export const pointLight = new PointLight(
   'rgb(255, 0, 0)',
