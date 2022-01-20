@@ -32,7 +32,15 @@ const modelObjs = {
   floorModel:{
     mtlUrl:'/model/obj/layout/layout.mtl',
     objUrl:'/model/obj/layout/layout.obj'
-  }
+  },
+  tray1Model:{
+    mtlUrl:'/model/obj/tray1/huojian.mtl',
+    objUrl:'/model/obj/tray1/huojian.obj'
+  },
+  tray2Model:{
+    mtlUrl:'/model/obj/tray2/2.mtl',
+    objUrl:'/model/obj/tray2/2.obj'
+  },
 }
 //图形界面控制器
 let gui = new dat.GUI()
@@ -192,6 +200,17 @@ export class TEngine {
       this.car = [carModel,wheel]
       this.scene.add(carModel)
 
+      let tray1 = await modelPromise(modelObjs.tray1Model)
+      tray1.name = "底盘1"
+      tray1.position.set(-50,5,0)
+      tray1.scale.set(3,3,3)
+      this.scene.add(tray1)
+
+      let tray2 = await modelPromise(modelObjs.tray2Model)
+      tray2.name = "底盘2"
+      tray2.position.set(-50,5,-20)
+      tray2.scale.set(3,3,3)
+      this.scene.add(tray2)
     })
   }
 
