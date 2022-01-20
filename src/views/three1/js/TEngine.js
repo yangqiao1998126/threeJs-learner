@@ -47,7 +47,8 @@ let guiObj = {
     "环境光强度":0.6,
   },
   carGui:{
-    "速度":0
+    "速度":0,
+    "轮胎旋转":false
   },
   "是否显示光源辅助线":true,
   "轨道控制器旋转":false
@@ -68,7 +69,8 @@ ambientLightGui.addColor(guiObj.ambientLightGui,'环境光颜色')
 ambientLightGui.add(guiObj.ambientLightGui,'环境光强度',0,2)
 
 let carGui = gui.addFolder('车')
-carGui.add(guiObj.carGui,'速度',{"停":0,"慢":0.05,"快":1.5})
+carGui.add(guiObj.carGui,'速度',{"停":0,"慢":0.03,"快":0.09})
+carGui.add(guiObj.carGui,'轮胎旋转')
 export class TEngine {
 
 
@@ -216,13 +218,27 @@ export class TEngine {
     if(guiObj['轨道控制器旋转']){this.orbitControls.autoRotate = true }else{this.orbitControls.autoRotate = false}
 
     let car = this.car&& this.car[0]
+    let wheels = this.car&& this.car[1]
+    const time = - performance.now();
     if(car){
       if(guiObj.carGui["速度"] === 0){
         // console.log(this.scene.getChildByName('AE86'))
-      }else if(guiObj.carGui["速度"] === 0.05){
-        console.log(car)
+        if(guiObj.carGui["轮胎旋转"]){
+          // guiObj.carGui["轮胎旋转"]=false
+        }
+      }else if(guiObj.carGui["速度"] === 0.03){
+        if(guiObj.carGui["轮胎旋转"]){
+          for ( let i = 0; i < wheels.length; i ++ ) {
+            wheels[ i ].rotation.x = (time/4500) * Math.PI;
+				  }
+        }
         car.position.z -= guiObj.carGui["速度"]
       }else{
+        if(guiObj.carGui["轮胎旋转"]){
+          for ( let i = 0; i < wheels.length; i ++ ) {
+            wheels[ i ].rotation.x = (time/2000) * Math.PI;
+          }
+        }
         car.position.z -= guiObj.carGui["速度"]
       }
     }
