@@ -23,14 +23,14 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  width: 200px;
+  width: 261px;
   height: 50px;
   transform: translateY(-100%);
   background: url(../../../assets/tip.png) center/100% no-repeat;
   .message {
     position: absolute;
     top: 8px;
-    left: 130px;
+    left: 145px;
     transform: translateX(-50%);
     color: white;
   }

@@ -1,4 +1,5 @@
 import dat from "dat.gui/src/dat";
+import 'dat.gui/src/dat/utils/css'
 import {
   AmbientLight,
   AxesHelper,
@@ -23,7 +24,9 @@ import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
 import {modelPromise} from "./TLoader";
 import {spotLight,ambientLight} from "./Tlights";
 import {pointLightHelper,spotLightHelper} from './THelper'
+import {gltfPromise} from "./TLoader";
 import Three1 from "../three1";
+import scene from "three/examples/jsm/offscreen/scene";
 
 const modelObjs = {
   floorModel:{
@@ -43,6 +46,9 @@ let guiObj = {
     "环境光颜色":'#fff',
     "环境光强度":0.6,
   },
+  carGui:{
+    "速度":0
+  },
   "是否显示光源辅助线":true,
   "轨道控制器旋转":false
 }
@@ -55,11 +61,14 @@ gui.add(guiObj,"轨道控制器旋转")
 let spotLightGui = gui.addFolder('聚合光')
 spotLightGui.add(guiObj.spotLightGui,'x',-1000,1000)
 spotLightGui.addColor(guiObj.spotLightGui,'聚光灯颜色')
-spotLightGui.add(guiObj.spotLightGui,'聚光灯强度',0,2)
+spotLightGui.add(guiObj.spotLightGui,'聚光灯强度',0,4)
 
 let ambientLightGui = gui.addFolder('环境光')
 ambientLightGui.addColor(guiObj.ambientLightGui,'环境光颜色')
 ambientLightGui.add(guiObj.ambientLightGui,'环境光强度',0,2)
+
+let carGui = gui.addFolder('车')
+carGui.add(guiObj.carGui,'速度',{"停":0,"慢":0.05,"快":1.5})
 export class TEngine {
 
 
@@ -158,14 +167,32 @@ export class TEngine {
     },false)
   }
   loadObjModel(){
-    modelPromise(modelObjs.floorModel).then(res => {
-      console.log(res,'模型')
+    modelPromise(modelObjs.floorModel).then( async res => {
       res.children[0].name = ''
       this.scene.add(res)
       res.position.set(0,0,0)
       res.scale.set(0.2,0.2,0.2)
+
+      let [carModel,wheel] =  await gltfPromise
+      carModel.name = 'AE86'
+      carModel.position.x = 45
+      carModel.position.z = 45
+      carModel.scale.set(6,6,6)
+      carModel.children.forEach( v => {
+        v.name = 'ferrari'+v.name
+        if(v.children.length){
+          v.children.forEach( o => {
+            o.name = 'ferrari-'+o.name
+          })
+        }
+      })
+      console.log(carModel)
+      this.car = [carModel,wheel]
+      this.scene.add(carModel)
+
     })
   }
+
   GUI(){
     //光源相关GUI
     spotLight.position.x = guiObj.spotLightGui.x
@@ -187,6 +214,18 @@ export class TEngine {
     }
     //轨道
     if(guiObj['轨道控制器旋转']){this.orbitControls.autoRotate = true }else{this.orbitControls.autoRotate = false}
+
+    let car = this.car&& this.car[0]
+    if(car){
+      if(guiObj.carGui["速度"] === 0){
+        // console.log(this.scene.getChildByName('AE86'))
+      }else if(guiObj.carGui["速度"] === 0.05){
+        console.log(car)
+        car.position.z -= guiObj.carGui["速度"]
+      }else{
+        car.position.z -= guiObj.carGui["速度"]
+      }
+    }
   }
   addObject (...object) {
     object.forEach(elem => {

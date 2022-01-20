@@ -89,14 +89,15 @@ export let fontModel = new Promise((resolve,reject) => {
 
 //加载模型
 // import { MTLLoader, OBJLoader } from 'three-obj-mtl-loader'
-export const modelPromise = obj => {
+export const modelPromise = ({mtlUrl,objUrl} = {}) => {
   const objLoader = new OBJLoader()
   const mtlLoader = new MTLLoader()
   return new Promise(resolve => {
-    mtlLoader.loadAsync(obj.mtlUrl).then(materialCreator => {
+    mtlLoader.loadAsync(mtlUrl)
+      .then(materialCreator => {
       objLoader
         .setMaterials(materialCreator)
-        .loadAsync(obj.objUrl)
+        .loadAsync(objUrl)
         .then(res => {
           resolve(res)
         })
