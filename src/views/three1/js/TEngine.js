@@ -41,6 +41,10 @@ const modelObjs = {
     mtlUrl:'/model/obj/tray2/2.mtl',
     objUrl:'/model/obj/tray2/2.obj'
   },
+  shelf:{
+    mtlUrl:'/model/obj/tray2/shelf.mtl',
+    objUrl:'/model/obj/tray2/shelf.obj'
+  }
 }
 //图形界面控制器
 let gui = new dat.GUI()
@@ -211,6 +215,12 @@ export class TEngine {
       tray2.position.set(-50,5,-20)
       tray2.scale.set(3,3,3)
       this.scene.add(tray2)
+
+      let shelf = await modelPromise(modelObjs.shelf)
+      shelf.name = "货架"
+      shelf.position.set(-120,0,20)
+      shelf.scale.set(150,150,150)
+      this.scene.add(shelf)
     })
   }
 
