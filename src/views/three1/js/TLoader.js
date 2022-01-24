@@ -29,34 +29,58 @@ gltfLoader.setDRACOLoader( dracoLoader );
 export let gltfPromise = new Promise((resolve,reject) => {
   gltfLoader.loadAsync('/model/glb/ferrari.glb').then(gltf => {
     let wheels = []
+    let wheels2 = []
     const carModel = gltf.scene.children[ 0 ];
+    let carModel2 = carModel.clone()
+    let arr = [carModel,carModel2]
+    arr.forEach( (v,index)=>{
+      v.getObjectByName( 'body' ).material = new THREE.MeshPhysicalMaterial( {
+        color: 0xff0000, metalness: 0.6, roughness: 0.4, clearcoat: 0.05, clearcoatRoughness: 0.05
+      } );
+      v.getObjectByName( 'rim_fl' ).material = new THREE.MeshStandardMaterial( {
+        color: 0xffffff, metalness: 1.0, roughness: 0.5
+      } );
+      v.getObjectByName( 'rim_fr' ).material = new THREE.MeshStandardMaterial( {
+        color: 0xffffff, metalness: 1.0, roughness: 0.5
+      } );
+      v.getObjectByName( 'rim_rr' ).material = new THREE.MeshStandardMaterial( {
+        color: 0xffffff, metalness: 1.0, roughness: 0.5
+      } );
+      v.getObjectByName( 'rim_rl' ).material = new THREE.MeshStandardMaterial( {
+        color: 0xffffff, metalness: 1.0, roughness: 0.5
+      } );
+      v.getObjectByName( 'trim' ).material = new THREE.MeshStandardMaterial( {
+        color: 0xffffff, metalness: 1.0, roughness: 0.5
+      } );
+      v.getObjectByName( 'glass' ).material = new THREE.MeshPhysicalMaterial( {
+        color: 0xffffff, metalness: 0, roughness: 0.1, transmission: 0.9, transparent: true
+      } );
+      index === 0 && wheels.push(
+        v.getObjectByName( 'wheel_fl' ),
+        v.getObjectByName( 'wheel_fr' ),
+        v.getObjectByName( 'wheel_rl' ),
+        v.getObjectByName( 'wheel_rr' )
+      );
+      index === 1 &&wheels2.push(
+        v.getObjectByName( 'wheel_fl' ),
+        v.getObjectByName( 'wheel_fr' ),
+        v.getObjectByName( 'wheel_rl' ),
+        v.getObjectByName( 'wheel_rr' )
+      );
+    })
 
-    carModel.getObjectByName( 'body' ).material = bodyMaterial;
 
-    carModel.getObjectByName( 'rim_fl' ).material = detailsMaterial;
-    carModel.getObjectByName( 'rim_fr' ).material = detailsMaterial;
-    carModel.getObjectByName( 'rim_rr' ).material = detailsMaterial;
-    carModel.getObjectByName( 'rim_rl' ).material = detailsMaterial;
-    carModel.getObjectByName( 'trim' ).material = detailsMaterial;
 
-    carModel.getObjectByName( 'glass' ).material = glassMaterial;
-
-    wheels.push(
-      carModel.getObjectByName( 'wheel_fl' ),
-      carModel.getObjectByName( 'wheel_fr' ),
-      carModel.getObjectByName( 'wheel_rl' ),
-      carModel.getObjectByName( 'wheel_rr' )
-    );
-    const mesh = new Mesh(
-      new THREE.PlaneGeometry( 0.655 * 4, 1.3 * 4 ),
-      new THREE.MeshBasicMaterial( {
-        map: shadow, blending: THREE.MultiplyBlending, toneMapped: false, transparent: true
-      } )
-    );
-    mesh.rotation.x = - Math.PI / 2;
-    mesh.renderOrder = 2;
-    carModel.add( mesh );
-    resolve([carModel,wheels])
+    // const mesh = new Mesh(
+    //   new THREE.PlaneGeometry( 0.655 * 4, 1.3 * 4 ),
+    //   new THREE.MeshBasicMaterial( {
+    //     map: shadow, blending: THREE.MultiplyBlending, toneMapped: false, transparent: true
+    //   } )
+    // );
+    // mesh.rotation.x = - Math.PI / 2;
+    // mesh.renderOrder = 2;
+    // carModel.add( mesh );
+    resolve([carModel,wheels,carModel2,wheels2])
   })
 })
 export let fontModel = new Promise((resolve,reject) => {

@@ -198,7 +198,7 @@ export class TEngine {
       res.position.set(0,0,0)
       res.scale.set(0.2,0.2,0.2)
 
-      let [carModel,wheel] =  await gltfPromise
+      let [carModel,wheel,carModel2,wheel2] =  await gltfPromise
       carModel.name = 'AE86'
       carModel.position.x = 45
       carModel.position.z = 45
@@ -211,9 +211,11 @@ export class TEngine {
           })
         }
       })
-      console.log(carModel)
       this.car = [carModel,wheel]
       this.scene.add(carModel)
+      carModel2.position.set(130,0,90)
+      carModel2.scale.set(6,6,6)
+      this.scene.add(carModel2)
 
       let tray1 = await modelPromise(modelObjs.tray1Model)
       tray1.name = "底盘1"
