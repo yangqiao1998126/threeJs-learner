@@ -27,7 +27,7 @@ import {pointLightHelper,spotLightHelper} from './THelper'
 import {gltfPromise} from "./TLoader";
 import Three1 from "../three1";
 import scene from "three/examples/jsm/offscreen/scene";
-
+import {curve} from "./TBasicObject";
 const modelObjs = {
   floorModel:{
     mtlUrl:'/model/obj/layout/layout.mtl',
@@ -83,6 +83,7 @@ ambientLightGui.add(guiObj.ambientLightGui,'环境光强度',0,2)
 let carGui = gui.addFolder('车')
 carGui.add(guiObj.carGui,'速度',{"停":0,"慢":0.03,"快":0.09})
 carGui.add(guiObj.carGui,'轮胎旋转')
+let progress = 0
 export class TEngine {
 
 
@@ -138,6 +139,16 @@ export class TEngine {
       this.renderer.render(this.scene, this.camera)
       this.composer.render()
       stats.update()
+      if(progress > 1){
+
+      }else{
+        progress += 0.02
+        if(curve){
+          let point = curve.getPoint(progress)
+          // console.log(point)
+        }
+      }
+
       requestAnimationFrame(renderFun)
     }
 

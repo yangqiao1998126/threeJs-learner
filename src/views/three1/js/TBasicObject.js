@@ -58,6 +58,20 @@ plane.name = '镁伽'
 plane.position.y = 45
 plane.scale.set(0.3, 0.3, 0.3)
 
+//曲线
+export const curve = new THREE.CatmullRomCurve3([
+  new THREE.Vector3(130,1,90),
+  new THREE.Vector3(130,1,-120),
+  new THREE.Vector3(-200,1,-120),
+  new THREE.Vector3(-200,1,90),
+  new THREE.Vector3(130,1,90),
+  // new THREE.Vector3(130,1,-90),
+  // new THREE.Vector3(0,1,90),
+],false)
+//管道缓冲几何体
+const tubeGeometry = new THREE.TubeGeometry(curve,100,1,10,false)
+const mesh = new THREE.Mesh(tubeGeometry,new THREE.MeshBasicMaterial({
+  color:0x00ff00
+}))
 
-
-basicObjectList.push(stage, box,plane)
+basicObjectList.push(stage, box,plane,mesh)
