@@ -140,12 +140,14 @@ export class TEngine {
       this.composer.render()
       stats.update()
       if(progress > 1){
-
+        //
       }else{
-        progress += 0.02
+        progress += 0.0005
         if(curve){
           let point = curve.getPoint(progress)
-          // console.log(point)
+          let point1 = curve.getPoint(progress+0.001)
+          this.car&& this.car[2]&&this.car[2].position.set(point.x,point.y,point.z)
+          this.car&& this.car[2]&&this.car[2].lookAt(point1.x,point1.y,point1.z)
         }
       }
 
@@ -211,10 +213,12 @@ export class TEngine {
           })
         }
       })
-      this.car = [carModel,wheel]
+      this.car = [carModel,wheel,carModel2,wheel2]
       this.scene.add(carModel)
       carModel2.position.set(130,0,90)
+      // carModel2.lookAt(100,0,-80)
       carModel2.scale.set(6,6,6)
+      carModel2.rotateX(Math.PI)
       this.scene.add(carModel2)
 
       let tray1 = await modelPromise(modelObjs.tray1Model)

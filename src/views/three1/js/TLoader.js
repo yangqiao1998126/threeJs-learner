@@ -5,6 +5,7 @@ import {FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
 import {TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
+import {cuboid} from "./TBasicObject";
 import {Mesh} from "three";
 import {shadow} from "./TTextures";
 // import a from 'three/examples/js/libs/draco/gltf/'
@@ -80,7 +81,7 @@ export let gltfPromise = new Promise((resolve,reject) => {
     // mesh.rotation.x = - Math.PI / 2;
     // mesh.renderOrder = 2;
     // carModel.add( mesh );
-    resolve([carModel,wheels,carModel2,wheels2])
+    resolve([carModel,wheels,cuboid,wheels2])
   })
 })
 export let fontModel = new Promise((resolve,reject) => {
