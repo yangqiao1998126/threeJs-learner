@@ -81,7 +81,7 @@ export let gltfPromise = new Promise((resolve,reject) => {
     // mesh.rotation.x = - Math.PI / 2;
     // mesh.renderOrder = 2;
     // carModel.add( mesh );
-    resolve([carModel,wheels,cuboid,wheels2])
+    resolve([carModel,wheels,carModel2,wheels2])
   })
 })
 export let fontModel = new Promise((resolve,reject) => {

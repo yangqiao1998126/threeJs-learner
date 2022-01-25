@@ -213,7 +213,7 @@ export class TEngine {
       carModel2.position.set(130,0,90)
       // carModel2.lookAt(100,0,-80)
       carModel2.scale.set(6,6,6)
-      carModel2.rotateX(Math.PI)
+      // carModel2.rotateY(Math.PI)
       this.scene.add(carModel2)
 
       let tray1 = await modelPromise(modelObjs.tray1Model)
@@ -247,11 +247,7 @@ export class TEngine {
     if(guiObj['是否显示光源辅助线']){
       spotLightHelper.visible = true
       pointLightHelper.visible = true
-      // this.scene.add(spotLightHelper,pointLightHelper)
     }else{
-      // console.log('false')
-      // spotLightHelper.dispose()
-      // pointLightHelper.dispose()
       spotLightHelper.visible = false
       pointLightHelper.visible = false
     }
@@ -275,26 +271,6 @@ export class TEngine {
         case 0.03:carPosition(4500);break;
         default:carPosition(2000);
       }
-      // if(guiObj.carGui["速度"] === 0){
-      //   // console.log(this.scene.getChildByName('AE86'))
-      //   if(guiObj.carGui["轮胎旋转"]){
-      //     // guiObj.carGui["轮胎旋转"]=false
-      //   }
-      // }else if(guiObj.carGui["速度"] === 0.03){
-      //   if(guiObj.carGui["轮胎旋转"]){
-      //     for ( let i = 0; i < wheels.length; i ++ ) {
-      //       wheels[ i ].rotation.x = (time/4500) * Math.PI;
-			// 	  }
-      //   }
-      //   car.position.z -= guiObj.carGui["速度"]
-      // }else{
-      //   if(guiObj.carGui["轮胎旋转"]){
-      //     for ( let i = 0; i < wheels.length; i ++ ) {
-      //       wheels[ i ].rotation.x = (time/2000) * Math.PI;
-      //     }
-      //   }
-      //   car.position.z -= guiObj.carGui["速度"]
-      // }
     }
     if(guiObj['car2Gui']['速度'] == 0){
     }else if(guiObj['car2Gui']['速度'] == 0.0005){
@@ -306,7 +282,7 @@ export class TEngine {
         let point = curve.getPoint(progress)
         let point1 = curve.getPoint(progress+guiObj['car2Gui']['速度']*2)
         this.car&& this.car[2]&&this.car[2].position.set(point.x,point.y,point.z)
-        this.car&& this.car[2]&&this.car[2].lookAt(point1.x,point1.y,point1.z)
+        // this.car&& this.car[2]&&this.car[2].lookAt(point1.x,point1.y,point1.z)
       }
     }else{
       if(guiObj['car2Gui']['路径循环']){
@@ -317,7 +293,7 @@ export class TEngine {
         let point = curve.getPoint(progress)
         let point1 = curve.getPoint(progress+guiObj['car2Gui']['速度']*2)
         this.car&& this.car[2]&&this.car[2].position.set(point.x,point.y,point.z)
-        this.car&& this.car[2]&&this.car[2].lookAt(point1.x,point1.y,point1.z)
+        // this.car&& this.car[2]&&this.car[2].lookAt(point1.x,point1.y,point1.z)
       }
     }
 
