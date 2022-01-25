@@ -62,6 +62,10 @@ let guiObj = {
     "速度":0,
     "轮胎旋转":false
   },
+  car2Gui:{
+    "速度":0,
+    "路径循环":false
+  },
   "是否显示光源辅助线":true,
   "轨道控制器旋转":false
 }
@@ -83,6 +87,10 @@ ambientLightGui.add(guiObj.ambientLightGui,'环境光强度',0,2)
 let carGui = gui.addFolder('车')
 carGui.add(guiObj.carGui,'速度',{"停":0,"慢":0.03,"快":0.09})
 carGui.add(guiObj.carGui,'轮胎旋转')
+
+let carGui2 = gui.addFolder('沿路径运动')
+carGui2.add(guiObj.car2Gui,"速度",{"停":0,"慢":0.0005,"快":0.002})
+carGui2.add(guiObj.car2Gui,"路径循环")
 let progress = 0
 export class TEngine {
 
@@ -129,7 +137,6 @@ export class TEngine {
     const renderFun = () => {
       this.GUI()
       this.orbitControls.update()
-
       // if(window.modelPoint){
       //
       //   let position = this.getPosition(window.modelPoint)
@@ -139,18 +146,6 @@ export class TEngine {
       this.renderer.render(this.scene, this.camera)
       this.composer.render()
       stats.update()
-      if(progress > 1){
-        //
-      }else{
-        progress += 0.0005
-        if(curve){
-          let point = curve.getPoint(progress)
-          let point1 = curve.getPoint(progress+0.001)
-          this.car&& this.car[2]&&this.car[2].position.set(point.x,point.y,point.z)
-          this.car&& this.car[2]&&this.car[2].lookAt(point1.x,point1.y,point1.z)
-        }
-      }
-
       requestAnimationFrame(renderFun)
     }
 
@@ -266,28 +261,66 @@ export class TEngine {
     let car = this.car&& this.car[0]
     let wheels = this.car&& this.car[1]
     const time = - performance.now();
+    let carPosition = _ => {
+      if(guiObj.carGui["轮胎旋转"]){
+        for ( let i = 0; i < wheels.length; i ++ ) {
+          wheels[ i ].rotation.x = (time/_) * Math.PI;
+        }
+      }
+      car.position.z -= guiObj.carGui["速度"]
+    }
     if(car){
-      if(guiObj.carGui["速度"] === 0){
-        // console.log(this.scene.getChildByName('AE86'))
-        if(guiObj.carGui["轮胎旋转"]){
-          // guiObj.carGui["轮胎旋转"]=false
-        }
-      }else if(guiObj.carGui["速度"] === 0.03){
-        if(guiObj.carGui["轮胎旋转"]){
-          for ( let i = 0; i < wheels.length; i ++ ) {
-            wheels[ i ].rotation.x = (time/4500) * Math.PI;
-				  }
-        }
-        car.position.z -= guiObj.carGui["速度"]
-      }else{
-        if(guiObj.carGui["轮胎旋转"]){
-          for ( let i = 0; i < wheels.length; i ++ ) {
-            wheels[ i ].rotation.x = (time/2000) * Math.PI;
-          }
-        }
-        car.position.z -= guiObj.carGui["速度"]
+      switch (guiObj.carGui["速度"]){
+        case 0:break;
+        case 0.03:carPosition(4500);break;
+        default:carPosition(2000);
+      }
+      // if(guiObj.carGui["速度"] === 0){
+      //   // console.log(this.scene.getChildByName('AE86'))
+      //   if(guiObj.carGui["轮胎旋转"]){
+      //     // guiObj.carGui["轮胎旋转"]=false
+      //   }
+      // }else if(guiObj.carGui["速度"] === 0.03){
+      //   if(guiObj.carGui["轮胎旋转"]){
+      //     for ( let i = 0; i < wheels.length; i ++ ) {
+      //       wheels[ i ].rotation.x = (time/4500) * Math.PI;
+			// 	  }
+      //   }
+      //   car.position.z -= guiObj.carGui["速度"]
+      // }else{
+      //   if(guiObj.carGui["轮胎旋转"]){
+      //     for ( let i = 0; i < wheels.length; i ++ ) {
+      //       wheels[ i ].rotation.x = (time/2000) * Math.PI;
+      //     }
+      //   }
+      //   car.position.z -= guiObj.carGui["速度"]
+      // }
+    }
+    if(guiObj['car2Gui']['速度'] == 0){
+    }else if(guiObj['car2Gui']['速度'] == 0.0005){
+      if(guiObj['car2Gui']['路径循环']){
+        if(progress >=1) progress = 0;
+      }
+      progress += (guiObj['car2Gui']['速度']*1000/1000)
+      if(curve){
+        let point = curve.getPoint(progress)
+        let point1 = curve.getPoint(progress+guiObj['car2Gui']['速度']*2)
+        this.car&& this.car[2]&&this.car[2].position.set(point.x,point.y,point.z)
+        this.car&& this.car[2]&&this.car[2].lookAt(point1.x,point1.y,point1.z)
+      }
+    }else{
+      if(guiObj['car2Gui']['路径循环']){
+        if(progress >=1) progress = 0;
+      }
+      progress += (guiObj['car2Gui']['速度']*1000/1000)
+      if(curve){
+        let point = curve.getPoint(progress)
+        let point1 = curve.getPoint(progress+guiObj['car2Gui']['速度']*2)
+        this.car&& this.car[2]&&this.car[2].position.set(point.x,point.y,point.z)
+        this.car&& this.car[2]&&this.car[2].lookAt(point1.x,point1.y,point1.z)
       }
     }
+
   }
   addObject (...object) {
     object.forEach(elem => {
