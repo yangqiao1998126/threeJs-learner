@@ -86,7 +86,7 @@ export let gltfPromise = new Promise((resolve,reject) => {
 })
 export let fontModel = new Promise((resolve,reject) => {
   new FontLoader().loadAsync('/model/font.json').then(font => {
-    let geometry = new TextGeometry( 'three.js', {
+    let geometry = new TextGeometry( 'happy birthday', {
       font: font,
       size: 50,
       height: 20,
@@ -101,13 +101,14 @@ export let fontModel = new Promise((resolve,reject) => {
     });
 
     let fontModel = new THREE.Mesh(geometry,fontMaterial);
-    fontModel.position.z = 45
-    fontModel.position.x = -20
+    fontModel.position.z = 85
+    fontModel.position.x = -75
     fontModel.position.y = 5
-    fontModel.scale.set(0.2,0.2,0.2)
+    fontModel.rotateY(1/6*Math.PI)
+    fontModel.scale.set(0.15,0.15,0.15)
     fontModel.castShadow = true
     fontModel.receiveShadow = true
-    fontModel.name = 'three.js'
+    fontModel.name = ''
     resolve(fontModel)
   })
 })

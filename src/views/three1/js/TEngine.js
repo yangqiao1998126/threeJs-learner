@@ -44,6 +44,10 @@ const modelObjs = {
   shelf:{
     mtlUrl:'/model/obj/tray2/shelf.mtl',
     objUrl:'/model/obj/tray2/shelf.obj'
+  },
+  cake:{
+    mtlUrl:'/model/obj/cake/cake.mtl',
+    objUrl:'/model/obj/cake/cake.obj'
   }
 }
 //图形界面控制器
@@ -233,6 +237,12 @@ export class TEngine {
       shelf.position.set(-120,0,20)
       shelf.scale.set(150,150,150)
       this.scene.add(shelf)
+
+      let cake = await modelPromise(modelObjs.cake)
+      cake.name = "cake"
+      cake.position.set(0,1,55)
+      cake.scale.set(10,10,10)
+      this.scene.add(cake)
     })
   }
 
