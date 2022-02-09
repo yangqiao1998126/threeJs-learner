@@ -14,6 +14,9 @@ import {
   WebGLRenderer,
   MOUSE,
   Color,
+  Matrix4,
+  Quaternion,
+  Euler,
   Object3D} from "three"
 
 import Stats from 'three/examples/jsm/libs/stats.module'
@@ -44,10 +47,6 @@ const modelObjs = {
   shelf:{
     mtlUrl:'/model/obj/tray2/shelf.mtl',
     objUrl:'/model/obj/tray2/shelf.obj'
-  },
-  cake:{
-    mtlUrl:'/model/obj/cake/cake.mtl',
-    objUrl:'/model/obj/cake/cake.obj'
   }
 }
 //图形界面控制器
@@ -130,7 +129,7 @@ export class TEngine {
     statsDom.style.left = 'unset'
 
     // 初始orbitControls
-     this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement)
+    this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement)
     this.orbitControls.mouseButtons = {
       LEFT: null,
       MIDDLE: MOUSE.DOLLY,
@@ -215,7 +214,7 @@ export class TEngine {
       this.car = [carModel,wheel,carModel2,wheel2]
       this.scene.add(carModel)
       carModel2.position.set(130,0,90)
-      // carModel2.lookAt(100,0,-80)
+      // carModel2.lookAt(130,0,80)
       carModel2.scale.set(6,6,6)
       // carModel2.rotateY(Math.PI)
       this.scene.add(carModel2)
@@ -237,12 +236,6 @@ export class TEngine {
       shelf.position.set(-120,0,20)
       shelf.scale.set(150,150,150)
       this.scene.add(shelf)
-
-      let cake = await modelPromise(modelObjs.cake)
-      cake.name = "cake"
-      cake.position.set(0,1,55)
-      cake.scale.set(10,10,10)
-      this.scene.add(cake)
     })
   }
 
@@ -267,7 +260,7 @@ export class TEngine {
     let car = this.car&& this.car[0]
     let wheels = this.car&& this.car[1]
     const time = - performance.now();
-    let carPosition = _ => {
+    let _carPosition = _ => {
       if(guiObj.carGui["轮胎旋转"]){
         for ( let i = 0; i < wheels.length; i ++ ) {
           wheels[ i ].rotation.x = (time/_) * Math.PI;
@@ -275,36 +268,33 @@ export class TEngine {
       }
       car.position.z -= guiObj.carGui["速度"]
     }
+    let _car2Matrix4 = _ => {
+      if(guiObj['car2Gui']['路径循环']){
+        if(progress >=1) progress = 0;
+      }
+      progress += (guiObj['car2Gui']['速度']*1000/1000)
+      let point = _.getPoint(progress)
+      let point1 = _.getPoint(progress+guiObj['car2Gui']['速度']*2)
+      let offsetAngle = Math.PI*2
+      let mtx = new Matrix4()
+      mtx.lookAt(this.car[2].position.clone(),point,this.car[2].up)
+      mtx.multiply(new Matrix4().makeRotationFromEuler(new Euler(0, offsetAngle, 0)));
+      let toRot = new Quaternion().setFromRotationMatrix(mtx);
+      this.car[2].quaternion.slerp(toRot,0.2)
+      this.car[2].position.set(point.x,point.y,point.z)
+    }
     if(car){
       switch (guiObj.carGui["速度"]){
         case 0:break;
-        case 0.03:carPosition(4500);break;
-        default:carPosition(2000);
+        case 0.03:_carPosition(4500);break;
+        default:_carPosition(2000);
       }
     }
     if(guiObj['car2Gui']['速度'] == 0){
     }else if(guiObj['car2Gui']['速度'] == 0.0005){
-      if(guiObj['car2Gui']['路径循环']){
-        if(progress >=1) progress = 0;
-      }
-      progress += (guiObj['car2Gui']['速度']*1000/1000)
-      if(curve){
-        let point = curve.getPoint(progress)
-        let point1 = curve.getPoint(progress+guiObj['car2Gui']['速度']*2)
-        this.car&& this.car[2]&&this.car[2].position.set(point.x,point.y,point.z)
-        // this.car&& this.car[2]&&this.car[2].lookAt(point1.x,point1.y,point1.z)
-      }
+      curve &&  _car2Matrix4(curve)
     }else{
-      if(guiObj['car2Gui']['路径循环']){
-        if(progress >=1) progress = 0;
-      }
-      progress += (guiObj['car2Gui']['速度']*1000/1000)
-      if(curve){
-        let point = curve.getPoint(progress)
-        let point1 = curve.getPoint(progress+guiObj['car2Gui']['速度']*2)
-        this.car&& this.car[2]&&this.car[2].position.set(point.x,point.y,point.z)
-        // this.car&& this.car[2]&&this.car[2].lookAt(point1.x,point1.y,point1.z)
-      }
+      curve &&  _car2Matrix4(curve)
     }
 
   }
