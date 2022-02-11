@@ -67,7 +67,8 @@ let guiObj = {
   },
   car2Gui:{
     "速度":0,
-    "路径循环":false
+    "路径循环":false,
+    "第三视角跟随":false
   },
   "是否显示光源辅助线":true,
   "轨道控制器旋转":false
@@ -92,8 +93,9 @@ carGui.add(guiObj.carGui,'速度',{"停":0,"慢":0.03,"快":0.09})
 carGui.add(guiObj.carGui,'轮胎旋转')
 
 let carGui2 = gui.addFolder('沿路径运动')
-carGui2.add(guiObj.car2Gui,"速度",{"停":0,"慢":0.0005,"快":0.002})
+carGui2.add(guiObj.car2Gui,"速度",{"停":0,"慢":0.0005,"快":0.001})
 carGui2.add(guiObj.car2Gui,"路径循环")
+carGui2.add(guiObj.car2Gui,"第三视角跟随")
 let progress = 0
 export class TEngine {
 
@@ -111,8 +113,9 @@ export class TEngine {
     this.camera = new PerspectiveCamera(45, dom.offsetWidth / dom.offsetHeight, 20, 999)
 
     this.camera.position.set(-10, 60 ,100)
-    this.camera.lookAt(new Vector3(0, 0, 0))
-    this.camera.up = new Vector3(0, 1, 0)
+    // this.camera.position.set(130, 5 ,130)
+    // this.camera.lookAt(130,0,0)
+    // this.camera.up = new Vector3(0, 1, 0)
 
 
     this.renderer.setSize(dom.offsetWidth, dom.offsetHeight, true)
@@ -120,7 +123,7 @@ export class TEngine {
     this.resize()
     //初始线条渲染
     this.useEffectComposer()
-    // 初始性能监视器
+    // 初始性能监视器ss
     const stats = Stats()
     const statsDom = stats.domElement
     statsDom.style.position = 'fixed'
@@ -135,7 +138,7 @@ export class TEngine {
       MIDDLE: MOUSE.DOLLY,
       RIGHT: MOUSE.ROTATE
     }
-
+    // this.orbitControls.target = new Vector3(130,0,0)
     //加载obj模型
     const renderFun = () => {
       this.GUI()
@@ -273,15 +276,22 @@ export class TEngine {
         if(progress >=1) progress = 0;
       }
       progress += (guiObj['car2Gui']['速度']*1000/1000)
+      // let point = _.getPoint((progress-guiObj['car2Gui']['速度']*2) >=0 ?progress-guiObj['car2Gui']['速度']*2:progress)
       let point = _.getPoint(progress)
       let point1 = _.getPoint(progress+guiObj['car2Gui']['速度']*2)
+      let point2 = _.getPoint(progress+guiObj['car2Gui']['速度']*75)
       let offsetAngle = Math.PI*2
       let mtx = new Matrix4()
-      mtx.lookAt(this.car[2].position.clone(),point,this.car[2].up)
+      mtx.lookAt(this.car[2].position.clone(),point2,this.car[2].up)
       mtx.multiply(new Matrix4().makeRotationFromEuler(new Euler(0, offsetAngle, 0)));
       let toRot = new Quaternion().setFromRotationMatrix(mtx);
       this.car[2].quaternion.slerp(toRot,0.2)
-      this.car[2].position.set(point.x,point.y,point.z)
+      this.car[2].position.set(point2.x,point2.y,point2.z)
+      if(guiObj["car2Gui"]["第三视角跟随"]){
+        this.camera.position.set(point.x,point.y+15,point.z)
+        this.orbitControls.target = new Vector3(point1.x,point1.y+15,point1.z)
+      }
+
     }
     if(car){
       switch (guiObj.carGui["速度"]){
