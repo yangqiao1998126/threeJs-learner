@@ -64,7 +64,7 @@ export default {
       //   res.position.set(0,0,0)
       //   res.scale.set(0.2,0.2,0.2)
       // })
-      Event(TE)
+      // Event(TE)
 
     }
   },

@@ -66,4 +66,22 @@ export default function Event(TE) {
 
 
   window.addEventListener('click', onMouseClick, false);
+
+
+  console.log(TE.scene.getObjectByName('底盘1'),'getOName');
+  let _tray1 = TE.scene.getObjectByName('底盘1')
+  let _tray2 = TE.scene.getObjectByName('底盘2')
+  let group = new THREE.Group()
+  group.add(_tray1)
+  group.add(_tray2)
+  TE.scene.add(group)
+  window.addEventListener('keydown',function (e){
+    switch(e.keyCode){
+      case 87: group.position.z-=1;break;
+      case 83: group.position.z+=1;break;
+      case 65: group.position.x-=1;break;
+      case 68: group.position.x=1;
+    }
+  })
+
 }

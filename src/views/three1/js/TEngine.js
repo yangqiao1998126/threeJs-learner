@@ -18,7 +18,7 @@ import {
   Quaternion,
   Euler,
   Object3D} from "three"
-
+import Event from "./TObjectClick";
 import Stats from 'three/examples/jsm/libs/stats.module'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
@@ -239,6 +239,8 @@ export class TEngine {
       shelf.position.set(-120,0,20)
       shelf.scale.set(150,150,150)
       this.scene.add(shelf)
+
+      Event(this)
     })
   }
 
