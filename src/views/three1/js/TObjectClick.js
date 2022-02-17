@@ -68,9 +68,10 @@ export default function Event(TE) {
   window.addEventListener('click', onMouseClick, false);
 
 
-  console.log(TE.scene.getObjectByName('底盘1'),'getOName');
   let _tray1 = TE.scene.getObjectByName('底盘1')
   let _tray2 = TE.scene.getObjectByName('底盘2')
+  let horseActionIsPlay = false
+  let horseActionPlayTime = 1.5
   let group = new THREE.Group()
   group.add(_tray1)
   group.add(_tray2)
@@ -80,7 +81,33 @@ export default function Event(TE) {
       case 87: group.position.z-=1;break;
       case 83: group.position.z+=1;break;
       case 65: group.position.x-=1;break;
-      case 68: group.position.x=1;
+      case 68: group.position.x=1;break;
+      case 32:
+        if(!horseActionIsPlay){
+          TE.horseAction.setDuration(horseActionPlayTime).play()
+          horseActionIsPlay = true
+        }else{
+          TE.horseAction.stop()
+          horseActionIsPlay = false
+        }
+        break
+      case 38:
+        if(horseActionIsPlay){
+          horseActionPlayTime <= 0.1
+            ? horseActionPlayTime = 0.1
+            : horseActionPlayTime -= 0.1;
+          TE.horseAction.setDuration(horseActionPlayTime).play()
+          // horseActionPlayTime = 0.5
+          // TE.horseAction.setDuration(horseActionPlayTime).play()
+        }
+        break
+      case 40:
+        if(horseActionIsPlay){
+          horseActionPlayTime >= 4
+            ? horseActionPlayTime = 4
+            : horseActionPlayTime += 0.1;
+          TE.horseAction.setDuration(horseActionPlayTime).play()
+        }
     }
   })
 

@@ -113,6 +113,19 @@ export let fontModel = new Promise((resolve,reject) => {
   })
 })
 
+//加载gltf模型
+export let gltfModelPromise = (url) => {
+  return new Promise((reslove,reject) => {
+    gltfLoader.loadAsync(url).then(gltf => {
+      reslove(gltf)
+    })
+  })
+
+}
+
+
+
+
 //加载模型
 // import { MTLLoader, OBJLoader } from 'three-obj-mtl-loader'
 export const modelPromise = ({mtlUrl,objUrl} = {}) => {

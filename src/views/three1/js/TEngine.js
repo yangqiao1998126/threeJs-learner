@@ -16,6 +16,7 @@ import {
   Color,
   Matrix4,
   Quaternion,
+  AnimationMixer,
   Euler,
   Object3D} from "three"
 import Event from "./TObjectClick";
@@ -27,7 +28,7 @@ import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
 import {modelPromise} from "./TLoader";
 import {spotLight,ambientLight} from "./Tlights";
 import {pointLightHelper,spotLightHelper} from './THelper'
-import {gltfPromise} from "./TLoader";
+import {gltfPromise,gltfModelPromise} from "./TLoader";
 import Three1 from "../three1";
 import scene from "three/examples/jsm/offscreen/scene";
 import {curve} from "./TBasicObject";
@@ -47,7 +48,8 @@ const modelObjs = {
   shelf:{
     mtlUrl:'/model/obj/tray2/shelf.mtl',
     objUrl:'/model/obj/tray2/shelf.obj'
-  }
+  },
+  horse:'/model/glb/Horse.glb'
 }
 //图形界面控制器
 let gui = new dat.GUI()
@@ -97,6 +99,7 @@ carGui2.add(guiObj.car2Gui,"速度",{"停":0,"慢":0.0005,"快":0.001})
 carGui2.add(guiObj.car2Gui,"路径循环")
 carGui2.add(guiObj.car2Gui,"第三视角跟随")
 let progress = 0
+let prevTime = Date.now()
 export class TEngine {
 
 
@@ -142,6 +145,11 @@ export class TEngine {
     //加载obj模型
     const renderFun = () => {
       this.GUI()
+      if ( this.mixer ) {
+        const time = Date.now();
+        this.mixer.update( ( time - prevTime ) * 0.001 );
+        prevTime = time;
+      }
       this.orbitControls.update()
       // if(window.modelPoint){
       //
@@ -239,6 +247,17 @@ export class TEngine {
       shelf.position.set(-120,0,20)
       shelf.scale.set(150,150,150)
       this.scene.add(shelf)
+
+      let horse = await gltfModelPromise(modelObjs.horse)
+      let horsemodel = horse.scene.children[0]
+      horsemodel.scale.set(0.2,0.2,0.2)
+      horsemodel.position.set(-135,0,0)
+      this.scene.add(horsemodel)
+      this.mixer = new AnimationMixer(horsemodel)
+      this.horseAction = this.mixer.clipAction(horse.animations[0])
+        // this.action.setDuration(0.5).play()
+
+
 
       Event(this)
     })

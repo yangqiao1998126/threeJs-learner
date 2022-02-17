@@ -33,7 +33,6 @@ export default {
     tip
   },
   mounted() {
-    console.log(window._event);
     window._event.on('showTip',(name,position) => {
      if(name){
        console.log(name,position)
