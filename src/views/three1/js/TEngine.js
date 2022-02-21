@@ -49,6 +49,10 @@ const modelObjs = {
     mtlUrl:'/model/obj/tray2/shelf.mtl',
     objUrl:'/model/obj/tray2/shelf.obj'
   },
+  all:{
+    mtlUrl:'/model/obj/all/a.mtl',
+    objUrl:'/model/obj/all/a.obj'
+  },
   horse:'/model/glb/Horse.glb'
 }
 //图形界面控制器
@@ -242,16 +246,24 @@ export class TEngine {
       tray2.scale.set(3,3,3)
       this.scene.add(tray2)
 
-      let shelf = await modelPromise(modelObjs.shelf)
-      shelf.name = "货架"
-      shelf.position.set(-120,0,20)
-      shelf.scale.set(150,150,150)
-      this.scene.add(shelf)
+      // let shelf = await modelPromise(modelObjs.shelf)
+      // shelf.name = "货架"
+      // shelf.position.set(-120,0,20)
+      // shelf.scale.set(150,150,150)
+      // this.scene.add(shelf)
+
+      let all = await modelPromise(modelObjs.all)
+      all.name = "aa"
+      all.position.set(-110,0,0)
+      all.scale.set(1,1,1)
+      all.remove(all.getObjectByName('地面_Plane'))
+      console.log(all)
+      this.scene.add(all)
 
       let horse = await gltfModelPromise(modelObjs.horse)
       let horsemodel = horse.scene.children[0]
       horsemodel.scale.set(0.2,0.2,0.2)
-      horsemodel.position.set(-135,0,0)
+      horsemodel.position.set(110,0,-10)
       this.scene.add(horsemodel)
       this.mixer = new AnimationMixer(horsemodel)
       this.horseAction = this.mixer.clipAction(horse.animations[0])

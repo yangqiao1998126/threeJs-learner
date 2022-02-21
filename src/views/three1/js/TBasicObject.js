@@ -79,5 +79,5 @@ const tubeGeometry = new THREE.TubeGeometry(curve,100,1,10,false)
 const mesh = new THREE.Mesh(tubeGeometry,new THREE.MeshBasicMaterial({
   color:0x00ff00
 }))
-
+// mesh.visible = false
 basicObjectList.push(stage, box,plane,mesh)
