@@ -52,9 +52,9 @@ export default {
 //       renderFun()*/
 //
 //       })
-      fontModel.then(res => {
-        TE.scene.add(res)
-      })
+//       fontModel.then(res => {
+//         TE.scene.add(res)
+//       })
       // modelPromise({
       //   mtlUrl:'/model/obj/layout/layout.mtl',
       //   objUrl:'/model/obj/layout/layout.mtl'

@@ -18,6 +18,7 @@ import {
   Quaternion,
   AnimationMixer,
   Euler,
+  Group,
   Object3D} from "three"
 import Event from "./TObjectClick";
 import Stats from 'three/examples/jsm/libs/stats.module'
@@ -31,7 +32,7 @@ import {pointLightHelper,spotLightHelper} from './THelper'
 import {gltfPromise,gltfModelPromise} from "./TLoader";
 import Three1 from "../three1";
 import scene from "three/examples/jsm/offscreen/scene";
-import {curve} from "./TBasicObject";
+import {curve,curve1,curve2} from "./TBasicObject";
 const modelObjs = {
   floorModel:{
     mtlUrl:'/model/obj/layout/layout.mtl',
@@ -53,7 +54,15 @@ const modelObjs = {
     mtlUrl:'/model/obj/all/a.mtl',
     objUrl:'/model/obj/all/a.obj'
   },
-  horse:'/model/glb/Horse.glb'
+  horse:'/model/glb/Horse.glb',
+  che:'/model/glb/untitled.glb',
+  dipanrobo:'/model/glb/dipanrobo.glb',
+  cangchuqu:'/model/glb/cangchuqu1.glb',
+  huodun:'/model/glb/huodun.glb',
+  chache:{
+    mtlUrl:'/model/obj/chache/untitled.mtl',
+    objUrl:'/model/obj/chache/untitled.obj',
+  }
 }
 //图形界面控制器
 let gui = new dat.GUI()
@@ -103,11 +112,15 @@ carGui2.add(guiObj.car2Gui,"速度",{"停":0,"慢":0.0005,"快":0.001})
 carGui2.add(guiObj.car2Gui,"路径循环")
 carGui2.add(guiObj.car2Gui,"第三视角跟随")
 let progress = 0
+let chacheProgress = 0
 let prevTime = Date.now()
+let isPoint = false
 export class TEngine {
 
 
   constructor (dom) {
+    this.isPlay = false
+    this.huodunNum = 0
     this.dom = dom
     this.renderer = new WebGLRenderer({
       antialias: true
@@ -234,17 +247,17 @@ export class TEngine {
       // carModel2.rotateY(Math.PI)
       this.scene.add(carModel2)
 
-      let tray1 = await modelPromise(modelObjs.tray1Model)
-      tray1.name = "底盘1"
-      tray1.position.set(-50,5,0)
-      tray1.scale.set(3,3,3)
-      this.scene.add(tray1)
-
-      let tray2 = await modelPromise(modelObjs.tray2Model)
-      tray2.name = "底盘2"
-      tray2.position.set(-50,5,-20)
-      tray2.scale.set(3,3,3)
-      this.scene.add(tray2)
+      // let tray1 = await modelPromise(modelObjs.tray1Model)
+      // tray1.name = "底盘1"
+      // tray1.position.set(-50,5,0)
+      // tray1.scale.set(3,3,3)
+      // this.scene.add(tray1)
+      //
+      // let tray2 = await modelPromise(modelObjs.tray2Model)
+      // tray2.name = "底盘2"
+      // tray2.position.set(-50,5,-20)
+      // tray2.scale.set(3,3,3)
+      // this.scene.add(tray2)
 
       // let shelf = await modelPromise(modelObjs.shelf)
       // shelf.name = "货架"
@@ -252,13 +265,63 @@ export class TEngine {
       // shelf.scale.set(150,150,150)
       // this.scene.add(shelf)
 
-      let all = await modelPromise(modelObjs.all)
-      all.name = "aa"
-      all.position.set(-110,0,0)
-      all.scale.set(1,1,1)
-      all.remove(all.getObjectByName('地面_Plane'))
-      console.log(all)
-      this.scene.add(all)
+      // let all = await modelPromise(modelObjs.all)
+      // all.name = "aa"
+      // all.position.set(-110,0,0)
+      // all.scale.set(1,1,1)
+      // all.remove(all.getObjectByName('地面_Plane'))
+      // all.remove(all.getObjectByName('货架.001_Cube.008'))
+      // console.log(all)
+      // this.scene.add(all)
+
+      let chache = await gltfModelPromise(modelObjs.che)
+      chache = chache.scene
+      this.chache = chache
+      // chache.position.set(-210,3,30)
+      chache.name = '叉车'
+      chache.scale.set(1.2,1.2,1.2)
+      // this.scene.add(chache)
+      this.chache2 = chache.clone()
+      this.chache2.position.set(-200,3,40)
+      this.chache2.scale.set(1.2,1.2,1.2)
+      this.scene.add(this.chache2)
+      //货墩
+      let huodun = (await gltfModelPromise(modelObjs.huodun)).scene
+     this.huodun = huodun
+      huodun.name = '货墩1'
+      // huodun.position.set(-210,7,37)//货盘_Cube006
+      huodun.scale.set(1,1.4,1)
+      huodun.translateZ(7)
+      huodun.translateY(4)
+
+      let huodunInit = huodun.clone()
+      huodunInit.name = '起始位置货墩'
+      huodunInit.position.set(-216,3,35)
+      this.scene.add(huodunInit)
+      // this.scene.add(huodun)
+      //获墩和叉车组合
+      let chacheGroup = new Group()
+      chacheGroup.add(this.chache)
+      chacheGroup.add(huodun)
+      this.chacheGroup = chacheGroup
+      this.scene.add(chacheGroup)
+      this.chacheGroup.position.x = -210
+      this.chacheGroup.position.y = 3
+      this.chacheGroup.position.z = 30
+
+
+
+
+      let dipanboro = (await gltfModelPromise(modelObjs.dipanrobo)).scene
+      dipanboro.position.set(-200,3,40)
+      dipanboro.scale.set(2,2,2)
+      this.scene.add(dipanboro)
+
+      //单独货架仓储区
+      let cangchuqu  = (await gltfModelPromise(modelObjs.cangchuqu)).scene
+      cangchuqu.position.set(-135,0,-5)
+      cangchuqu.scale.set(1.2,1.2,1.2)
+      this.scene.add(cangchuqu)
 
       let horse = await gltfModelPromise(modelObjs.horse)
       let horsemodel = horse.scene.children[0]
@@ -274,7 +337,21 @@ export class TEngine {
       Event(this)
     })
   }
+  loadHuodun(){
 
+    for(let i=0 ;i<this.huodunNum;i++){
+      let hd = this.huodun.clone()
+      hd.name = `获墩遍历生成${i}`
+      if(this.scene.getObjectByName(`获墩遍历生成${i}`)){
+
+      }else{
+        hd.position.set(-120,6,(i)*6)
+        this.scene.add(hd)
+      }
+
+    }
+
+  }
   GUI(){
     //光源相关GUI
     spotLight.position.x = guiObj.spotLightGui.x
@@ -326,6 +403,37 @@ export class TEngine {
       }
 
     }
+    //叉车
+    if(this.isPlay){
+      if(this.chache && this.chache2 && this.chacheGroup){
+        if(chacheProgress >= 1) {chacheProgress =0 ;isPoint=false;this,this.huodunNum <=2 ? this.chacheGroup.add(this.huodun) :this.scene.remove(this.scene.getObjectByName('起始位置货墩'))};
+        chacheProgress  = (chacheProgress*1000+0.003*1000)/1000
+        let chachePoint = curve1.getPoint(chacheProgress)
+        let {x,y,z} = chachePoint
+        if(Math.abs(Math.abs(x).toFixed(3)-115) <=6 && Math.abs(Math.abs(z).toFixed(3)-0) <=4 && !isPoint && this.huodunNum <=2){
+          isPoint = true
+          this.isPlay = false
+          console.log('到达指定位置了',)
+          this.chacheGroup.remove(this.chacheGroup.getObjectByName('货墩1'))
+          this.huodunNum +=1
+          setTimeout(() => {
+            this.isPlay = true
+          },800)
+        }else{
+          let chachePoint1 = curve1.getPoint(chacheProgress+0.001*2)
+          this.chacheGroup.lookAt(chachePoint1.x,chachePoint1.y,chachePoint1.z)
+          // console.log(chachePoint.x,chachePoint.y,chachePoint.z)
+          this.chacheGroup.position.set(chachePoint.x,chachePoint.y,chachePoint.z)
+
+          let chachePoint2 = curve2.getPoint(chacheProgress)
+          let chachePoint22 = curve2.getPoint(chacheProgress+0.001*2)
+          this.chache2.lookAt(chachePoint22.x,chachePoint22.y,chachePoint22.z)
+          this.chache2.position.set(chachePoint2.x,chachePoint2.y,chachePoint2.z)
+        }
+
+      }
+    }
+    this.loadHuodun()
     if(car){
       switch (guiObj.carGui["速度"]){
         case 0:break;

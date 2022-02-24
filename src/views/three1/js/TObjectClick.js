@@ -108,6 +108,9 @@ export default function Event(TE) {
             : horseActionPlayTime += 0.1;
           TE.horseAction.setDuration(horseActionPlayTime).play()
         }
+        break
+      case 13:
+        TE.isPlay = !TE.isPlay
     }
   })
 
