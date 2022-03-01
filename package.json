@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@jiaminghi/data-view": "^2.7.3",
+    "@tweenjs/tween.js": "github:tweenjs/tween.js",
     "@types/echarts": "^4.4.3",
     "core-js": "^3.6.4",
     "echarts": "^4.6.0",

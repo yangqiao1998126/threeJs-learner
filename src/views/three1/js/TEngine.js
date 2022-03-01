@@ -58,6 +58,7 @@ const modelObjs = {
   che:'/model/glb/untitled.glb',
   dipanrobo:'/model/glb/dipanrobo.glb',
   cangchuqu:'/model/glb/cangchuqu1.glb',
+  xiaohw:'/model/glb/xiaohw.glb',
   huodun:'/model/glb/huodun.glb',
   chache:{
     mtlUrl:'/model/obj/chache/untitled.mtl',
@@ -116,11 +117,13 @@ let chacheProgress = 0
 let prevTime = Date.now()
 let isPoint = false
 export class TEngine {
-
+  xhwNum = 0
 
   constructor (dom) {
     this.isPlay = false
     this.huodunNum = 0
+    this.xhwList = []
+    this.xhwList1 = []
     this.dom = dom
     this.renderer = new WebGLRenderer({
       antialias: true
@@ -133,9 +136,7 @@ export class TEngine {
     this.camera = new PerspectiveCamera(45, dom.offsetWidth / dom.offsetHeight, 20, 999)
 
     this.camera.position.set(-10, 60 ,100)
-    // this.camera.position.set(130, 5 ,130)
-    // this.camera.lookAt(130,0,0)
-    // this.camera.up = new Vector3(0, 1, 0)
+
 
 
     this.renderer.setSize(dom.offsetWidth, dom.offsetHeight, true)
@@ -168,6 +169,7 @@ export class TEngine {
         prevTime = time;
       }
       this.orbitControls.update()
+      this.handleXhw()
       // if(window.modelPoint){
       //
       //   let position = this.getPosition(window.modelPoint)
@@ -247,32 +249,6 @@ export class TEngine {
       // carModel2.rotateY(Math.PI)
       this.scene.add(carModel2)
 
-      // let tray1 = await modelPromise(modelObjs.tray1Model)
-      // tray1.name = "底盘1"
-      // tray1.position.set(-50,5,0)
-      // tray1.scale.set(3,3,3)
-      // this.scene.add(tray1)
-      //
-      // let tray2 = await modelPromise(modelObjs.tray2Model)
-      // tray2.name = "底盘2"
-      // tray2.position.set(-50,5,-20)
-      // tray2.scale.set(3,3,3)
-      // this.scene.add(tray2)
-
-      // let shelf = await modelPromise(modelObjs.shelf)
-      // shelf.name = "货架"
-      // shelf.position.set(-120,0,20)
-      // shelf.scale.set(150,150,150)
-      // this.scene.add(shelf)
-
-      // let all = await modelPromise(modelObjs.all)
-      // all.name = "aa"
-      // all.position.set(-110,0,0)
-      // all.scale.set(1,1,1)
-      // all.remove(all.getObjectByName('地面_Plane'))
-      // all.remove(all.getObjectByName('货架.001_Cube.008'))
-      // console.log(all)
-      // this.scene.add(all)
 
       let chache = await gltfModelPromise(modelObjs.che)
       chache = chache.scene
@@ -309,9 +285,6 @@ export class TEngine {
       this.chacheGroup.position.y = 3
       this.chacheGroup.position.z = 30
 
-
-
-
       let dipanboro = (await gltfModelPromise(modelObjs.dipanrobo)).scene
       dipanboro.position.set(-200,3,40)
       dipanboro.scale.set(2,2,2)
@@ -332,13 +305,78 @@ export class TEngine {
       this.horseAction = this.mixer.clipAction(horse.animations[0])
         // this.action.setDuration(0.5).play()
 
+      let csd1 = cangchuqu.getObjectByName('货盘029_Cube137_1')
+      let csd2 = cangchuqu.getObjectByName('货盘029_Cube137_2')
+      cangchuqu.getObjectByName('货盘030_Cube138_2').visible=false
+      cangchuqu.getObjectByName('货盘030_Cube138_1').visible=false
+      csd1.visible = false
+      csd2.visible = false
 
+      //传送带运动 相关小货物"
+      let xhw = (await gltfModelPromise(modelObjs.xiaohw)).scene;
+      xhw.name = `xhw${this.xhwNum}`
+      xhw.position.set(-120,4.5,-36)
+      xhw.scale.set(2,2,2)
+      let endXhw = xhw.clone();endXhw.name = 'endXhw';this.scene.add(endXhw);endXhw.position.set(-120,0,37);endXhw.visible = false
+      this.scene.add(xhw)
+      this.xhwList.push(xhw)
+      //传送带运动 相关小货物1"
+      let xhw1 = (await gltfModelPromise(modelObjs.xiaohw)).scene;
+      xhw1.name = `xhw1${this.xhwNum}`
+      xhw1.position.set(-131,4.5,-36)//92
+      xhw1.scale.set(2,2,2)
+      let endXhw1 = xhw1.clone();endXhw1.name = 'endXhw1';endXhw1.position.set(-131,2,96);this.scene.add(endXhw1);endXhw1.visible= false
+      this.scene.add(xhw1)
+      this.xhwList1.push(xhw1)
 
       Event(this)
     })
   }
-  loadHuodun(){
+  handleXhw(){
+    let endXhw = this.scene.getObjectByName('endXhw')
+    for (let i = 0 ; i < this.xhwList.length ; i++) {
+      if (this.xhwList[i] && this.xhwList[i].position) {
+        if (this.xhwList[i].position.z > -24 && this.xhwList.length <= i + 1 && this.xhwList.length < 6) {
+          let xhwClone = this.xhwList[0].clone()
+          xhwClone.position.set(-120, 4.5, -36)
+          xhwClone.name = `xhw${i + 1}`
+          this.xhwList.push(xhwClone)
+          console.log(this.xhwList);
+          this.scene.add(xhwClone)
+        } else {
+          this.xhwList[i].position.z = ((this.xhwList[i].position.z * 100 + 0.06 * 100) / 100).toFixed(3) * 1
+          if (this.xhwList[i].position.z > 34) {
+            this.xhwList[i].position.z = -36
+            endXhw.visible = true
+            setTimeout(() => {
+              endXhw.visible = false
+            }, 800)
+          }
+        }
+      }
+    }
 
+    let endXhw1 = this.scene.getObjectByName('endXhw1')
+    for (let i = 0 ; i < this.xhwList1.length ; i++){
+      if(this.xhwList1[i] && this.xhwList1[i].position){
+        if(this.xhwList1[i].position.z > -14.5 && this.xhwList1.length <= i+1 && this.xhwList1.length <6){
+          let xhwClone = this.xhwList1[0].clone()
+          xhwClone.position.set(-131,4.5,-36)
+          xhwClone.name = `xhw${i+1}`
+          this.xhwList1.push(xhwClone)
+         this.scene.add(xhwClone)
+        }else{
+          this.xhwList1[i].position.z = ((this.xhwList1[i].position.z*100 + 0.15*100)/100).toFixed(3)*1
+          if( this.xhwList1[i].position.z > 92){
+            this.xhwList1[i].position.z = -36
+            endXhw1.visible = true
+            setTimeout(() => { endXhw1.visible = false},800)
+          }
+        }
+      }
+    }
+  }
+  loadHuodun(){
     for(let i=0 ;i<this.huodunNum;i++){
       let hd = this.huodun.clone()
       hd.name = `获墩遍历生成${i}`
@@ -348,9 +386,17 @@ export class TEngine {
         hd.position.set(-120,6,(i)*6)
         this.scene.add(hd)
       }
-
     }
-
+  }
+  loadXhw(xhw){
+    let xhwGroup = new Group()
+    for (let i =0 ; i <5;i++){
+      let xhwClone = xhw.clone()
+      xhwClone.name = "xhw"+i
+      xhwClone.position.z = i*3
+      xhwGroup.add(xhwClone)
+    }
+    return xhwGroup
   }
   GUI(){
     //光源相关GUI
