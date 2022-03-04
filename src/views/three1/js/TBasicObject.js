@@ -120,4 +120,4 @@ const line2 = new THREE.Mesh(tubeGeometry2,new THREE.MeshBasicMaterial({
 }))
 line2.visible = false
 // mesh.visible = false
-basicObjectList.push(stage,mesh,line,line2)
+basicObjectList.push(mesh,line,line2)

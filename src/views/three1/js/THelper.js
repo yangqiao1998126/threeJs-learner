@@ -3,10 +3,12 @@ import {
   GridHelper,
   Object3D,
   PointLightHelper,
-  SpotLightHelper
+  SpotLightHelper,
+  DirectionalLightHelper,
+  Color
 } from 'three'
 
-import { pointLight, spotLight } from './Tlights'
+import { pointLight, spotLight ,Dlight} from './Tlights'
 
 export const helperList = []
 
@@ -17,6 +19,8 @@ const gridHelper = new GridHelper(500, 20, 'rgb(200, 200, 200)', 'rgb(100, 100, 
 
 export const pointLightHelper = new PointLightHelper(pointLight, pointLight.distance, pointLight.color)
 
-export const spotLightHelper = new SpotLightHelper(spotLight, spotLight.color)
 
-helperList.push(axesHelper, gridHelper, pointLightHelper, spotLightHelper)
+export const spotLightHelper = new SpotLightHelper(spotLight, spotLight.color)
+export const DLightHelper = new DirectionalLightHelper(Dlight,50,new Color(0,1,1))
+
+helperList.push(axesHelper,DLightHelper)

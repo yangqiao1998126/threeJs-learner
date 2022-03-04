@@ -34,36 +34,21 @@ import Three1 from "../three1";
 import scene from "three/examples/jsm/offscreen/scene";
 import {curve,curve1,curve2} from "./TBasicObject";
 const modelObjs = {
-  floorModel:{
-    mtlUrl:'/model/obj/layout/layout.mtl',
-    objUrl:'/model/obj/layout/layout.obj'
-  },
-  tray1Model:{
-    mtlUrl:'/model/obj/tray1/huojian.mtl',
-    objUrl:'/model/obj/tray1/huojian.obj'
-  },
-  tray2Model:{
-    mtlUrl:'/model/obj/tray2/2.mtl',
-    objUrl:'/model/obj/tray2/2.obj'
-  },
-  shelf:{
-    mtlUrl:'/model/obj/tray2/shelf.mtl',
-    objUrl:'/model/obj/tray2/shelf.obj'
-  },
-  all:{
-    mtlUrl:'/model/obj/all/a.mtl',
-    objUrl:'/model/obj/all/a.obj'
-  },
-  horse:'/model/glb/Horse.glb',
-  che:'/model/glb/untitled.glb',
-  dipanrobo:'/model/glb/dipanrobo.glb',
-  cangchuqu:'/model/glb/cangchuqu1.glb',
-  xiaohw:'/model/glb/xiaohw.glb',
-  huodun:'/model/glb/huodun.glb',
-  chache:{
-    mtlUrl:'/model/obj/chache/untitled.mtl',
-    objUrl:'/model/obj/chache/untitled.obj',
-  }
+  dimain:'/model/glb1/dimian.glb',
+  cangchuqu:'/model/glb1/cangchuqu.glb',
+  chache:'/model/glb1/chache.glb',
+  longmenjia:'/model/glb1/longmenjia.glb',
+  huodun:'/model/glb1/huodun.glb',
+  tuopan:'/model/glb1/tuopan.glb',
+  dipan:'/model/glb1/dipan.glb',
+  huopinhe:'/model/glb1/huopinhe.glb',
+  shebei1:'/model/glb1/shebei1.glb',
+  shebei2:'/model/glb1/shebei2.glb',
+  shebei3:'/model/glb1/shebei3.glb',
+  shebei4:'/model/glb1/shebei4.glb',
+  shebei5:'/model/glb1/shebei5.glb',
+  shebei6:'/model/glb1/shebei6.glb',
+  shebei7:'/model/glb1/shebei7.glb',
 }
 //图形界面控制器
 let gui = new dat.GUI()
@@ -75,7 +60,7 @@ let guiObj = {
   },
   ambientLightGui:{
     "环境光颜色":'#fff',
-    "环境光强度":0.6,
+    "环境光强度":1.22,
   },
   carGui:{
     "速度":0,
@@ -132,7 +117,7 @@ export class TEngine {
     this.renderer.shadowMap.enabled = true
 
     this.scene = new Scene()
-    this.scene.background = new Color( 0,0,0 );
+    this.scene.background = new Color( 0.1,0.1,0.1 );
     this.camera = new PerspectiveCamera(45, dom.offsetWidth / dom.offsetHeight, 20, 999)
 
     this.camera.position.set(-10, 60 ,100)
@@ -163,13 +148,13 @@ export class TEngine {
     //加载obj模型
     const renderFun = () => {
       this.GUI()
-      if ( this.mixer ) {
-        const time = Date.now();
-        this.mixer.update( ( time - prevTime ) * 0.001 );
-        prevTime = time;
-      }
+      // if ( this.mixer ) {
+      //   const time = Date.now();
+      //   this.mixer.update( ( time - prevTime ) * 0.001 );
+      //   prevTime = time;
+      // }
       this.orbitControls.update()
-      this.handleXhw()
+      // this.handleXhw()
       // if(window.modelPoint){
       //
       //   let position = this.getPosition(window.modelPoint)
@@ -222,8 +207,84 @@ export class TEngine {
     },false)
   }
   loadObjModel(){
-    modelPromise(modelObjs.floorModel).then( async res => {
-      res.children[0].name = ''
+    gltfModelPromise(modelObjs.dimain).then( async res => {
+
+      let dimian = res.scene
+      dimian.position.set(0,0,0)
+      dimian.scale.set(1.6,2,1)
+      this.scene.add(dimian)
+
+      let cangchuqu = (await gltfModelPromise(modelObjs.cangchuqu)).scene
+      cangchuqu.position.set(160,0,0)
+      cangchuqu.scale.set(1.4,1.4,1.4)
+      cangchuqu.rotateY(-Math.PI/2)
+      this.scene.add(cangchuqu)
+
+      let chache = (await gltfModelPromise(modelObjs.chache)).scene
+      chache.position.set(20,0,20)
+      chache.scale.set(1.1,1.1,1.1)
+      this.scene.add(chache)
+
+      let longmenjia = (await gltfModelPromise(modelObjs.longmenjia)).scene
+      longmenjia.position.set(100,0,0)
+      longmenjia.scale.set(1.1,1.1,1.1)
+      longmenjia.rotateY(-Math.PI/2)
+      this.scene.add(longmenjia)
+
+      let huodun = (await gltfModelPromise(modelObjs.huodun)).scene
+      huodun.position.set(20,0,35)
+      huodun.scale.set(1.1,1.1,1.1)
+      this.scene.add(huodun)
+
+      let tuopan = (await gltfModelPromise(modelObjs.tuopan)).scene
+      tuopan.position.set(20,0,42)
+      tuopan.scale.set(1.1,1.1,1.1)
+      this.scene.add(tuopan)
+
+      let dipan = (await gltfModelPromise(modelObjs.dipan)).scene
+      dipan.position.set(20,0,47)
+      dipan.scale.set(1.1,1.1,1.1)
+      dipan.rotateY(-Math.PI/2)
+      this.scene.add(dipan)
+
+      let huopinhe = (await gltfModelPromise(modelObjs.huopinhe)).scene
+      huopinhe.position.set(20,0,51)
+      huopinhe.scale.set(1.1,1.1,1.1)
+      huopinhe.rotateY(-Math.PI/2)
+      this.scene.add(huopinhe)
+
+      let shebeiyiList = [[60,0,-60],[38,0,-60],[60,0,-40],[38,0,-40],[60,0,-20],[38,0,-20]]
+      let shebei1 = (await gltfModelPromise(modelObjs.shebei1)).scene
+      shebei1.scale.set(1.1,1.1,1.1)
+      for(let i = 0;i<shebeiyiList.length;i++){
+        let shebei1Clone = shebei1.clone()
+        shebei1Clone.name = `shebei1Clone${i}`
+        let [x,y,z] = shebeiyiList[i]
+        shebei1Clone.position.set(x,y,z)
+        shebei1Clone.rotateY(-Math.PI/2)
+        this.scene.add(shebei1Clone)
+      }
+
+      let shebei3 = (await gltfModelPromise(modelObjs.shebei3)).scene
+      shebei3.position.set(45,0,35)
+      shebei3.scale.set(1.1,1.1,1.1)
+      shebei3.rotateY(-Math.PI/2)
+      this.scene.add(shebei3)
+
+      let shebeierList = [[14,0,-60],[14,0,-40],[14,0,-20]]
+      let shebei2 = (await gltfModelPromise(modelObjs.shebei2)).scene
+      shebei2.scale.set(1.1,1.1,1.1)
+      for(let i = 0;i<shebeierList.length;i++){
+        let shebei2Clone = shebei2.clone()
+        shebei2Clone.name = `shebei2Clone${i}`
+        let [x,y,z] = shebeierList[i]
+        shebei2Clone.position.set(x,y,z)
+        shebei2Clone.rotateY(-Math.PI/2)
+        this.scene.add(shebei2Clone)
+      }
+
+
+     /* res.children[0].name = ''
       this.scene.add(res)
       res.position.set(0,0,0)
       res.scale.set(0.2,0.2,0.2)
@@ -327,7 +388,7 @@ export class TEngine {
       xhw1.scale.set(2,2,2)
       let endXhw1 = xhw1.clone();endXhw1.name = 'endXhw1';endXhw1.position.set(-131,2,96);this.scene.add(endXhw1);endXhw1.visible= false
       this.scene.add(xhw1)
-      this.xhwList1.push(xhw1)
+      this.xhwList1.push(xhw1)*/
 
       Event(this)
     })
