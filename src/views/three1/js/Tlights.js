@@ -34,7 +34,7 @@ spotLight.position.set(-50, 50, -50)
 spotLight.position.set(0,300,-500)
 
 
-export let Dlight = new DirectionalLight('#fafcfa',2)
+export let Dlight = new DirectionalLight('#fafcfa',1.5)
 // Dlight.position.set(-50,0,0)
 
 LightsList.push(ambientLight,Dlight)

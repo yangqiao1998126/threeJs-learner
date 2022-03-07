@@ -27,8 +27,8 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
 import {modelPromise} from "./TLoader";
-import {spotLight,ambientLight} from "./Tlights";
-import {pointLightHelper,spotLightHelper} from './THelper'
+import {spotLight,ambientLight,Dlight} from "./Tlights";
+import {pointLightHelper,spotLightHelper,DLightHelper} from './THelper'
 import {gltfPromise,gltfModelPromise} from "./TLoader";
 import Three1 from "../three1";
 import scene from "three/examples/jsm/offscreen/scene";
@@ -54,49 +54,31 @@ const modelObjs = {
 let gui = new dat.GUI()
 let guiObj = {
   spotLightGui:{
-    x:0,
-    "聚光灯颜色":'#fff',
-    "聚光灯强度":2,
+    // x:0,
+    "平行光颜色":'#fff',
+    "平行光强度":2,
   },
   ambientLightGui:{
     "环境光颜色":'#fff',
     "环境光强度":1.22,
   },
-  carGui:{
-    "速度":0,
-    "轮胎旋转":false
-  },
-  car2Gui:{
-    "速度":0,
-    "路径循环":false,
-    "第三视角跟随":false
-  },
   "是否显示光源辅助线":true,
-  "轨道控制器旋转":false
+  // "轨道控制器旋转":false
 }
 gui.domElement.style="position:absolute;top:0px;left:0px"
 gui.domElement.onclick = function (e){
   e.stopPropagation()
 }
 gui.add(guiObj,"是否显示光源辅助线")
-gui.add(guiObj,"轨道控制器旋转")
-let spotLightGui = gui.addFolder('聚合光')
-spotLightGui.add(guiObj.spotLightGui,'x',-1000,1000)
-spotLightGui.addColor(guiObj.spotLightGui,'聚光灯颜色')
-spotLightGui.add(guiObj.spotLightGui,'聚光灯强度',0,4)
+let spotLightGui = gui.addFolder('平行光')
+// spotLightGui.add(guiObj.spotLightGui,'x',-1000,1000)
+spotLightGui.addColor(guiObj.spotLightGui,'平行光颜色')
+spotLightGui.add(guiObj.spotLightGui,'平行光强度',0,4)
 
 let ambientLightGui = gui.addFolder('环境光')
 ambientLightGui.addColor(guiObj.ambientLightGui,'环境光颜色')
 ambientLightGui.add(guiObj.ambientLightGui,'环境光强度',0,2)
 
-let carGui = gui.addFolder('车')
-carGui.add(guiObj.carGui,'速度',{"停":0,"慢":0.03,"快":0.09})
-carGui.add(guiObj.carGui,'轮胎旋转')
-
-let carGui2 = gui.addFolder('沿路径运动')
-carGui2.add(guiObj.car2Gui,"速度",{"停":0,"慢":0.0005,"快":0.001})
-carGui2.add(guiObj.car2Gui,"路径循环")
-carGui2.add(guiObj.car2Gui,"第三视角跟随")
 let progress = 0
 let chacheProgress = 0
 let prevTime = Date.now()
@@ -111,13 +93,14 @@ export class TEngine {
     this.xhwList1 = []
     this.dom = dom
     this.renderer = new WebGLRenderer({
-      antialias: true
+      antialias: true,
+      alpha:true
     })
 
     this.renderer.shadowMap.enabled = true
 
     this.scene = new Scene()
-    this.scene.background = new Color( 0.1,0.1,0.1 );
+    this.scene.background = new Color( 200/255,200/255,200/255 );
     this.camera = new PerspectiveCamera(45, dom.offsetWidth / dom.offsetHeight, 20, 999)
 
     this.camera.position.set(-10, 60 ,100)
@@ -154,6 +137,7 @@ export class TEngine {
       //   prevTime = time;
       // }
       this.orbitControls.update()
+      this.newXhwList0 && this.newXhwList0.length >0 &&this.handleXhw('xhwEnd0',this.newXhwList0,160,5,[184.5,4.2,93.5],[66,4.2,93.5])
       // this.handleXhw()
       // if(window.modelPoint){
       //
@@ -221,9 +205,12 @@ export class TEngine {
       this.scene.add(cangchuqu)
 
       let chache = (await gltfModelPromise(modelObjs.chache)).scene
-      chache.position.set(20,0,20)
+      // chache.position.set(20,0,20)
       chache.scale.set(1.1,1.1,1.1)
-      this.scene.add(chache)
+      this.chache = chache
+      this.chache2 = chache.clone()
+      this.chache2.position.set(20,0,0)
+      this.scene.add(this.chache2)
 
       let longmenjia = (await gltfModelPromise(modelObjs.longmenjia)).scene
       longmenjia.position.set(100,0,0)
@@ -232,9 +219,23 @@ export class TEngine {
       this.scene.add(longmenjia)
 
       let huodun = (await gltfModelPromise(modelObjs.huodun)).scene
-      huodun.position.set(20,0,35)
-      huodun.scale.set(1.1,1.1,1.1)
-      this.scene.add(huodun)
+      let huodun1 = huodun.clone()
+      huodun1.position.set(20,0,35)
+      this.scene.add(huodun1)
+
+      //获墩和叉车组合
+      let chacheGroup = new Group()
+      chacheGroup.add(this.chache)
+      chacheGroup.add(huodun)
+      this.chacheGroup = chacheGroup
+      huodun.translateZ(7)
+      huodun.translateY(1)
+      huodun.name = '货墩1'
+      this.huodun = huodun
+      this.scene.add(chacheGroup)
+      this.chacheGroup.position.x = 20
+      this.chacheGroup.position.y = 0
+      this.chacheGroup.position.z = 20
 
       let tuopan = (await gltfModelPromise(modelObjs.tuopan)).scene
       tuopan.position.set(20,0,42)
@@ -252,186 +253,49 @@ export class TEngine {
       huopinhe.scale.set(1.1,1.1,1.1)
       huopinhe.rotateY(-Math.PI/2)
       this.scene.add(huopinhe)
-
-      let shebeiyiList = [[60,0,-60],[38,0,-60],[60,0,-40],[38,0,-40],[60,0,-20],[38,0,-20]]
-      let shebei1 = (await gltfModelPromise(modelObjs.shebei1)).scene
-      shebei1.scale.set(1.1,1.1,1.1)
-      for(let i = 0;i<shebeiyiList.length;i++){
-        let shebei1Clone = shebei1.clone()
-        shebei1Clone.name = `shebei1Clone${i}`
-        let [x,y,z] = shebeiyiList[i]
-        shebei1Clone.position.set(x,y,z)
-        shebei1Clone.rotateY(-Math.PI/2)
-        this.scene.add(shebei1Clone)
+      //传送带 货品和相关
+      let xhwEndList = [[ [184.5,4.2,93.5],[61,0,93.5] ],]
+      //1. [184.5,4.2,93.5],[66,4.2,93.5],[61,0,93.5]
+      for(let i = 0;i<xhwEndList.length;i++){
+        let arr = []
+        let xhwClone = huopinhe.clone()
+        let endClone = huopinhe.clone()
+        let [x,y,z] = xhwEndList[i][1]
+        let [x1,y1,z1] = xhwEndList[i][0]
+        endClone.scale.set(1.8,1.8,1.8)
+        xhwClone.scale.set(1.8,1.8,1.8)
+        endClone.position.set(x,y,z)
+        xhwClone.position.set(x1,y1,z1)
+        endClone.name = 'xhwEnd'+i
+        this.scene.add(endClone)
+        this.scene.add(xhwClone)
+        endClone.visible = false
+        arr.push(xhwClone)
+        this[`newXhwList${i}`] = [...arr]
       }
-
-      let shebei3 = (await gltfModelPromise(modelObjs.shebei3)).scene
-      shebei3.position.set(45,0,35)
-      shebei3.scale.set(1.1,1.1,1.1)
-      shebei3.rotateY(-Math.PI/2)
-      this.scene.add(shebei3)
-
-      let shebeierList = [[14,0,-60],[14,0,-40],[14,0,-20]]
-      let shebei2 = (await gltfModelPromise(modelObjs.shebei2)).scene
-      shebei2.scale.set(1.1,1.1,1.1)
-      for(let i = 0;i<shebeierList.length;i++){
-        let shebei2Clone = shebei2.clone()
-        shebei2Clone.name = `shebei2Clone${i}`
-        let [x,y,z] = shebeierList[i]
-        shebei2Clone.position.set(x,y,z)
-        shebei2Clone.rotateY(-Math.PI/2)
-        this.scene.add(shebei2Clone)
-      }
-
-
-     /* res.children[0].name = ''
-      this.scene.add(res)
-      res.position.set(0,0,0)
-      res.scale.set(0.2,0.2,0.2)
-
-      let [carModel,wheel,carModel2,wheel2] =  await gltfPromise
-      carModel.name = 'AE86'
-      carModel.position.x = 45
-      carModel.position.z = 45
-      carModel.scale.set(6,6,6)
-      carModel.children.forEach( v => {
-        v.name = 'ferrari'+v.name
-        if(v.children.length){
-          v.children.forEach( o => {
-            o.name = 'ferrari-'+o.name
-          })
-        }
-      })
-      this.car = [carModel,wheel,carModel2,wheel2]
-      this.scene.add(carModel)
-      carModel2.position.set(130,0,90)
-      // carModel2.lookAt(130,0,80)
-      carModel2.scale.set(6,6,6)
-      // carModel2.rotateY(Math.PI)
-      this.scene.add(carModel2)
-
-
-      let chache = await gltfModelPromise(modelObjs.che)
-      chache = chache.scene
-      this.chache = chache
-      // chache.position.set(-210,3,30)
-      chache.name = '叉车'
-      chache.scale.set(1.2,1.2,1.2)
-      // this.scene.add(chache)
-      this.chache2 = chache.clone()
-      this.chache2.position.set(-200,3,40)
-      this.chache2.scale.set(1.2,1.2,1.2)
-      this.scene.add(this.chache2)
-      //货墩
-      let huodun = (await gltfModelPromise(modelObjs.huodun)).scene
-     this.huodun = huodun
-      huodun.name = '货墩1'
-      // huodun.position.set(-210,7,37)//货盘_Cube006
-      huodun.scale.set(1,1.4,1)
-      huodun.translateZ(7)
-      huodun.translateY(4)
-
-      let huodunInit = huodun.clone()
-      huodunInit.name = '起始位置货墩'
-      huodunInit.position.set(-216,3,35)
-      this.scene.add(huodunInit)
-      // this.scene.add(huodun)
-      //获墩和叉车组合
-      let chacheGroup = new Group()
-      chacheGroup.add(this.chache)
-      chacheGroup.add(huodun)
-      this.chacheGroup = chacheGroup
-      this.scene.add(chacheGroup)
-      this.chacheGroup.position.x = -210
-      this.chacheGroup.position.y = 3
-      this.chacheGroup.position.z = 30
-
-      let dipanboro = (await gltfModelPromise(modelObjs.dipanrobo)).scene
-      dipanboro.position.set(-200,3,40)
-      dipanboro.scale.set(2,2,2)
-      this.scene.add(dipanboro)
-
-      //单独货架仓储区
-      let cangchuqu  = (await gltfModelPromise(modelObjs.cangchuqu)).scene
-      cangchuqu.position.set(-135,0,-5)
-      cangchuqu.scale.set(1.2,1.2,1.2)
-      this.scene.add(cangchuqu)
-
-      let horse = await gltfModelPromise(modelObjs.horse)
-      let horsemodel = horse.scene.children[0]
-      horsemodel.scale.set(0.2,0.2,0.2)
-      horsemodel.position.set(110,0,-10)
-      this.scene.add(horsemodel)
-      this.mixer = new AnimationMixer(horsemodel)
-      this.horseAction = this.mixer.clipAction(horse.animations[0])
-        // this.action.setDuration(0.5).play()
-
-      let csd1 = cangchuqu.getObjectByName('货盘029_Cube137_1')
-      let csd2 = cangchuqu.getObjectByName('货盘029_Cube137_2')
-      cangchuqu.getObjectByName('货盘030_Cube138_2').visible=false
-      cangchuqu.getObjectByName('货盘030_Cube138_1').visible=false
-      csd1.visible = false
-      csd2.visible = false
-
-      //传送带运动 相关小货物"
-      let xhw = (await gltfModelPromise(modelObjs.xiaohw)).scene;
-      xhw.name = `xhw${this.xhwNum}`
-      xhw.position.set(-120,4.5,-36)
-      xhw.scale.set(2,2,2)
-      let endXhw = xhw.clone();endXhw.name = 'endXhw';this.scene.add(endXhw);endXhw.position.set(-120,0,37);endXhw.visible = false
-      this.scene.add(xhw)
-      this.xhwList.push(xhw)
-      //传送带运动 相关小货物1"
-      let xhw1 = (await gltfModelPromise(modelObjs.xiaohw)).scene;
-      xhw1.name = `xhw1${this.xhwNum}`
-      xhw1.position.set(-131,4.5,-36)//92
-      xhw1.scale.set(2,2,2)
-      let endXhw1 = xhw1.clone();endXhw1.name = 'endXhw1';endXhw1.position.set(-131,2,96);this.scene.add(endXhw1);endXhw1.visible= false
-      this.scene.add(xhw1)
-      this.xhwList1.push(xhw1)*/
-
       Event(this)
     })
   }
-  handleXhw(){
-    let endXhw = this.scene.getObjectByName('endXhw')
-    for (let i = 0 ; i < this.xhwList.length ; i++) {
-      if (this.xhwList[i] && this.xhwList[i].position) {
-        if (this.xhwList[i].position.z > -24 && this.xhwList.length <= i + 1 && this.xhwList.length < 6) {
-          let xhwClone = this.xhwList[0].clone()
-          xhwClone.position.set(-120, 4.5, -36)
+
+  handleXhw(endXhwName,xhwList,distance,num,[x,y,z],endPosition){
+    let endXhw = this.scene.getObjectByName(endXhwName)
+    for (let i = 0 ; i < xhwList.length ; i++) {
+      if (xhwList[i] && xhwList[i].position) {
+        if (xhwList[i].position.x < distance && xhwList.length <= i + 1 && xhwList.length < num) {
+          let xhwClone = xhwList[0].clone()
+          xhwClone.position.set(x, y,z)
           xhwClone.name = `xhw${i + 1}`
-          this.xhwList.push(xhwClone)
-          console.log(this.xhwList);
+          xhwList.push(xhwClone)
+          console.log(xhwList);
           this.scene.add(xhwClone)
         } else {
-          this.xhwList[i].position.z = ((this.xhwList[i].position.z * 100 + 0.06 * 100) / 100).toFixed(3) * 1
-          if (this.xhwList[i].position.z > 34) {
-            this.xhwList[i].position.z = -36
+          xhwList[i].position.x = ((xhwList[i].position.x * 100 - 0.06 * 100) / 100).toFixed(3) * 1
+          if (xhwList[i].position.x < endPosition[0]) {
+            xhwList[i].position.x = x
             endXhw.visible = true
             setTimeout(() => {
               endXhw.visible = false
             }, 800)
-          }
-        }
-      }
-    }
-
-    let endXhw1 = this.scene.getObjectByName('endXhw1')
-    for (let i = 0 ; i < this.xhwList1.length ; i++){
-      if(this.xhwList1[i] && this.xhwList1[i].position){
-        if(this.xhwList1[i].position.z > -14.5 && this.xhwList1.length <= i+1 && this.xhwList1.length <6){
-          let xhwClone = this.xhwList1[0].clone()
-          xhwClone.position.set(-131,4.5,-36)
-          xhwClone.name = `xhw${i+1}`
-          this.xhwList1.push(xhwClone)
-         this.scene.add(xhwClone)
-        }else{
-          this.xhwList1[i].position.z = ((this.xhwList1[i].position.z*100 + 0.15*100)/100).toFixed(3)*1
-          if( this.xhwList1[i].position.z > 92){
-            this.xhwList1[i].position.z = -36
-            endXhw1.visible = true
-            setTimeout(() => { endXhw1.visible = false},800)
           }
         }
       }
@@ -444,7 +308,7 @@ export class TEngine {
       if(this.scene.getObjectByName(`获墩遍历生成${i}`)){
 
       }else{
-        hd.position.set(-120,6,(i)*6)
+        hd.position.set(185,0,100+i*5)
         this.scene.add(hd)
       }
     }
@@ -461,63 +325,31 @@ export class TEngine {
   }
   GUI(){
     //光源相关GUI
-    spotLight.position.x = guiObj.spotLightGui.x
-    spotLight.intensity =  guiObj.spotLightGui['聚光灯强度']
-    spotLight.color =  new Color(guiObj.spotLightGui['聚光灯颜色'])
+    // spotLight.position.x = guiObj.spotLightGui.x
+    Dlight.intensity =  guiObj.spotLightGui['平行光强度']
+    Dlight.color =  new Color(guiObj.spotLightGui['平行光颜色'])
 
     ambientLight.intensity =  guiObj.ambientLightGui['环境光强度']
     ambientLight.color =  new Color(guiObj.ambientLightGui['环境光颜色'])
     if(guiObj['是否显示光源辅助线']){
-      spotLightHelper.visible = true
+      DLightHelper.visible = true
       pointLightHelper.visible = true
     }else{
-      spotLightHelper.visible = false
+      DLightHelper.visible = false
       pointLightHelper.visible = false
     }
     //轨道
-    if(guiObj['轨道控制器旋转']){this.orbitControls.autoRotate = true }else{this.orbitControls.autoRotate = false}
 
-    let car = this.car&& this.car[0]
-    let wheels = this.car&& this.car[1]
-    const time = - performance.now();
-    let _carPosition = _ => {
-      if(guiObj.carGui["轮胎旋转"]){
-        for ( let i = 0; i < wheels.length; i ++ ) {
-          wheels[ i ].rotation.x = (time/_) * Math.PI;
-        }
-      }
-      car.position.z -= guiObj.carGui["速度"]
-    }
-    let _car2Matrix4 = _ => {
-      if(guiObj['car2Gui']['路径循环']){
-        if(progress >=1) progress = 0;
-      }
-      progress += (guiObj['car2Gui']['速度']*1000/1000)
-      // let point = _.getPoint((progress-guiObj['car2Gui']['速度']*2) >=0 ?progress-guiObj['car2Gui']['速度']*2:progress)
-      let point = _.getPoint(progress)
-      let point1 = _.getPoint(progress+guiObj['car2Gui']['速度']*2)
-      let point2 = _.getPoint(progress+guiObj['car2Gui']['速度']*75)
-      let offsetAngle = Math.PI*2
-      let mtx = new Matrix4()
-      mtx.lookAt(this.car[2].position.clone(),point2,this.car[2].up)
-      mtx.multiply(new Matrix4().makeRotationFromEuler(new Euler(0, offsetAngle, 0)));
-      let toRot = new Quaternion().setFromRotationMatrix(mtx);
-      this.car[2].quaternion.slerp(toRot,0.2)
-      this.car[2].position.set(point2.x,point2.y,point2.z)
-      if(guiObj["car2Gui"]["第三视角跟随"]){
-        this.camera.position.set(point.x,point.y+15,point.z)
-        this.orbitControls.target = new Vector3(point1.x,point1.y+15,point1.z)
-      }
 
-    }
     //叉车
     if(this.isPlay){
       if(this.chache && this.chache2 && this.chacheGroup){
-        if(chacheProgress >= 1) {chacheProgress =0 ;isPoint=false;this,this.huodunNum <=2 ? this.chacheGroup.add(this.huodun) :this.scene.remove(this.scene.getObjectByName('起始位置货墩'))};
+        if(chacheProgress >= 1) {chacheProgress =0 ;isPoint=false;this.huodunNum <=2 ? this.chacheGroup.add(this.huodun) :''};
+        // if(chacheProgress >= 1) {chacheProgress =0 ;isPoint=false};
         chacheProgress  = (chacheProgress*1000+0.003*1000)/1000
         let chachePoint = curve1.getPoint(chacheProgress)
         let {x,y,z} = chachePoint
-        if(Math.abs(Math.abs(x).toFixed(3)-115) <=6 && Math.abs(Math.abs(z).toFixed(3)-0) <=4 && !isPoint && this.huodunNum <=2){
+        if(Math.abs(Math.abs(x).toFixed(3)-190) <=6 && Math.abs(Math.abs(z).toFixed(3)-100) <=4 && !isPoint && this.huodunNum <=2){
           isPoint = true
           this.isPlay = false
           console.log('到达指定位置了',)
@@ -541,19 +373,7 @@ export class TEngine {
       }
     }
     this.loadHuodun()
-    if(car){
-      switch (guiObj.carGui["速度"]){
-        case 0:break;
-        case 0.03:_carPosition(4500);break;
-        default:_carPosition(2000);
-      }
-    }
-    if(guiObj['car2Gui']['速度'] == 0){
-    }else if(guiObj['car2Gui']['速度'] == 0.0005){
-      curve &&  _car2Matrix4(curve)
-    }else{
-      curve &&  _car2Matrix4(curve)
-    }
+
 
   }
   addObject (...object) {
