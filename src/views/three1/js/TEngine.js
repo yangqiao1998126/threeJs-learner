@@ -327,6 +327,7 @@ export class TEngine {
         arr.push(xhwClone)
         this[`newXhwList${i}`] = [...arr]
       }
+      window._event.emit('model-loading-finished')
       Event(this)
     })
   }
@@ -394,7 +395,7 @@ export class TEngine {
           this.huodunNum +=1
           setTimeout(() => {
             this.isPlay = true
-          },800)
+          },200)
         }else{
           let chachePoint1 = curve1.getPoint(chacheProgress+0.001*2)
           this.chacheGroup.lookAt(chachePoint1.x,chachePoint1.y,chachePoint1.z)

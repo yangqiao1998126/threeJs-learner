@@ -14,6 +14,7 @@ import 'vue-awesome/icons/chart-area.js';
 import 'vue-awesome/icons/chart-pie.js';
 import 'vue-awesome/icons/chart-line.js';
 import 'vue-awesome/icons/align-left.js';
+import Loading from "./views/three1/loading/loading";
 
 //引入echart
 //4.x 引用方式
@@ -27,6 +28,7 @@ Vue.config.productionTip = false;
 // 全局注册
 Vue.component('icon', Icon);
 Vue.use(dataV);
+Vue.use(Loading);
 
 new Vue({
   router,
