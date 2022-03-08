@@ -253,6 +253,38 @@ export class TEngine {
       huopinhe.scale.set(1.1,1.1,1.1)
       huopinhe.rotateY(-Math.PI/2)
       this.scene.add(huopinhe)
+
+      let shebeiyiList = [[60,0,-60],[38,0,-60],[60,0,-40],[38,0,-40],[60,0,-20],[38,0,-20]]
+      let shebei1 = (await gltfModelPromise(modelObjs.shebei1)).scene
+      shebei1.scale.set(1.1,1.1,1.1)
+      for(let i = 0;i<shebeiyiList.length;i++){
+        let shebei1Clone = shebei1.clone()
+        shebei1Clone.name = `shebei1Clone${i}`
+        let [x,y,z] = shebeiyiList[i]
+        shebei1Clone.position.set(x,y,z)
+        shebei1Clone.rotateY(-Math.PI/2)
+        this.scene.add(shebei1Clone)
+      }
+
+      let shebei3 = (await gltfModelPromise(modelObjs.shebei3)).scene
+      shebei3.position.set(45,0,35)
+      shebei3.scale.set(1.1,1.1,1.1)
+      shebei3.rotateY(-Math.PI/2)
+      this.scene.add(shebei3)
+
+      let shebeierList = [[14,0,-60],[14,0,-40],[14,0,-20]]
+      let shebei2 = (await gltfModelPromise(modelObjs.shebei2)).scene
+      shebei2.scale.set(1.1,1.1,1.1)
+      for(let i = 0;i<shebeierList.length;i++){
+        let shebei2Clone = shebei2.clone()
+        shebei2Clone.name = `shebei2Clone${i}`
+        let [x,y,z] = shebeierList[i]
+        shebei2Clone.position.set(x,y,z)
+        shebei2Clone.rotateY(-Math.PI/2)
+        this.scene.add(shebei2Clone)
+      }
+
+
       //传送带 货品和相关
       let xhwEndList = [[ [184.5,4.2,93.5],[61,0,93.5] ],]
       //1. [184.5,4.2,93.5],[66,4.2,93.5],[61,0,93.5]
