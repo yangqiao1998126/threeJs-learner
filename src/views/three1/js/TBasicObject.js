@@ -98,7 +98,7 @@ const tubeGeometry1 = new THREE.TubeGeometry(curve1,100,1,5,false)
 const line = new THREE.Mesh(tubeGeometry1,new THREE.MeshBasicMaterial({
   color:"#ffee33"
 }))
-// line.visible = false
+line.visible = false
 
 export const curve2 = new THREE.CatmullRomCurve3([
   new THREE.Vector3(20,0,20),

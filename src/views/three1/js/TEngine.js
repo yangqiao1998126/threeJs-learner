@@ -1,7 +1,6 @@
 import dat from "dat.gui/src/dat";
 import 'dat.gui/src/dat/utils/css'
-import {
-  AmbientLight,
+import {AmbientLight,
   AxesHelper,
   BoxBufferGeometry,
   GridHelper,
@@ -96,17 +95,11 @@ export class TEngine {
       antialias: true,
       alpha:true
     })
-
     this.renderer.shadowMap.enabled = true
-
     this.scene = new Scene()
     this.scene.background = new Color( 200/255,200/255,200/255 );
     this.camera = new PerspectiveCamera(45, dom.offsetWidth / dom.offsetHeight, 20, 999)
-
     this.camera.position.set(-10, 60 ,100)
-
-
-
     this.renderer.setSize(dom.offsetWidth, dom.offsetHeight, true)
     //自适应窗口
     this.resize()
@@ -119,7 +112,6 @@ export class TEngine {
     statsDom.style.top = '0'
     statsDom.style.right = '5px'
     statsDom.style.left = 'unset'
-
     // 初始orbitControls
     this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement)
     this.orbitControls.mouseButtons = {
@@ -127,7 +119,6 @@ export class TEngine {
       MIDDLE: MOUSE.DOLLY,
       RIGHT: MOUSE.ROTATE
     }
-    // this.orbitControls.target = new Vector3(130,0,0)
     //加载obj模型
     const renderFun = () => {
       this.GUI()
@@ -136,11 +127,15 @@ export class TEngine {
       //   this.mixer.update( ( time - prevTime ) * 0.001 );
       //   prevTime = time;
       // }
+      this.isPlay && (
+      this.newXhwList0 && this.newXhwList0.length >0 &&this.handleXhw('xhwEnd0',this.newXhwList0,160,5,[184.5,4.2,93.5],[66,4.2,93.5]),
+      this.newXhwList1 && this.newXhwList1.length >0 &&this.handleXhw('xhwEnd1',this.newXhwList1,167,10,[184.5,4.2,80.8],[9,4.2,80.8],0.2),
+      this.newXhwList2 && this.newXhwList2.length >0 &&this.handleXhw('xhwEnd2',this.newXhwList2,-56,7,[-46,4,20.5],[-117,4,20.5],0.15),
+      this.newXhwList3 && this.newXhwList3.length >0 &&this.handleXhw('xhwEnd3',this.newXhwList3,-60.2,5,[-46,4,-69.3],[-117,4,-69.3],0.11)
+      )
       this.orbitControls.update()
-      this.newXhwList0 && this.newXhwList0.length >0 &&this.handleXhw('xhwEnd0',this.newXhwList0,160,5,[184.5,4.2,93.5],[66,4.2,93.5])
       // this.handleXhw()
       // if(window.modelPoint){
-      //
       //   let position = this.getPosition(window.modelPoint)
       //   console.log(',,,,,,,,',position)
       //   window._event.emit('rePosition',position)
@@ -150,10 +145,8 @@ export class TEngine {
       stats.update()
       requestAnimationFrame(renderFun)
     }
-
     renderFun()
     this.loadObjModel()
-
     dom.appendChild(this.renderer.domElement)
     dom.appendChild(statsDom)
   }
@@ -192,7 +185,6 @@ export class TEngine {
   }
   loadObjModel(){
     gltfModelPromise(modelObjs.dimain).then( async res => {
-
       let dimian = res.scene
       dimian.position.set(0,0,0)
       dimian.scale.set(1.6,2,1)
@@ -309,8 +301,15 @@ export class TEngine {
       }
 
       //传送带 货品和相关
-      let xhwEndList = [[ [184.5,4.2,93.5],[61,0,93.5] ],]
+      let xhwEndList = [
+        [ [184.5,4.2,93.5],[61,0,93.5] ],
+        [ [184.5,4.2,80.8],[5.5,0,82] ],
+        [ [-46,4,20.5],[-121.5,0,20.5] ],
+        [ [-46,4,-69.3],[-121.5,0,-69.3] ],
+      ]
       //1. [184.5,4.2,93.5],[66,4.2,93.5],[61,0,93.5]
+      //2. [184.5,4.2,80.8], [9,4.2,80.8]   [5.5,0,82]
+      //3. [-46,4,20.5],[-117,4,20.5] [-121.5,0,20.5]
       for(let i = 0;i<xhwEndList.length;i++){
         let arr = []
         let xhwClone = huopinhe.clone()
@@ -331,8 +330,7 @@ export class TEngine {
       Event(this)
     })
   }
-
-  handleXhw(endXhwName,xhwList,distance,num,[x,y,z],endPosition){
+  handleXhw(endXhwName,xhwList,distance,num,[x,y,z],endPosition,speed=0.06){
     let endXhw = this.scene.getObjectByName(endXhwName)
     for (let i = 0 ; i < xhwList.length ; i++) {
       if (xhwList[i] && xhwList[i].position) {
@@ -341,10 +339,9 @@ export class TEngine {
           xhwClone.position.set(x, y,z)
           xhwClone.name = `xhw${i + 1}`
           xhwList.push(xhwClone)
-          console.log(xhwList);
           this.scene.add(xhwClone)
         } else {
-          xhwList[i].position.x = ((xhwList[i].position.x * 100 - 0.06 * 100) / 100).toFixed(3) * 1
+          xhwList[i].position.x = ((xhwList[i].position.x * 100 - speed * 100) / 100).toFixed(3) * 1
           if (xhwList[i].position.x < endPosition[0]) {
             xhwList[i].position.x = x
             endXhw.visible = true
@@ -368,22 +365,11 @@ export class TEngine {
       }
     }
   }
-  loadXhw(xhw){
-    let xhwGroup = new Group()
-    for (let i =0 ; i <5;i++){
-      let xhwClone = xhw.clone()
-      xhwClone.name = "xhw"+i
-      xhwClone.position.z = i*3
-      xhwGroup.add(xhwClone)
-    }
-    return xhwGroup
-  }
   GUI(){
     //光源相关GUI
     // spotLight.position.x = guiObj.spotLightGui.x
     Dlight.intensity =  guiObj.spotLightGui['平行光强度']
     Dlight.color =  new Color(guiObj.spotLightGui['平行光颜色'])
-
     ambientLight.intensity =  guiObj.ambientLightGui['环境光强度']
     ambientLight.color =  new Color(guiObj.ambientLightGui['环境光颜色'])
     if(guiObj['是否显示光源辅助线']){
@@ -393,14 +379,10 @@ export class TEngine {
       DLightHelper.visible = false
       pointLightHelper.visible = false
     }
-    //轨道
-
-
     //叉车
     if(this.isPlay){
       if(this.chache && this.chache2 && this.chacheGroup){
         if(chacheProgress >= 1) {chacheProgress =0 ;isPoint=false;this.huodunNum <=2 ? this.chacheGroup.add(this.huodun) :''};
-        // if(chacheProgress >= 1) {chacheProgress =0 ;isPoint=false};
         chacheProgress  = (chacheProgress*1000+0.003*1000)/1000
         let chachePoint = curve1.getPoint(chacheProgress)
         let {x,y,z} = chachePoint
@@ -416,9 +398,7 @@ export class TEngine {
         }else{
           let chachePoint1 = curve1.getPoint(chacheProgress+0.001*2)
           this.chacheGroup.lookAt(chachePoint1.x,chachePoint1.y,chachePoint1.z)
-          // console.log(chachePoint.x,chachePoint.y,chachePoint.z)
           this.chacheGroup.position.set(chachePoint.x,chachePoint.y,chachePoint.z)
-
           let chachePoint2 = curve2.getPoint(chacheProgress)
           let chachePoint22 = curve2.getPoint(chacheProgress+0.001*2)
           this.chache2.lookAt(chachePoint22.x,chachePoint22.y,chachePoint22.z)
@@ -428,8 +408,6 @@ export class TEngine {
       }
     }
     this.loadHuodun()
-
-
   }
   addObject (...object) {
     object.forEach(elem => {
