@@ -284,6 +284,29 @@ export class TEngine {
         this.scene.add(shebei2Clone)
       }
 
+      let shebei5List = [[-65,0,-70],[-65,0,20]]
+      let shebei5 = (await gltfModelPromise(modelObjs.shebei5)).scene
+      shebei5.scale.set(1.2,1.2,1.2)
+      for(let i = 0;i<shebei5List.length;i++){
+        let shebei5Clone = shebei5.clone()
+        shebei5Clone.name = `shebei5Clone${i}`
+        let [x,y,z] = shebei5List[i]
+        shebei5Clone.position.set(x,y,z)
+        shebei5Clone.rotateY(-Math.PI/2)
+        this.scene.add(shebei5Clone)
+      }
+
+      let shebei6List = [[-65,0,-20],[-65,0,70]]
+      let shebei6 = (await gltfModelPromise(modelObjs.shebei6)).scene
+      shebei6.scale.set(1.2,1.2,1.2)
+      for(let i = 0;i<shebei6List.length;i++){
+        let shebei6Clone = shebei6.clone()
+        shebei6Clone.name = `shebei6Clone${i}`
+        let [x,y,z] = shebei6List[i]
+        shebei6Clone.position.set(x,y,z)
+        shebei6Clone.rotateY(-Math.PI/2)
+        this.scene.add(shebei6Clone)
+      }
 
       //传送带 货品和相关
       let xhwEndList = [[ [184.5,4.2,93.5],[61,0,93.5] ],]
