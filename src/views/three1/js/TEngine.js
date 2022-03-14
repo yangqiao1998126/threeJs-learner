@@ -16,6 +16,7 @@ import {AmbientLight,
   Matrix4,
   Quaternion,
   AnimationMixer,
+  CubeTextureLoader,
   Euler,
   Group,
   Object3D} from "three"
@@ -23,6 +24,7 @@ import Event from "./TObjectClick";
 import Stats from 'three/examples/jsm/libs/stats.module'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
+import { SSAARenderPass} from 'three/examples/jsm/postprocessing/SSAARenderPass.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
 import {modelPromise} from "./TLoader";
@@ -48,6 +50,14 @@ const modelObjs = {
   shebei5:'/model/glb1/shebei5.glb',
   shebei6:'/model/glb1/shebei6.glb',
   shebei7:'/model/glb1/shebei7.glb',
+  low_building_1:{
+    mtlUrl:'/model/obj/low_building_1/low_building_1.mtl',
+    objUrl:'/model/obj/low_building_1/low_building_1.obj'
+  },
+  low_building_2:{
+    mtlUrl:'/model/obj/low_building_2/low_building_2.mtl',
+    objUrl:'/model/obj/low_building_2/low_building_2.obj'
+  }
 }
 //图形界面控制器
 let gui = new dat.GUI()
@@ -62,6 +72,7 @@ let guiObj = {
     "环境光强度":1.22,
   },
   "是否显示光源辅助线":true,
+  "抗锯齿Level":0
   // "轨道控制器旋转":false
 }
 gui.domElement.style="position:absolute;top:0px;left:0px"
@@ -77,6 +88,14 @@ spotLightGui.add(guiObj.spotLightGui,'平行光强度',0,4)
 let ambientLightGui = gui.addFolder('环境光')
 ambientLightGui.addColor(guiObj.ambientLightGui,'环境光颜色')
 ambientLightGui.add(guiObj.ambientLightGui,'环境光强度',0,2)
+gui.add(guiObj,'抗锯齿Level',{
+  'Level 0': 0,
+  'Level 1': 1,
+  'Level 2': 2,
+  'Level 3': 3,
+  'Level 4': 4,
+  'Level 5': 5
+})
 
 let progress = 0
 let chacheProgress = 0
@@ -93,10 +112,30 @@ export class TEngine {
     this.dom = dom
     this.renderer = new WebGLRenderer({
       antialias: true,
-      alpha:true
+      // alpha:true
     })
     this.renderer.shadowMap.enabled = true
+    // this.renderer.setPixelRatio(window.devicePixelRatio < 1.5 ? 1.5 : window.devicePixelRatio)
+    // this.renderer.antialias = true
     this.scene = new Scene()
+    var path = "http://ae01.alicdn.com/kf/";       //设置路径
+    var format = '.jpg';                        //设定格式
+    var urls = [
+      path + 'HTB1GBRUhpooBKNjSZFPq6xa2XXa5'+ format,
+      path + 'HTB1nqDXm98YBeNkSnb4q6yevFXa0'+ format,
+      path + 'HTB13tL9vkOWBuNjSsppq6xPgpXay' + format,
+      path + 'HTB1VELXvgaTBuNjSszfq6xgfpXac' + format,
+      path + 'HTB1PLbTvf9TBuNjy1zbq6xpepXao' + format,
+      path + 'HTB1bxWzmZuYBuNkSmRyq6AA3pXa8' + format
+      // 'https://wow.techbrood.com/uploads/1909/sky.jpg',
+      // 'https://wow.techbrood.com/uploads/1909/sky.jpg',
+      // 'https://wow.techbrood.com/uploads/1909/sky.jpg',
+      // 'https://wow.techbrood.com/uploads/1909/sky.jpg',
+      // 'https://wow.techbrood.com/uploads/1909/sky.jpg',
+      // 'https://wow.techbrood.com/uploads/1909/sky.jpg',
+    ];
+   this.textureCube = new CubeTextureLoader().load( urls );
+    // this.scene.background = textureCube
     this.scene.background = new Color( 200/255,200/255,200/255 );
     this.camera = new PerspectiveCamera(45, dom.offsetWidth / dom.offsetHeight, 20, 999)
     this.camera.position.set(-10, 60 ,100)
@@ -140,7 +179,8 @@ export class TEngine {
       //   console.log(',,,,,,,,',position)
       //   window._event.emit('rePosition',position)
       // }
-      this.renderer.render(this.scene, this.camera)
+      // this.renderer.render(this.scene, this.camera)
+      this.renderPass.sampleLevel = guiObj['抗锯齿Level']
       this.composer.render()
       stats.update()
       requestAnimationFrame(renderFun)
@@ -152,9 +192,12 @@ export class TEngine {
   }
   useEffectComposer(){
     const composer = new EffectComposer(this.renderer);
+    composer.setPixelRatio(1)
     this.composer = composer
-    const renderPass = new RenderPass(this.scene, this.camera);
-    composer.addPass(renderPass) //将传入的过程添加到过程链。
+     this.renderPass = new SSAARenderPass(this.scene, this.camera);
+    composer.addPass(this.renderPass) //将传入的过程添加到过程链。
+
+
 
     const outlinePass = new OutlinePass( //线条渲染
       new Vector2(window.innerWidth, window.innerHeight),
@@ -327,6 +370,26 @@ export class TEngine {
         arr.push(xhwClone)
         this[`newXhwList${i}`] = [...arr]
       }
+
+      let build1 = await  modelPromise(modelObjs.low_building_1)
+      // build1.position.set(0,0,0)
+      // build1.name= '6666'
+      // build1.scale.set(2,2,2)
+      // console.log(build1)
+      // this.scene.add(build1)
+      let buildGroup = new Group()
+      for (let index = 1; index < 3; index++) {
+        const cloneObj = build1.clone()
+        build1.scale.set(0.7,0.5,0.7)
+        cloneObj.position.set(-100+index*70, 0, -240)
+        buildGroup.add(build1)
+        // this.scene.add(cloneObj)
+      }
+      buildGroup.position.set(-80,0,-200)
+      this.scene.add(buildGroup)
+      this.buildGroup = buildGroup
+      this.buildGroup.visible = false
+
       window._event.emit('model-loading-finished')
       Event(this)
     })

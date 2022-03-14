@@ -1,5 +1,7 @@
 import * as THREE from "three";
+import {Color} from "three";
 
+let sceneIsCube = false
 export default function Event(TE) {
   let SELECTED;
   var raycaster = new THREE.Raycaster()
@@ -67,7 +69,7 @@ export default function Event(TE) {
 
   window.addEventListener('click', onMouseClick, false);
 
-
+  let sceneChildren = []
   let _tray1 = TE.scene.getObjectByName('底盘1')
   let _tray2 = TE.scene.getObjectByName('底盘2')
   let horseActionIsPlay = false
@@ -83,31 +85,40 @@ export default function Event(TE) {
       case 65: group.position.x-=1;break;
       case 68: group.position.x=1;break;
       case 32:
-        if(!horseActionIsPlay){
-          TE.horseAction.setDuration(horseActionPlayTime).play()
-          horseActionIsPlay = true
+        if(!sceneIsCube){
+          TE.scene.background = TE.textureCube
+          sceneIsCube = true
+          sceneChildren =  TE.scene.children
+          TE.scene.children = []
         }else{
-          TE.horseAction.stop()
-          horseActionIsPlay = false
+          TE.scene.background = new Color( 200/255,200/255,200/255 );
+          sceneIsCube = false
         }
         break
       case 38:
-        if(horseActionIsPlay){
-          horseActionPlayTime <= 0.1
-            ? horseActionPlayTime = 0.1
-            : horseActionPlayTime -= 0.1;
-          TE.horseAction.setDuration(horseActionPlayTime).play()
-          // horseActionPlayTime = 0.5
-          // TE.horseAction.setDuration(horseActionPlayTime).play()
+        if(sceneChildren.length !== 0){
+          TE.scene.children = sceneChildren
+        }else{
+
         }
+        // sceneChildren.length !== 0 &&TE.scene.children = sceneChildren
+        // if(horseActionIsPlay){
+        //   horseActionPlayTime <= 0.1
+        //     ? horseActionPlayTime = 0.1
+        //     : horseActionPlayTime -= 0.1;
+        //   TE.horseAction.setDuration(horseActionPlayTime).play()
+        //   // horseActionPlayTime = 0.5
+        //   // TE.horseAction.setDuration(horseActionPlayTime).play()
+        // }
         break
       case 40:
-        if(horseActionIsPlay){
-          horseActionPlayTime >= 4
-            ? horseActionPlayTime = 4
-            : horseActionPlayTime += 0.1;
-          TE.horseAction.setDuration(horseActionPlayTime).play()
-        }
+        TE.buildGroup.visible = !TE.buildGroup.visible
+        // if(horseActionIsPlay){
+        //   horseActionPlayTime >= 4
+        //     ? horseActionPlayTime = 4
+        //     : horseActionPlayTime += 0.1;
+        //   TE.horseAction.setDuration(horseActionPlayTime).play()
+        // }
         break
       case 13:
         TE.isPlay = !TE.isPlay
