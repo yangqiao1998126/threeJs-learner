@@ -28,7 +28,7 @@ const glassMaterial = new THREE.MeshPhysicalMaterial( {
 const gltfLoader = new GLTFLoader()
 gltfLoader.setDRACOLoader( dracoLoader );
 export let gltfPromise = new Promise((resolve,reject) => {
-  gltfLoader.loadAsync('/model/glb/ferrari.glb').then(gltf => {
+  gltfLoader .loadAsync('/model/glb/ferrari.glb').then(gltf => {
     let wheels = []
     let wheels2 = []
     const carModel = gltf.scene.children[ 0 ];
