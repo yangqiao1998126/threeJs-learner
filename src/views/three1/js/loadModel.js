@@ -2,6 +2,7 @@ import {gltfModelPromise, modelPromise} from "./TLoader";
 import {Group} from "three";
 import Event from "./TObjectClick";
 import {MeshBasicMaterial, DoubleSide} from 'three'
+import {Tween} from "@tweenjs/tween.js";
 
 let changeMaterialOpc = (model, ...nameList) => {
   nameList.forEach(name => {
@@ -21,6 +22,20 @@ export let loadModelFun = function (modelObjs) {
     dimian.position.set(0, 0, 0)
     dimian.scale.set(1.6, 2, 1)
     this.scene.add(dimian)
+    let startVal = {x:1.6,y:2,z:1}
+    let endVal = {x:3.2,y:4,z:2}
+    // let tween1 = new Tween(startVal)
+    //   .delay(10000)
+    //   .to({x:3.2,y:4,z:2},5000)
+    //   .onUpdate(() => {
+    //     dimian.scale.set(startVal.x,startVal.y,startVal.z)
+    //   })
+    //   .onComplete((x)=>{
+    //     console.log('完成',x)
+    //   })
+    // //tween1.chain(动画2) //在tween1动画结束后执行动画2
+    //   .start()
+    //练习 TWEEN的 使用
     let cangchuqu = (await gltfModelPromise(modelObjs.cangchuqu)).scene
     cangchuqu.position.set(160, 0, 0)
     cangchuqu.scale.set(1.4, 1.4, 1.4)

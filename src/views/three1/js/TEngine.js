@@ -45,6 +45,7 @@ import Three1 from "../three1";
 import scene from "three/examples/jsm/offscreen/scene";
 import {curve,curve1,curve2} from "./TBasicObject";
 import {loadModelFun} from "./loadModel";
+import TWEEN from "@tweenjs/tween.js";
 const modelObjs = {
   dimain:'/model/glb1/dimian.glb',
   cangchuqu:'/model/glb1/cangchuqu.glb',
@@ -194,6 +195,7 @@ export class TEngine {
       this.renderPass.sampleLevel = guiObj['抗锯齿Level']
       this.composer.render()
       stats.update()
+      // TWEEN.update()
       requestAnimationFrame(renderFun)
     }
     renderFun()
