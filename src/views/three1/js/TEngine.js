@@ -48,6 +48,7 @@ import {loadModelFun} from "./loadModel";
 import TWEEN from "@tweenjs/tween.js";
 const modelObjs = {
   dimain:'/model/glb1/dimian.glb',
+  "zhoubianjianzhu":'/model/glb1/zhoubianjianzhu.glb',
   cangchuqu:'/model/glb1/cangchuqu.glb',
   chache:'/model/glb1/chache.glb',
   longmenjia:'/model/glb1/longmenjia.glb',
@@ -62,6 +63,8 @@ const modelObjs = {
   shebei5:'/model/glb1/shebei5.glb',
   shebei6:'/model/glb1/shebei6.glb',
   shebei7:'/model/glb1/shebei7.glb',
+  suodao:'/model/glb1/suodao.glb',
+  wenjiangui2:'/model/glb1/wenjiangui2.glb',
   low_building_1:{
     mtlUrl:'/model/obj/low_building_1/low_building_1.mtl',
     objUrl:'/model/obj/low_building_1/low_building_1.obj'
@@ -77,14 +80,14 @@ let guiObj = {
   spotLightGui:{
     // x:0,
     "平行光颜色":'#fff',
-    "平行光强度":2,
+    "平行光强度":1.1,
   },
   ambientLightGui:{
     "环境光颜色":'#fff',
     "环境光强度":1.22,
   },
   "是否显示光源辅助线":true,
-  "抗锯齿Level":0
+  "抗锯齿Level":1
   // "轨道控制器旋转":false
 }
 gui.domElement.style="position:absolute;top:0px;left:0px"
@@ -127,6 +130,7 @@ export class TEngine {
       // alpha:true
     })
     this.renderer.shadowMap.enabled = true
+    // this.renderer.shadowMapEnabled = true
     // this.renderer.setPixelRatio(window.devicePixelRatio < 1.5 ? 1.5 : window.devicePixelRatio)
     // this.renderer.antialias = true
     this.scene = new Scene()
@@ -149,7 +153,7 @@ export class TEngine {
    this.textureCube = new CubeTextureLoader().load( urls );
     // this.scene.background = textureCube
     this.scene.background = new Color( 200/255,200/255,200/255 );
-    this.camera = new PerspectiveCamera(45, dom.offsetWidth / dom.offsetHeight, 20, 999)
+    this.camera = new PerspectiveCamera(45, dom.offsetWidth / dom.offsetHeight, 5, 1855)
     this.camera.position.set(-10, 60 ,100)
     this.renderer.setSize(dom.offsetWidth, dom.offsetHeight, true)
     //自适应窗口
@@ -170,6 +174,10 @@ export class TEngine {
       MIDDLE: MOUSE.DOLLY,
       RIGHT: MOUSE.ROTATE
     }
+    this.orbitControls.maxDistance = 600
+    this.orbitControls.maxZoom = 600
+    this.orbitControls.maxZoom = 10
+    this.orbitControls.maxPolarAngle = Math.PI/2.2
     //加载obj模型
     const renderFun = () => {
       this.GUI()
@@ -181,8 +189,8 @@ export class TEngine {
       this.isPlay && (
       this.newXhwList0 && this.newXhwList0.length >0 &&this.handleXhw('xhwEnd0',this.newXhwList0,160,5,[184.5,4.2,93.5],[66,4.2,93.5]),
       this.newXhwList1 && this.newXhwList1.length >0 &&this.handleXhw('xhwEnd1',this.newXhwList1,167,10,[184.5,4.2,80.8],[9,4.2,80.8],0.2),
-      this.newXhwList2 && this.newXhwList2.length >0 &&this.handleXhw('xhwEnd2',this.newXhwList2,-56,7,[-46,4,20.5],[-117,4,20.5],0.15),
-      this.newXhwList3 && this.newXhwList3.length >0 &&this.handleXhw('xhwEnd3',this.newXhwList3,-60.2,5,[-46,4,-69.3],[-117,4,-69.3],0.11)
+      this.newXhwList2 && this.newXhwList2.length >0 &&this.handleXhw('xhwEnd2',this.newXhwList2,-36,7,[-26,4,20.5],[-97,4,20.5],0.15),
+      this.newXhwList3 && this.newXhwList3.length >0 &&this.handleXhw('xhwEnd3',this.newXhwList3,-40.2,5,[-26,4,-69.3],[-97,4,-69.3],0.11)
       )
       this.orbitControls.update()
       // this.handleXhw()
@@ -240,7 +248,7 @@ export class TEngine {
     },false)
   }
   loadObjModel(){
-    gltfModelPromise(modelObjs.dimain).then(loadModelFun.call(this,modelObjs))
+    gltfModelPromise(modelObjs.zhoubianjianzhu).then(loadModelFun.call(this,modelObjs))
   }
   handleXhw(endXhwName,xhwList,distance,num,[x,y,z],endPosition,speed=0.06){
     let endXhw = this.scene.getObjectByName(endXhwName)

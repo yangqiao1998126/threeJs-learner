@@ -117,6 +117,13 @@ export let fontModel = new Promise((resolve,reject) => {
 export let gltfModelPromise = (url) => {
   return new Promise((reslove,reject) => {
     gltfLoader.loadAsync(url).then(gltf => {
+      gltf.scene.traverse( (child) => {
+
+          child.castShadow = true;
+          child.receiveShadow = true;
+          // child.material && (child.material.side = 0)
+
+      } );
       reslove(gltf)
     })
   })

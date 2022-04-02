@@ -1,5 +1,5 @@
 import {gltfModelPromise, modelPromise} from "./TLoader";
-import {Group} from "three";
+import {Group, Mesh,Color} from "three";
 import Event from "./TObjectClick";
 import {MeshBasicMaterial, DoubleSide} from 'three'
 import {Tween} from "@tweenjs/tween.js";
@@ -17,13 +17,35 @@ let changeMaterialOpc = (model, ...nameList) => {
 }
 export let loadModelFun = function (modelObjs) {
   return async (res) => {
-    let dimian = res.scene
-    dimian.children[0].material.roughness = 0.8
-    dimian.position.set(0, 0, 0)
-    dimian.scale.set(1.6, 2, 1)
-    this.scene.add(dimian)
-    let startVal = {x:1.6,y:2,z:1}
-    let endVal = {x:3.2,y:4,z:2}
+    let build = res.scene
+    build.traverse(function (obj) {
+      if(obj instanceof Mesh){
+        if(obj.name === 'zbhj_dm1'){
+          obj.material.emissive=new Color(189/255,163/255,238/255)
+          obj.material.emissiveIntensity=0.8;
+          obj.material.emissiveMap=obj.material.map;
+        }else if(obj.name==='zbhj_dm2'){
+          obj.material.emissive=new Color(157/255,147/255,147/255)
+          obj.material.emissiveIntensity=0.6;
+          obj.material.emissiveMap=obj.material.map;
+        }
+        else{
+          obj.material.emissive=new Color(145/255,135/255,171/255)
+          obj.material.emissiveIntensity=0.8;
+          obj.material.emissiveMap=obj.material.map;
+        }
+
+      }
+    });
+    build.getObjectByName('zbhj_dm2').castShadow = false
+    build.getObjectByName('zbhj_dm1').castShadow = false
+    build.position.set(35, 0, 0)
+    build.rotateY(-Math.PI/2)
+    this.scene.add(build)
+
+
+    // let startVal = {x:1.6,y:2,z:1}
+    // let endVal = {x:3.2,y:4,z:2}
     // let tween1 = new Tween(startVal)
     //   .delay(10000)
     //   .to({x:3.2,y:4,z:2},5000)
@@ -124,7 +146,7 @@ export let loadModelFun = function (modelObjs) {
       this.scene.add(shebei2Clone)
     }
 
-    let shebei5List = [[-65, 0, -70], [-65, 0, 20]]
+    let shebei5List = [[-45, 0, -70], [-45, 0, 20]]
     let shebei5 = (await gltfModelPromise(modelObjs.shebei5)).scene
     shebei5.scale.set(1.2, 1.2, 1.2)
     for (let i = 0; i < shebei5List.length; i++) {
@@ -153,8 +175,8 @@ export let loadModelFun = function (modelObjs) {
     let xhwEndList = [
       [[184.5, 4.2, 93.5], [61, 0, 93.5]],
       [[184.5, 4.2, 80.8], [5.5, 0, 82]],
-      [[-46, 4, 20.5], [-121.5, 0, 20.5]],
-      [[-46, 4, -69.3], [-121.5, 0, -69.3]],
+      [[-26, 4, 20.5], [-101.5, 0, 20.5]],
+      [[-26, 4, -69.3], [-101.5, 0, -69.3]],
     ]
     //1. [184.5,4.2,93.5],[66,4.2,93.5],[61,0,93.5]
     //2. [184.5,4.2,80.8], [9,4.2,80.8]   [5.5,0,82]
@@ -177,19 +199,17 @@ export let loadModelFun = function (modelObjs) {
       this[`newXhwList${i}`] = [...arr]
     }
 
-    /*   let build1 = await  modelPromise(modelObjs.low_building_1)
-       let buildGroup = new Group()
-       for (let index = 1; index < 3; index++) {
-         const cloneObj = build1.clone()
-         build1.scale.set(0.7,0.5,0.7)
-         cloneObj.position.set(-100+index*70, 0, -240)
-         buildGroup.add(build1)
-         // this.scene.add(cloneObj)
-       }
-       buildGroup.position.set(-80,0,-200)
-       this.scene.add(buildGroup)
-       this.buildGroup = buildGroup
-       this.buildGroup.visible = false*/
+    //索道
+    let suodao = (await gltfModelPromise(modelObjs.suodao)).scene
+    suodao.position.set(-45,0,-65)
+    suodao.rotateY(-Math.PI / 2)
+    this.scene.add(suodao)
+
+    //文件柜
+    let wenjiangui2 = (await gltfModelPromise(modelObjs.wenjiangui2)).scene
+    wenjiangui2.position.set(125,0,55)
+    wenjiangui2.rotateY(-Math.PI / 2)
+    this.scene.add(wenjiangui2)
 
     window._event.emit('model-loading-finished')
     Event(this)

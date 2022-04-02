@@ -31,6 +31,7 @@ export default function Event(TE) {
 
       //获取第一个物体
       if (SELECTED !== intersects[0].object) {
+        if(intersects[0]?.object?.name?.includes('zbhj'))return;
         //鼠标的变换
         // document.body.style.cursor='pointer';
         /*intersects[ 0 ].object.material.transparent=true;//透明度的变化
@@ -41,7 +42,7 @@ export default function Event(TE) {
         //改变物体的颜色(红色)
         SELECTED.material.color && SELECTED.material.color.set('yellow');
         TE.outlinePass.selectedObjects = [intersects[0].object]
-        if (SELECTED.name) {
+        if (SELECTED.name) { //zbhj_dm1 zbhj_F2
           console.log(intersects[0]&&intersects[0].object.name);
           let position = TE.getPosition(intersects[0].point)
           window.modelPoint = intersects[0].point
