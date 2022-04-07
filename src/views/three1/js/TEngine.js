@@ -65,6 +65,7 @@ const modelObjs = {
   shebei7:'/model/glb1/shebei7.glb',
   suodao:'/model/glb1/suodao.glb',
   wenjiangui2:'/model/glb1/wenjiangui2.glb',
+  jixiebi:'/model/glb1/jixiebi.glb',
   low_building_1:{
     mtlUrl:'/model/obj/low_building_1/low_building_1.mtl',
     objUrl:'/model/obj/low_building_1/low_building_1.obj'
@@ -80,11 +81,11 @@ let guiObj = {
   spotLightGui:{
     // x:0,
     "平行光颜色":'#fff',
-    "平行光强度":1.1,
+    "平行光强度":1,
   },
   ambientLightGui:{
     "环境光颜色":'#fff',
-    "环境光强度":1.22,
+    "环境光强度":1,
   },
   "是否显示光源辅助线":true,
   "抗锯齿Level":1
@@ -203,7 +204,7 @@ export class TEngine {
       this.renderPass.sampleLevel = guiObj['抗锯齿Level']
       this.composer.render()
       stats.update()
-      // TWEEN.update()
+      TWEEN.update()
       requestAnimationFrame(renderFun)
     }
     renderFun()

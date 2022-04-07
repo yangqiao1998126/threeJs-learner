@@ -121,7 +121,7 @@ export let gltfModelPromise = (url) => {
 
           child.castShadow = true;
           child.receiveShadow = true;
-          // child.material && (child.material.side = 0)
+          child.material && (child.material.side = 0)
 
       } );
       reslove(gltf)

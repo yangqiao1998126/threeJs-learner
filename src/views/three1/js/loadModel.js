@@ -1,5 +1,5 @@
 import {gltfModelPromise, modelPromise} from "./TLoader";
-import {Group, Mesh,Color} from "three";
+import {Group, Mesh, Color} from "three";
 import Event from "./TObjectClick";
 import {MeshBasicMaterial, DoubleSide} from 'three'
 import {Tween} from "@tweenjs/tween.js";
@@ -19,20 +19,19 @@ export let loadModelFun = function (modelObjs) {
   return async (res) => {
     let build = res.scene
     build.traverse(function (obj) {
-      if(obj instanceof Mesh){
-        if(obj.name === 'zbhj_dm1'){
-          obj.material.emissive=new Color(189/255,163/255,238/255)
-          obj.material.emissiveIntensity=0.8;
-          obj.material.emissiveMap=obj.material.map;
-        }else if(obj.name==='zbhj_dm2'){
-          obj.material.emissive=new Color(157/255,147/255,147/255)
-          obj.material.emissiveIntensity=0.6;
-          obj.material.emissiveMap=obj.material.map;
-        }
-        else{
-          obj.material.emissive=new Color(145/255,135/255,171/255)
-          obj.material.emissiveIntensity=0.8;
-          obj.material.emissiveMap=obj.material.map;
+      if (obj instanceof Mesh) {
+        if (obj.name === 'zbhj_dm1') {
+          obj.material.emissive = new Color(189 / 255, 163 / 255, 238 / 255)
+          obj.material.emissiveIntensity = 0.8;
+          obj.material.emissiveMap = obj.material.map;
+        } else if (obj.name === 'zbhj_dm2') {
+          obj.material.emissive = new Color(157 / 255, 147 / 255, 147 / 255)
+          obj.material.emissiveIntensity = 0.6;
+          obj.material.emissiveMap = obj.material.map;
+        } else {
+          obj.material.emissive = new Color(145 / 255, 135 / 255, 171 / 255)
+          obj.material.emissiveIntensity = 0.8;
+          obj.material.emissiveMap = obj.material.map;
         }
 
       }
@@ -40,24 +39,9 @@ export let loadModelFun = function (modelObjs) {
     build.getObjectByName('zbhj_dm2').castShadow = false
     build.getObjectByName('zbhj_dm1').castShadow = false
     build.position.set(35, 0, 0)
-    build.rotateY(-Math.PI/2)
+    build.rotateY(-Math.PI / 2)
     this.scene.add(build)
 
-
-    // let startVal = {x:1.6,y:2,z:1}
-    // let endVal = {x:3.2,y:4,z:2}
-    // let tween1 = new Tween(startVal)
-    //   .delay(10000)
-    //   .to({x:3.2,y:4,z:2},5000)
-    //   .onUpdate(() => {
-    //     dimian.scale.set(startVal.x,startVal.y,startVal.z)
-    //   })
-    //   .onComplete((x)=>{
-    //     console.log('完成',x)
-    //   })
-    // //tween1.chain(动画2) //在tween1动画结束后执行动画2
-    //   .start()
-    //练习 TWEEN的 使用
     let cangchuqu = (await gltfModelPromise(modelObjs.cangchuqu)).scene
     cangchuqu.position.set(160, 0, 0)
     cangchuqu.scale.set(1.4, 1.4, 1.4)
@@ -201,15 +185,138 @@ export let loadModelFun = function (modelObjs) {
 
     //索道
     let suodao = (await gltfModelPromise(modelObjs.suodao)).scene
-    suodao.position.set(-45,0,-65)
+    suodao.position.set(-45, 0, -65)
     suodao.rotateY(-Math.PI / 2)
     this.scene.add(suodao)
 
     //文件柜
     let wenjiangui2 = (await gltfModelPromise(modelObjs.wenjiangui2)).scene
-    wenjiangui2.position.set(125,0,55)
+    wenjiangui2.position.set(125, 0, 55)
     wenjiangui2.rotateY(-Math.PI / 2)
     this.scene.add(wenjiangui2)
+
+    let jixiebiGroup = new Group()
+    //机械臂
+    let jixiebi = (await gltfModelPromise(modelObjs.jixiebi)).scene
+    jixiebi.scale.set(1.5, 1.5, 1.5)
+    jixiebiGroup.position.set(-22, 4.5, -77)
+    jixiebiGroup.rotation.y = -Math.PI * 50 / 180
+    let hphJxb = huopinhe.clone()
+    hphJxb.position.set(3.8, 1.1, -6.6)
+    hphJxb.scale.set(1.7, 1.7, 1.7)
+    hphJxb.visible = false
+    jixiebiGroup.add(jixiebi)
+    jixiebiGroup.add(hphJxb)
+
+    let jxbJia = jixiebiGroup.getObjectByName('jixiebi')
+    let jxbGan = jixiebiGroup.getObjectByName('jixiebi004')
+
+    /*
+    * 5.381875038146973 0.6478362083435059
+    * 3.681875038146977 -1.052163791656494
+    * */
+    this.scene.add(jixiebiGroup)
+
+    let removeHph = (name) => {
+      if (this.scene.getObjectByName(name)) {
+        console.log(this.scene.getObjectByName(name).position.y, '--++++++');
+        this.scene.remove(this.scene.getObjectByName(name))
+        return true
+      }
+      return false
+    }
+    let obj = {
+      '2.90': -0.07, '2.20': 0.33, '1.50': 0.50
+    }
+    let tuopan1 = tuopan.clone()
+    tuopan1.position.set(-14, 0.5, -79)
+    this.scene.add(tuopan1)
+    let huopinheList1 = [
+      [-15.4, 1.5, -80.2], [-12.9, 1.5, -80.2], [-15.4, 1.5, -78.9], [-12.9, 1.5, -78.9], [-15.4, 1.5, -77.5], [-12.9, 1.5, -77.5],
+      [-15.4, 2.2, -80.2], [-12.9, 2.2, -80.2], [-15.4, 2.2, -78.9], [-12.9, 2.2, -78.9], [-15.4, 2.2, -77.5], [-12.9, 2.2, -77.5],
+      [-15.4, 2.9, -80.2], [-12.9, 2.9, -80.2], [-15.4, 2.9, -78.9], [-12.9, 2.9, -78.9], [-15.4, 2.9, -77.5], [-12.9, 2.9, -77.5],
+    ]
+    for (let i = 0; i < huopinheList1.length; i++) {
+      let hphClone = huopinhe.clone()
+      let [x, y, z] = huopinheList1[i]
+      hphClone.scale.y = 1.6
+      hphClone.position.set(x, y, z)
+      hphClone.name = `huopinheList-${i}`
+      this.scene.add(hphClone)
+    }
+
+    let flag = true
+    let tween1_down_jxbJia_jxbGan_start = {jxbGan: 5.38, jxbJia: 0.64}
+    let tween1_down_jxbJia_jxbGan = new Tween(tween1_down_jxbJia_jxbGan_start)
+      .delay(1000)
+      .to({jxbGan: 3.68, jxbJia: -1.05}, 2000)
+      .onUpdate(() => {
+        jxbGan.position.y = tween1_down_jxbJia_jxbGan_start.jxbGan
+        jxbJia.position.y = tween1_down_jxbJia_jxbGan_start.jxbJia
+      })
+      .onStart(() => {
+        flag = true
+        // hphJxb.visible = false
+      })
+      .onComplete(() => {
+      })
+
+    let jxbNum = huopinheList1.length - 1
+
+    let tween1_up_jxbJia_jxbGan_start = {jxbGan: 3.68, jxbJia: -1.05}
+    let tween1_up_jxbJia_jxbGan = new Tween(tween1_up_jxbJia_jxbGan_start)
+      .delay(500)
+      .to({jxbGan: 5.38, jxbJia: 0.64}, 2000)
+      .onUpdate(() => {
+
+        // if(jxbJia.position.y > obj[this.scene.getObjectByName(`huopinheList-${jxbNum}`).position.y.toFixed(2)] && flag&& removeHph(`huopinheList-${jxbNum}`)){
+        if (jxbJia.position.y > 0.5 && flag && removeHph(`huopinheList-${jxbNum}`)) {
+          flag = false
+          --jxbNum
+        }
+        jxbGan.position.y = tween1_up_jxbJia_jxbGan_start.jxbGan
+        jxbJia.position.y = tween1_up_jxbJia_jxbGan_start.jxbJia
+      })
+      .onComplete(() => {
+        if (jxbNum >= 0) hphJxb.visible = true
+        console.log("完成机械臂的上升了")
+      })
+    let startVal1 = {angle: 50}
+    let tween1 = new Tween(startVal1)
+      .delay(1000)
+      .to({angle: 180}, 3000)
+      .onUpdate(() => {
+        let angle = startVal1.angle.toFixed(2)
+        jixiebiGroup.rotation.y = -Math.PI * angle / 180
+      })
+      .onComplete((x) => {
+        hphJxb.visible = false
+      })
+
+    let startVal2 = {angle: 180}
+    let tween2 = new Tween(startVal2)
+      .delay(1000)
+      .to({angle: 50}, 3000)
+      .onUpdate(() => {
+        let angle = startVal2.angle.toFixed(2)
+        jixiebiGroup.rotation.y = -Math.PI * angle / 180
+      })
+      .onComplete((x) => {
+      })
+    tween1_down_jxbJia_jxbGan.chain(tween1_up_jxbJia_jxbGan)
+    tween1_up_jxbJia_jxbGan.chain(tween1)
+    tween1.chain(tween2)
+    tween2.chain(tween1_down_jxbJia_jxbGan)
+    tween1_down_jxbJia_jxbGan.start()
+
+    // setTimeout(() => {
+    //   console.log(tween1_down_jxbJia_jxbGan)
+    // },6000)
+    // tween1.chain(tween2) //在tween1动画结束后执行动画2
+    // tween2.chain(tween1) //在tween1动画结束后执行动画2
+
+    // this.scene.add(jixiebi)
+
 
     window._event.emit('model-loading-finished')
     Event(this)

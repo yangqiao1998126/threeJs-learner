@@ -21,7 +21,7 @@ pointLight.position.set(20, 20, 20)
 
 export const spotLight = new SpotLight(
   'rgb(255, 255, 255)',
-  1,
+  0.9,
   8000,
   104.05,
   0.05,
@@ -44,8 +44,8 @@ Dlight.shadow.camera.top = 100; //最上边
 Dlight.shadow.camera.bottom = -100; //最下面
 
 // 这两个值决定使用多少像素生成阴影 默认512
-Dlight.shadow.mapSize.height = 1024;
-Dlight.shadow.mapSize.width = 1024;
+Dlight.shadow.mapSize.height = 800;
+Dlight.shadow.mapSize.width = 800;
 
 Dlight.castShadow = true
 
