@@ -28,7 +28,7 @@ import {AmbientLight,
   DoubleSide,
   Group,
   Object3D} from "three"
-import Event from "./TObjectClick";
+import Event from "./event/TObjectClick";
 import Stats from 'three/examples/jsm/libs/stats.module'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
@@ -37,14 +37,14 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
 // import "three/examples/js/objects/Refractor"
 // import  'three/examples/js/shaders/WaterRefractionShader';
-import {modelPromise} from "./TLoader";
-import {spotLight,ambientLight,Dlight} from "./Tlights";
-import {pointLightHelper,spotLightHelper,DLightHelper} from './THelper'
-import {gltfPromise,gltfModelPromise} from "./TLoader";
+import {modelPromise} from "./loader/TLoader";
+import {spotLight,ambientLight,Dlight} from "./base/Tlights";
+import {pointLightHelper,spotLightHelper,DLightHelper} from './base/THelper'
+import {gltfPromise,gltfModelPromise} from "./loader/TLoader";
 import Three1 from "../three1";
 import scene from "three/examples/jsm/offscreen/scene";
-import {curve,curve1,curve2} from "./TBasicObject";
-import {loadModelFun} from "./loadModel";
+import {curve,curve1,curve2} from "./base/TBasicObject";
+import {loadModelFun} from "./loader/loadModel";
 import TWEEN from "@tweenjs/tween.js";
 const modelObjs = {
   dimain:'/model/glb1/dimian.glb',

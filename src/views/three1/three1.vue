@@ -4,12 +4,12 @@
 
 <script>
 import {TEngine} from "./js/TEngine";
-import {basicObjectList} from "./js/TBasicObject";
-import {LightsList} from "./js/Tlights";
-import {helperList} from "./js/THelper";
-import {gltfPromise,fontModel} from "./js/TLoader";
-import {modelPromise} from "./js/TLoader";
-import Event from "./js/TObjectClick";
+import {basicObjectList} from "./js/base/TBasicObject";
+import {LightsList} from "./js/base/Tlights";
+import {helperList} from "./js/base/THelper";
+import {gltfPromise,fontModel} from "./js/loader/TLoader";
+import {modelPromise} from "./js/loader/TLoader";
+import Event from "./js/event/TObjectClick";
 
 export default {
   name: "three1",

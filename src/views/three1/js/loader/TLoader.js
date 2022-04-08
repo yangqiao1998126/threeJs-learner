@@ -5,9 +5,9 @@ import {FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
 import {TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
-import {cuboid} from "./TBasicObject";
+import {cuboid} from "../base/TBasicObject";
 import {Mesh} from "three";
-import {shadow} from "./TTextures";
+import {shadow} from "../base/TTextures";
 // import a from 'three/examples/js/libs/draco/gltf/'
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath( '/model/gltf/' );
