@@ -3,7 +3,7 @@ import {Group, Mesh, Color} from "three";
 import Event from "../event/TObjectClick";
 import {MeshBasicMaterial, DoubleSide} from 'three'
 import {Tween} from "@tweenjs/tween.js";
-import {jxbAnimation} from "../jxb/jxbAnimation";
+import {JxbAnimation} from "../jxb/jxbAnimation";
 
 let changeMaterialOpc = (model, ...nameList) => {
   nameList.forEach(name => {
@@ -16,6 +16,7 @@ let changeMaterialOpc = (model, ...nameList) => {
     })
   })
 }
+export let jxbAnimationList = []
 export let loadModelFun = function (modelObjs) {
   return async (res) => {
     let build = res.scene
@@ -123,7 +124,7 @@ export let loadModelFun = function (modelObjs) {
     let shebei2 = (await gltfModelPromise(modelObjs.shebei2)).scene
     shebei2.scale.set(1.1, 1.1, 1.1)
     for (let i = 0; i < shebeierList.length; i++) {
-      let shebei2Clone = shebei2.clone()
+      let shebei2Clone = (await gltfModelPromise(modelObjs.shebei2)).scene
       shebei2Clone.name = `shebei2Clone${i}`
       let [x, y, z] = shebeierList[i]
       shebei2Clone.position.set(x, y, z)
@@ -202,15 +203,17 @@ export let loadModelFun = function (modelObjs) {
       [-15.4, 2.2, -80.2], [-12.9, 2.2, -80.2], [-15.4, 2.2, -78.9], [-12.9, 2.2, -78.9], [-15.4, 2.2, -77.5], [-12.9, 2.2, -77.5],
       [-15.4, 2.9, -80.2], [-12.9, 2.9, -80.2], [-15.4, 2.9, -78.9], [-12.9, 2.9, -78.9], [-15.4, 2.9, -77.5], [-12.9, 2.9, -77.5],
     ]
-    jxbAnimation.call(this,jixiebi1,huopinhe,tuopan,huopinheList01,-77,-79)
+    // jxbAnimation.call(this,jixiebi1,huopinhe,tuopan,huopinheList01,-77,-79)
+    jxbAnimationList.push(new JxbAnimation(this,jixiebi1,huopinhe,tuopan,huopinheList01,-77,-79))
 
     let jixiebi2 = (await gltfModelPromise(modelObjs.jixiebi)).scene
     let huopinheList02 = [
       [-15.4, 1.5, -80.2+90], [-12.9, 1.5, -80.2+90], [-15.4, 1.5, -78.9+90], [-12.9, 1.5, -78.9+90], [-15.4, 1.5, -77.5+90], [-12.9, 1.5, -77.5+90],
       [-15.4, 2.2, -80.2+90], [-12.9, 2.2, -80.2+90], [-15.4, 2.2, -78.9+90], [-12.9, 2.2, -78.9+90], [-15.4, 2.2, -77.5+90], [-12.9, 2.2, -77.5+90],
-      [-15.4, 2.9, -80.2+90], [-12.9, 2.9, -80.2+90], [-15.4, 2.9, -78.9+90], [-12.9, 2.9, -78.9+90], [-15.4, 2.9, -77.5+90], [-12.9, 2.9, -77.5+90],
+     [-15.4, 2.9, -80.2+90], [-12.9, 2.9, -80.2+90], [-15.4, 2.9, -78.9+90], [-12.9, 2.9, -78.9+90], [-15.4, 2.9, -77.5+90], [-12.9, 2.9, -77.5+90],
     ]
-    jxbAnimation.call(this,jixiebi2,huopinhe,tuopan,huopinheList02,13,11)
+    // jxbAnimation.call(this,jixiebi2,huopinhe,tuopan,huopinheList02,13,11)
+    jxbAnimationList.push(new JxbAnimation(this,jixiebi2,huopinhe,tuopan,huopinheList02,13,11))
 
 
     // let jixiebiGroup = new Group()

@@ -44,7 +44,7 @@ import {gltfPromise,gltfModelPromise} from "./loader/TLoader";
 import Three1 from "../three1";
 import scene from "three/examples/jsm/offscreen/scene";
 import {curve,curve1,curve2} from "./base/TBasicObject";
-import {loadModelFun} from "./loader/loadModel";
+import {loadModelFun,jxbAnimationList} from "./loader/loadModel";
 import TWEEN from "@tweenjs/tween.js";
 const modelObjs = {
   dimain:'/model/glb1/dimian.glb',
@@ -131,9 +131,6 @@ export class TEngine {
       // alpha:true
     })
     this.renderer.shadowMap.enabled = true
-    // this.renderer.shadowMapEnabled = true
-    // this.renderer.setPixelRatio(window.devicePixelRatio < 1.5 ? 1.5 : window.devicePixelRatio)
-    // this.renderer.antialias = true
     this.scene = new Scene()
     var path = "http://ae01.alicdn.com/kf/";       //设置路径
     var format = '.jpg';                        //设定格式
@@ -191,7 +188,8 @@ export class TEngine {
       this.newXhwList0 && this.newXhwList0.length >0 &&this.handleXhw('xhwEnd0',this.newXhwList0,160,5,[184.5,4.2,93.5],[66,4.2,93.5]),
       this.newXhwList1 && this.newXhwList1.length >0 &&this.handleXhw('xhwEnd1',this.newXhwList1,167,10,[184.5,4.2,80.8],[9,4.2,80.8],0.2),
       this.newXhwList2 && this.newXhwList2.length >0 &&this.handleXhw('xhwEnd2',this.newXhwList2,-36,7,[-26,4,20.5],[-97,4,20.5],0.15),
-      this.newXhwList3 && this.newXhwList3.length >0 &&this.handleXhw('xhwEnd3',this.newXhwList3,-40.2,5,[-26,4,-69.3],[-97,4,-69.3],0.11)
+      this.newXhwList3 && this.newXhwList3.length >0 &&this.handleXhw('xhwEnd3',this.newXhwList3,-40.2,5,[-26,4,-69.3],[-97,4,-69.3],0.11),
+        this.startJxbAnimation()
       )
       this.orbitControls.update()
       // this.handleXhw()
@@ -204,13 +202,24 @@ export class TEngine {
       this.renderPass.sampleLevel = guiObj['抗锯齿Level']
       this.composer.render()
       stats.update()
-      TWEEN.update()
+
       requestAnimationFrame(renderFun)
     }
     renderFun()
     this.loadObjModel()
     dom.appendChild(this.renderer.domElement)
     dom.appendChild(statsDom)
+  }
+  startJxbAnimation(){
+    if(jxbAnimationList.every(item => item.jxbNum === item.hphList) && !jxbAnimationList.every(item => item.flag)){
+      jxbAnimationList.forEach(item => {
+        item.flag = true
+        item.tween1_down_jxbJia_jxbGan.start()
+        TWEEN.update()
+      })
+    }else{
+      TWEEN.update()
+    }
   }
   useEffectComposer(){
     const composer = new EffectComposer(this.renderer);
