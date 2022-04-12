@@ -36,14 +36,14 @@ import {OutlinePass} from 'three/examples/jsm/postprocessing/OutlinePass.js'
 import {modelPromise} from "./loader/TLoader";
 import {spotLight, ambientLight, Dlight} from "./base/Tlights";
 import {pointLightHelper, spotLightHelper, DLightHelper} from './base/THelper'
-import {gltfPromise, gltfModelPromise} from "./loader/TLoader";
+import {gltfModelPromise} from "./loader/TLoader";
 import Three1 from "../three1";
 import scene from "three/examples/jsm/offscreen/scene";
 import {curve, curve1, curve2} from "./base/TBasicObject";
 import {loadModelFun, jxbAnimationList} from "./loader/loadModel";
 import TWEEN from "@tweenjs/tween.js";
 import {modelObjs, guiObj, guiFun} from "./constant/constant";
-
+import {WS} from "./event/webSocket";
 //图形界面控制器
 let gui = new dat.GUI()
 gui = guiFun(gui)
@@ -82,6 +82,9 @@ export class TEngine {
     this.loadObjModel()
     dom.appendChild(this.renderer.domElement)
     dom.appendChild(statsDom)
+    if(process.env.NODE_ENV === 'development'){
+      new WS(this.scene)
+    }
   }
 
   initBaseFactor() {

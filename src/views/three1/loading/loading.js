@@ -17,7 +17,7 @@ Loading.install = function(Vue) {
 
   // 通过Vue的原型注册一个方法
   // 让所有实例共享这个方法
-  Vue.prototype.$loading = {
+  Vue.prototype.$loading1 = {
     show: message => {
       instance.show = true
       instance.message = message

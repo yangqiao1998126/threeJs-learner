@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "prod": "vue-cli-service serve --mode production",
+    "build:prod": "vue-cli-service build --mode production",
+    "build:dev": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -13,6 +15,7 @@
     "@types/echarts": "^4.4.3",
     "core-js": "^3.6.4",
     "echarts": "^4.6.0",
+    "element-ui": "^2.15.6",
     "events": "3.0.0",
     "three": "^0.133.1",
     "three-obj-mtl-loader": "^1.0.3",

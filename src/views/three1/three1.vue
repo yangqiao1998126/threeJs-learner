@@ -21,11 +21,11 @@ export default {
   },
   methods: {
     init(){
-      this.$loading.show('模型加载场景构建中，请稍后...')
+      this.$loading1.show('模型加载场景构建中，请稍后...')
       window._event.once('model-loading-finished',_ => {
         setTimeout(() => {
-          this.$loading.show('构建完成')
-          this.$loading.hide(800)
+          this.$loading1.show('构建完成')
+          this.$loading1.hide(100)
         },800)
 
       })

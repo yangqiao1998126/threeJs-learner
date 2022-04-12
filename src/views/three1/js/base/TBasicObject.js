@@ -3,16 +3,9 @@ import {
   Mesh,
   BoxBufferGeometry,
   MeshStandardMaterial,
-  SphereBufferGeometry,
-  CylinderBufferGeometry,
-  Object3D,
-  Line,
-  Points,
-  PointsMaterial,
-  Material,
   PlaneBufferGeometry
 } from 'three'
-import {pictureTexture,shadow} from "./TTextures";
+import {pictureTexture} from "./TTextures";
 
 export const basicObjectList = []
 
@@ -24,16 +17,11 @@ const stage = new Mesh(
 // stage.name = 'floor'
 stage.castShadow = true
 stage.receiveShadow = true
-
 stage.position.y = -5
 
 // 立方体
 const box = new Mesh(
   new BoxBufferGeometry(20, 20, 20),
-  // new MeshStandardMaterial({color: 'red'})
-
-
-  //pbr材质 面粗糙度粗糙度
   new MeshStandardMaterial({
     color: 'red',
     // metalness: 1,
@@ -43,7 +31,6 @@ const box = new Mesh(
 box.name='Box1'
 box.castShadow = true
 box.receiveShadow = true
-
 box.position.y = 10
 box.position.x = -20
 
@@ -52,7 +39,6 @@ export const cuboid = new Mesh(new BoxBufferGeometry(3,5,5),new THREE.MeshBasicM
 cuboid.castShadow = true
 cuboid.receiveShadow = true
 cuboid.position.set(130,0,90)
-
 
 const plane = new Mesh(
   new PlaneBufferGeometry(192, 108),
@@ -92,7 +78,6 @@ export const curve1 = new THREE.CatmullRomCurve3([
   new THREE.Vector3(190,0,110),
   new THREE.Vector3(-8,0,110),
   new THREE.Vector3(20,0,20),
-
 ])
 const tubeGeometry1 = new THREE.TubeGeometry(curve1,100,1,5,false)
 const line = new THREE.Mesh(tubeGeometry1,new THREE.MeshBasicMaterial({

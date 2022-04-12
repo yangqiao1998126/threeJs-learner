@@ -1,6 +1,8 @@
 import {Group} from "three";
 import {Tween} from "@tweenjs/tween.js";
+
 export class JxbAnimation {
+
   constructor(engine,jixiebi,huopinhe,tuopan,huopinheList1,jixiebiGroupZ,tuopanZ) {
     this.scene = engine.scene
     this.jixiebiGroup = new Group()
@@ -77,7 +79,6 @@ export class JxbAnimation {
         this.hphJxb.position.y = tween1_down_jxbJia_jxbGan_start.hphJxbY
       })
       .onStart(() => {
-        console.log('下臂动作开始执行前',this.jxbNum)
         if(this.jxbNum === -1)this.tween1_down_jxbJia_jxbGan.stop()
       })
       .onComplete(() => {

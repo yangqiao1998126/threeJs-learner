@@ -15,7 +15,8 @@ import 'vue-awesome/icons/chart-pie.js';
 import 'vue-awesome/icons/chart-line.js';
 import 'vue-awesome/icons/align-left.js';
 import Loading from "./views/three1/loading/loading";
-
+import ElementUi from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 //引入echart
 //4.x 引用方式
 import echarts from 'echarts'
@@ -29,6 +30,7 @@ Vue.config.productionTip = false;
 Vue.component('icon', Icon);
 Vue.use(dataV);
 Vue.use(Loading);
+Vue.use(ElementUi);
 
 new Vue({
   router,
