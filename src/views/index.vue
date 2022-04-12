@@ -94,13 +94,13 @@
 <script>
 import drawMixin from "../utils/drawMixin";
 import { formatTime } from '../utils/index.js'
-import centerLeft1 from './centerLeft1'
-import centerLeft2 from './centerLeft2'
-import centerRight1 from './centerRight1'
-import centerRight2 from './centerRight2'
-import center from './center'
-import bottomLeft from './bottomLeft'
-import bottomRight from './bottomRight'
+import centerLeft1 from './Chart/centerLeft1'
+import centerLeft2 from './Chart/centerLeft2'
+import centerRight1 from './Chart/centerRight1'
+import centerRight2 from './Chart/centerRight2'
+import center from './Chart/center'
+import bottomLeft from './Chart/bottomLeft'
+import bottomRight from './Chart/bottomRight'
 
 export default {
   mixins: [ drawMixin ],

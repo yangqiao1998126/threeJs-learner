@@ -95,25 +95,15 @@ export class TEngine {
     this.renderer.shadowMap.enabled = true
     this.scene = new Scene()
     let {dom} = this
-    var path = "http://ae01.alicdn.com/kf/";       //设置路径
-    var format = '.jpg';                        //设定格式
-    var urls = [
-      path + 'HTB1GBRUhpooBKNjSZFPq6xa2XXa5' + format,
-      path + 'HTB1nqDXm98YBeNkSnb4q6yevFXa0' + format,
-      path + 'HTB13tL9vkOWBuNjSsppq6xPgpXay' + format,
-      path + 'HTB1VELXvgaTBuNjSszfq6xgfpXac' + format,
-      path + 'HTB1PLbTvf9TBuNjy1zbq6xpepXao' + format,
-      path + 'HTB1bxWzmZuYBuNkSmRyq6AA3pXa8' + format
-      // 'https://wow.techbrood.com/uploads/1909/sky.jpg',
-      // 'https://wow.techbrood.com/uploads/1909/sky.jpg',
-      // 'https://wow.techbrood.com/uploads/1909/sky.jpg',
-      // 'https://wow.techbrood.com/uploads/1909/sky.jpg',
-      // 'https://wow.techbrood.com/uploads/1909/sky.jpg',
-      // 'https://wow.techbrood.com/uploads/1909/sky.jpg',
-    ];
-    this.textureCube = new CubeTextureLoader().load(urls);
-    // this.scene.background = textureCube
-    this.scene.background = new Color(200 / 255, 200 / 255, 200 / 255);
+    let textureCube = new CubeTextureLoader();
+    textureCube.setPath('/img/');
+    let cubeTexture = textureCube.load([
+      'right.jpg', 'left.jpg',
+      'top.jpg', 'bottom.jpg',
+      'front.jpg', 'back.jpg'
+    ]);
+    // this.scene.background = new Color(200 / 255, 200 / 255, 200 / 255);
+    this.scene.background = cubeTexture
     this.camera = new PerspectiveCamera(45, dom.offsetWidth / dom.offsetHeight, 5, 1855)
     this.camera.position.set(-10, 60, 100)
     this.renderer.setSize(dom.offsetWidth, dom.offsetHeight, true)
