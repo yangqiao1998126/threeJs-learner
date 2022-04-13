@@ -76,15 +76,17 @@ export class TEngine {
 
     const renderFun = () => {
       this.requestAnimationFrameFun(stats)
+      this.wsConnecet && this.wsChacheEvent()
       requestAnimationFrame(renderFun)
     }
     renderFun()
     this.loadObjModel()
     dom.appendChild(this.renderer.domElement)
     dom.appendChild(statsDom)
-    if(process.env.NODE_ENV === 'development'){
-      new WS(this.scene)
+    if (process.env.NODE_ENV === 'development') {
+      new WS(this)
     }
+
   }
 
   initBaseFactor() {
@@ -260,7 +262,6 @@ export class TEngine {
           isPoint = false;
           this.huodunNum <= 2 ? this.chacheGroup.add(this.huodun) : ''
         }
-        ;
         chacheProgress = (chacheProgress * 1000 + 0.003 * 1000) / 1000
         let chachePoint = curve1.getPoint(chacheProgress)
         let {x, y, z} = chachePoint

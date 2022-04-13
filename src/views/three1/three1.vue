@@ -23,10 +23,10 @@ export default {
     init(){
       this.$loading1.show('模型加载场景构建中，请稍后...')
       window._event.once('model-loading-finished',_ => {
-        setTimeout(() => {
+        // setTimeout(() => {
           this.$loading1.show('构建完成')
           this.$loading1.hide(100)
-        },800)
+        // },300)
 
       })
       const TE = new TEngine(this.$refs.threeTarget)

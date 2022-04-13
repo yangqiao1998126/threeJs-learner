@@ -59,6 +59,14 @@ export let loadModelFun = function (modelObjs) {
     this.chache2.position.set(20, 0, 0)
     this.scene.add(this.chache2)
 
+    let wsChache = this.chache.clone()
+    wsChache.scale.set(1.5,1.5,1.5)
+    wsChache.position.set(20,0,60)
+    this.scene.add(wsChache)
+    this.wsObj = {
+      wsChache,
+    }
+
     let longmenjia = (await gltfModelPromise(modelObjs.longmenjia)).scene
     longmenjia.position.set(100, 0, 0)
     longmenjia.scale.set(1.1, 1.1, 1.1)

@@ -79,11 +79,11 @@ export const curve1 = new THREE.CatmullRomCurve3([
   new THREE.Vector3(-8,0,110),
   new THREE.Vector3(20,0,20),
 ])
-const tubeGeometry1 = new THREE.TubeGeometry(curve1,100,1,5,false)
-const line = new THREE.Mesh(tubeGeometry1,new THREE.MeshBasicMaterial({
-  color:"#ffee33"
-}))
-line.visible = false
+// const tubeGeometry1 = new THREE.TubeGeometry(curve1,100,1,5,false)
+// const line = new THREE.Mesh(tubeGeometry1,new THREE.MeshBasicMaterial({
+//   color:"#ffee33"
+// }))
+// line.visible = false
 
 export const curve2 = new THREE.CatmullRomCurve3([
   new THREE.Vector3(20,0,20),
@@ -96,10 +96,10 @@ export const curve2 = new THREE.CatmullRomCurve3([
   new THREE.Vector3(-8,0,20),
   new THREE.Vector3(20,0,20),
 ])
-const tubeGeometry2 = new THREE.TubeGeometry(curve2,100,1,5,false)
-const line2 = new THREE.Mesh(tubeGeometry2,new THREE.MeshBasicMaterial({
-  color:"#ffee33"
-}))
-line2.visible = false
+// const tubeGeometry2 = new THREE.TubeGeometry(curve2,100,1,5,false)
+// const line2 = new THREE.Mesh(tubeGeometry2,new THREE.MeshBasicMaterial({
+//   color:"#ffee33"
+// }))
+// line2.visible = false
 // mesh.visible = false
-basicObjectList.push(mesh,line,line2)
+basicObjectList.push(mesh)
