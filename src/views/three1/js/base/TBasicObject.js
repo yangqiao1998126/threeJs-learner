@@ -35,7 +35,7 @@ box.position.y = 10
 box.position.x = -20
 
 //长方体
-export const cuboid = new Mesh(new BoxBufferGeometry(3,5,5),new THREE.MeshBasicMaterial( {color: "#fd5ffd",roughness: 0.3} ))
+export const cuboid = new Mesh(new BoxBufferGeometry(3,5,5),new THREE.MeshBasicMaterial( {color: "#fd5ffd",} ))
 cuboid.castShadow = true
 cuboid.receiveShadow = true
 cuboid.position.set(130,0,90)

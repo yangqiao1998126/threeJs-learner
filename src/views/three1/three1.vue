@@ -27,53 +27,11 @@ export default {
           this.$loading1.show('构建完成')
           this.$loading1.hide(100)
         // },300)
-
       })
       const TE = new TEngine(this.$refs.threeTarget)
       TE.addObject(...basicObjectList)
       TE.addObject(...LightsList)
       TE.addObject(...helperList)
-//       gltfPromise.then(res => {
-//         console.log(res)
-//         TE.scene.add(res[0])
-//         res[0].position.x = 30
-//         res[0].position.z = -9
-//         res[0].scale.x = 5
-//         res[0].scale.y = 5
-//         res[0].scale.z = 5
-// /*         const renderFun = () => {
-//         // basicObjectList[1].position.x += -0.02
-//         // basicObjectList[1].rotation.y += 0.001
-//         // TE.camera.position.x += -0.01
-//
-//         const time = - performance.now() / 1000;
-// 				for ( let i = 0; i < res[1].length; i ++ ) {
-// 					res[1][ i ].rotation.x = time * Math.PI;
-// 				}
-//            res[0].position.z -=0.02
-// 				// helperList[1].position.z = - ( time ) % 100;
-//         TE.renderer.render(TE.scene, TE.camera)
-//            TE.composer.render()
-//         requestAnimationFrame(renderFun)
-//       }
-//
-//       renderFun()*/
-//
-//       })
-//       fontModel.then(res => {
-//         TE.scene.add(res)
-//       })
-      // modelPromise({
-      //   mtlUrl:'/model/obj/layout/layout.mtl',
-      //   objUrl:'/model/obj/layout/layout.mtl'
-      // }).then(res => {
-      //   console.log(res,'模型')
-      //  TE.scene.add(res)
-      //   res.position.set(0,0,0)
-      //   res.scale.set(0.2,0.2,0.2)
-      // })
-      // Event(TE)
-
     }
   },
 
