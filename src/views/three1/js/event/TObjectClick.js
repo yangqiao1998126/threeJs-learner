@@ -47,38 +47,38 @@ export default function Event(TE) {
 
   window.addEventListener('click', onMouseClick, false);
 
-  let sceneChildren = []
-  let _tray1 = TE.scene.getObjectByName('底盘1')
-  let _tray2 = TE.scene.getObjectByName('底盘2')
+  // let sceneChildren = []
+  // let _tray1 = TE.scene.getObjectByName('底盘1')
+  // let _tray2 = TE.scene.getObjectByName('底盘2')
   // let horseActionIsPlay = false
   // let horseActionPlayTime = 1.5
-  let group = new THREE.Group()
-  group.add(_tray1)
-  group.add(_tray2)
-  TE.scene.add(group)
+  // let group = new THREE.Group()
+  // group.add(_tray1)
+  // group.add(_tray2)
+  // TE.scene.add(group)
   window.addEventListener('keydown',function (e){
     switch(e.keyCode){
-      case 87: group.position.z-=1;break;
-      case 83: group.position.z+=1;break;
-      case 65: group.position.x-=1;break;
-      case 68: group.position.x=1;break;
+      // case 87: group.position.z-=1;break;
+      // case 83: group.position.z+=1;break;
+      // case 65: group.position.x-=1;break;
+      // case 68: group.position.x=1;break;
       case 32:
-        if(!sceneIsCube){
-          TE.scene.background = TE.textureCube
-          sceneIsCube = true
-          sceneChildren =  TE.scene.children
-          TE.scene.children = []
-        }else{
-          TE.scene.background = new Color( 200/255,200/255,200/255 );
-          sceneIsCube = false
-        }
+        // if(!sceneIsCube){
+        //   TE.scene.background = TE.textureCube
+        //   sceneIsCube = true
+        //   sceneChildren =  TE.scene.children
+        //   TE.scene.children = []
+        // }else{
+        //   TE.scene.background = new Color( 200/255,200/255,200/255 );
+        //   sceneIsCube = false
+        // }
         break
       case 38:
-        if(sceneChildren.length !== 0){
-          TE.scene.children = sceneChildren
-        }else{
-
-        }
+        // if(sceneChildren.length !== 0){
+        //   TE.scene.children = sceneChildren
+        // }else{
+        //
+        // }
         // sceneChildren.length !== 0 &&TE.scene.children = sceneChildren
         // if(horseActionIsPlay){
         //   horseActionPlayTime <= 0.1
