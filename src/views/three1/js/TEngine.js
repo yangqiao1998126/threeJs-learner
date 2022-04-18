@@ -84,7 +84,7 @@ export class TEngine {
     dom.appendChild(this.renderer.domElement)
     dom.appendChild(statsDom)
     if (process.env.NODE_ENV === 'development') {
-      new WS(this)
+      // new WS(this)
     }
 
   }

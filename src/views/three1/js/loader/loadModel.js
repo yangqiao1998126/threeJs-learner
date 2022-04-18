@@ -1,8 +1,7 @@
-import {gltfModelPromise, modelPromise} from "./TLoader";
+import {Font,fontModel, gltfModelPromise} from "./TLoader";
 import {Group, Mesh, Color} from "three";
 import Event from "../event/TObjectClick";
 import {MeshBasicMaterial, DoubleSide} from 'three'
-import {Tween} from "@tweenjs/tween.js";
 import {JxbAnimation} from "../jxb/jxbAnimation";
 
 let changeMaterialOpc = (model, ...nameList) => {
@@ -43,6 +42,8 @@ export let loadModelFun = function (modelObjs) {
     build.position.set(35, 0, 0)
     build.rotateY(-Math.PI / 2)
     this.scene.add(build)
+
+    let font = await Font()
 
     let cangchuqu = (await gltfModelPromise(modelObjs.cangchuqu)).scene
     cangchuqu.position.set(160, 0, 0)
@@ -118,6 +119,9 @@ export let loadModelFun = function (modelObjs) {
       let [x, y, z] = shebeiyiList[i]
       shebei1Clone.position.set(x, y, z)
       shebei1Clone.rotateY(-Math.PI / 2)
+      let fm = fontModel(font,`设备${i}`,2.5)
+      fm.position.set(x-4.3, y+10, z)
+      this.scene.add(fm)
       changeMaterialOpc(shebei1Clone, 'Cube039_1')
       this.scene.add(shebei1Clone)
     }
@@ -137,6 +141,9 @@ export let loadModelFun = function (modelObjs) {
       let [x, y, z] = shebeierList[i]
       shebei2Clone.position.set(x, y, z)
       shebei2Clone.rotateY(-Math.PI / 2)
+      let fm = fontModel(font,`设备${i}`,3,0xfe2d2d)
+      fm.position.set(x-4, y+9, z)
+      this.scene.add(fm)
       this.scene.add(shebei2Clone)
     }
 

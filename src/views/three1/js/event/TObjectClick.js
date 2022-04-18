@@ -1,7 +1,6 @@
 import * as THREE from "three";
-import {Color} from "three";
 
-let sceneIsCube = false
+// let sceneIsCube = false
 export default function Event(TE) {
   let SELECTED;
   let raycaster = new THREE.Raycaster()
@@ -17,7 +16,14 @@ export default function Event(TE) {
     if (intersects.length > 0) {
       //获取第一个物体
       if (SELECTED !== intersects[0].object) {
-        if(intersects[0]?.object?.name?.includes('zbhj'))return;
+        if(intersects[0]?.object?.name?.includes('zbhj') || !intersects[0]?.object?.name){
+          if (SELECTED) SELECTED.material.color&&SELECTED.material.color.set(SELECTED.currentHex);
+          SELECTED = null;
+          TE.outlinePass.selectedObjects = [];
+          window._event.emit('showTip')
+          window.modelPoint = null
+          return
+        }
         if (SELECTED) SELECTED.material.color && SELECTED.material.color.setHex(SELECTED.currentHex);
         SELECTED = intersects[0].object;
         SELECTED.currentHex = SELECTED.material.color&&SELECTED.material.color.getHex();//记录当前选择的颜色

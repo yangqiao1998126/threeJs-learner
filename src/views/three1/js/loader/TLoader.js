@@ -1,10 +1,11 @@
-import * as THREE from "three";
+import {Mesh, MeshLambertMaterial} from "three";
 import {DRACOLoader} from 'three/examples/jsm/loaders/DRACOLoader.js'
-import {GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import {FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
-import {TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
-import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js'
+import {FontLoader} from 'three/examples/jsm/loaders/FontLoader.js'
+import {TextGeometry} from 'three/examples/jsm/geometries/TextGeometry.js'
+import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader'
+import {MTLLoader} from 'three/examples/jsm/loaders/MTLLoader'
+
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath( '/model/gltf/' );
 
@@ -12,34 +13,17 @@ const gltfLoader = new GLTFLoader()
 
 gltfLoader.setDRACOLoader( dracoLoader );
 
-export let fontModel = new Promise((resolve,reject) => {
-  new FontLoader().loadAsync('/model/font.json').then(font => {
-    let geometry = new TextGeometry( 'three.js', {
-      font: font,
-      size: 50,
-      height: 20,
-      // curveSegments: 20,
-      // bevelEnabled: true,
-      // bevelThickness: 8,
-      // bevelSize: 6,
-      // bevelSegments: 4
-    } );
-    let fontMaterial = new THREE.MeshLambertMaterial({
-      color: '#f3f3f3'
-    });
-
-    let fontModel = new THREE.Mesh(geometry,fontMaterial);
-    fontModel.position.z = 85
-    fontModel.position.x = -75
-    fontModel.position.y = 5
-    fontModel.rotateY(1/6*Math.PI)
-    fontModel.scale.set(0.15,0.15,0.15)
-    fontModel.castShadow = true
-    fontModel.receiveShadow = true
-    fontModel.name = ''
-    resolve(fontModel)
-  })
-})
+export let Font = () => {
+  return new FontLoader().loadAsync('/model/STXingkai_Regular.json')
+    .then(font => font)
+}
+export let fontModel = (font,text,size =3,color =0x282828 ) => {
+  return new Mesh(new TextGeometry(text,{
+    font,
+    size,
+    height:0.55
+  }),new MeshLambertMaterial({color}))
+}
 
 //加载gltf模型
 export let gltfModelPromise = (url) => {
