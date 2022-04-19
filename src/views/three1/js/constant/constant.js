@@ -42,7 +42,8 @@ export let guiObj = {
   // "轨道控制器旋转":false
 }
 export let guiFun = gui => {
-  gui.domElement.style="position:absolute;top:0px;left:0px"
+  gui.domElement.parentNode.style.zIndex = 10
+  gui.domElement.style="position:absolute;top:0px;left:0px;"
   gui.domElement.onclick = function (e){
     e.stopPropagation()
   }

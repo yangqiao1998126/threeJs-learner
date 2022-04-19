@@ -1,5 +1,5 @@
 <template>
-  <div class="tip" :style="_style">
+  <div  class="tip" :style="_style">
     <span class="message">{{desc}}</span>
   </div>
 </template>
@@ -25,6 +25,7 @@ export default {
   right: 0;
   width: 261px;
   height: 50px;
+  z-index: 100;
   transform: translateY(-100%);
   background: url(../../../assets/tip.png) center/100% no-repeat;
   .message {

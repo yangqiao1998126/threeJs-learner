@@ -9,7 +9,7 @@
       >
 
       </component>
-      <div v-show="hidden" class="dialog">
+      <div v-show="hidden" @click.stop class="dialog">
         <h2 >{{desc}}</h2>
         <div class="close" @click="hidden = false"></div>
       </div>
@@ -78,6 +78,7 @@ export default {
   }
 }
 .dialog{
+  z-index: 10;
   text-align: center;padding-top: 35px;
   color: white;
   box-sizing: border-box;

@@ -1,5 +1,6 @@
 import {Group} from "three";
 import {Tween} from "@tweenjs/tween.js";
+import {Css2DLabel} from "../base/THelper";
 
 export class JxbAnimation {
 
@@ -52,6 +53,7 @@ export class JxbAnimation {
     this.hphJxb = hphJxb
     jixiebiGroup.add(jixiebi)
     jixiebiGroup.add(hphJxb)
+    jixiebiGroup.add(new Css2DLabel({textContent:'机械臂'},0,5,0).label)
     this.jxbJia = jixiebiGroup.getObjectByName('jixiebi')
     this.jxbGan = jixiebiGroup.getObjectByName('jixiebi004')
     this.scene.add(jixiebiGroup)

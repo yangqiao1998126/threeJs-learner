@@ -9,6 +9,7 @@ import {
 } from 'three'
 
 import { pointLight, spotLight ,Dlight} from './Tlights'
+import {CSS2DObject} from "three/examples/jsm/renderers/CSS2DRenderer";
 
 export const helperList = []
 
@@ -24,3 +25,19 @@ export const spotLightHelper = new SpotLightHelper(spotLight, spotLight.color)
 export const DLightHelper = new DirectionalLightHelper(Dlight,50,new Color(0,1,1))
 
 helperList.push(axesHelper,DLightHelper)
+
+export class Css2DLabel{
+  constructor({className,style1,textContent} = {},...position) {
+    let labelDiv = document.createElement('div')
+    labelDiv.className = className || 'css2d_label'
+    labelDiv.textContent = textContent
+    labelDiv.style = style1 || 'margin-top:-1em'
+    let [x,y,z] = position
+    let label = new CSS2DObject(labelDiv)
+    label.position.set(x,y,z)
+    this.label = label
+  }
+  setLayer(num){
+    this.label.layers.set(num)
+  }
+}

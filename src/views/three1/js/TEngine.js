@@ -33,6 +33,7 @@ import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.j
 import {SSAARenderPass} from 'three/examples/jsm/postprocessing/SSAARenderPass.js'
 import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js'
 import {OutlinePass} from 'three/examples/jsm/postprocessing/OutlinePass.js'
+import {CSS2DRenderer} from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 import {modelPromise} from "./loader/TLoader";
 import {spotLight, ambientLight, Dlight} from "./base/Tlights";
 import {pointLightHelper, spotLightHelper, DLightHelper} from './base/THelper'
@@ -73,7 +74,6 @@ export class TEngine {
     statsDom.style.top = '0'
     statsDom.style.right = '5px'
     statsDom.style.left = 'unset'
-
     const renderFun = () => {
       this.requestAnimationFrameFun(stats)
       this.wsConnecet && this.wsChacheEvent()
@@ -84,7 +84,7 @@ export class TEngine {
     dom.appendChild(this.renderer.domElement)
     dom.appendChild(statsDom)
     if (process.env.NODE_ENV === 'development') {
-      // new WS(this)
+      new WS(this)
     }
 
   }
@@ -104,19 +104,26 @@ export class TEngine {
       'top.jpg', 'bottom.jpg',
       'front.jpg', 'back.jpg'
     ]);
-    // this.scene.background = new Color(200 / 255, 200 / 255, 200 / 255);
     this.scene.background = cubeTexture
     this.camera = new PerspectiveCamera(45, dom.offsetWidth / dom.offsetHeight, 5, 1855)
     this.camera.position.set(-10, 60, 100)
     this.renderer.setSize(dom.offsetWidth, dom.offsetHeight, true)
+    //css2DRender
+    this.labelRender = new CSS2DRenderer()
+    this.labelRender.setSize(dom.offsetWidth, dom.offsetHeight)
+    this.labelRender.domElement.style.position = 'absolute'
+    this.labelRender.domElement.style.top='0px'
+    document.body.appendChild(this.labelRender.domElement)
     // 初始orbitControls
-    this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement)
+    // this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement)
+    this.orbitControls = new OrbitControls(this.camera, this.labelRender.domElement)
     this.orbitControls.mouseButtons = {
       LEFT: null,
       MIDDLE: MOUSE.DOLLY,
       RIGHT: MOUSE.ROTATE
     }
-    this.orbitControls.maxDistance = 600
+    this.orbitControls.maxDistance = 400
+    this.orbitControls.minDistance = 5
     this.orbitControls.maxZoom = 600
     this.orbitControls.maxZoom = 10
     this.orbitControls.maxPolarAngle = Math.PI / 2.2
@@ -137,15 +144,9 @@ export class TEngine {
         this.startJxbAnimation()
     )
     this.orbitControls.update()
-    // this.handleXhw()
-    // if(window.modelPoint){
-    //   let position = this.getPosition(window.modelPoint)
-    //   console.log(',,,,,,,,',position)
-    //   window._event.emit('rePosition',position)
-    // }
-    // this.renderer.render(this.scene, this.camera)
     this.renderPass.sampleLevel = guiObj['抗锯齿Level']
     this.composer.render()
+    this.labelRender.render(this.scene,this.camera)
     stats.update()
   }
 
@@ -196,6 +197,7 @@ export class TEngine {
       this.camera.aspect = this.renderer.domElement.width / this.renderer.domElement.height
       this.camera.updateProjectionMatrix()
       this.renderer.setSize(this.dom.offsetWidth, this.dom.offsetHeight, true)
+      this.labelRender.setSize(this.dom.offsetWidth, this.dom.offsetHeight)
     }, false)
   }
 
