@@ -4,13 +4,8 @@
 
 <script>
 import {TEngine} from "./js/TEngine";
-import {basicObjectList} from "./js/base/TBasicObject";
 import {LightsList} from "./js/base/Tlights";
 import {helperList} from "./js/base/THelper";
-import {gltfPromise,fontModel} from "./js/loader/TLoader";
-import {modelPromise} from "./js/loader/TLoader";
-import Event from "./js/event/TObjectClick";
-
 export default {
   name: "three1",
   data() {
@@ -29,7 +24,6 @@ export default {
         // },300)
       })
       const TE = new TEngine(this.$refs.threeTarget)
-      TE.addObject(...basicObjectList)
       TE.addObject(...LightsList)
       TE.addObject(...helperList)
     }

@@ -40,7 +40,7 @@ import {pointLightHelper, spotLightHelper, DLightHelper} from './base/THelper'
 import {gltfModelPromise} from "./loader/TLoader";
 import Three1 from "../three1";
 import scene from "three/examples/jsm/offscreen/scene";
-import {curve, curve1, curve2,cylinderMesh} from "./base/TBasicObject";
+import {curve1, curve2} from "./base/TBasicObject";
 import {loadModelFun, jxbAnimationList} from "./loader/loadModel";
 import TWEEN from "@tweenjs/tween.js";
 import {modelObjs, guiObj, guiFun} from "./constant/constant";
@@ -57,7 +57,7 @@ let cylinderOpacity= 1;
 
 export class TEngine {
   xhwNum = 0
-  isPlay = false
+  isPlay = true
   huodunNum = 0
   xhwList = []
   xhwList1 = []
@@ -133,6 +133,7 @@ export class TEngine {
 
   requestAnimationFrameFun(stats) {
     this.apertureList && this.apertureList.length > 0 && this.apertureList.forEach( i => i.changeMaterial())
+    let lineMesh = this.scene.getObjectByName('lineMesh')
     this.GUI()
     // if ( this.mixer ) {
     //   const time = Date.now();
@@ -144,8 +145,9 @@ export class TEngine {
       this.newXhwList1 && this.newXhwList1.length > 0 && this.handleXhw('xhwEnd1', this.newXhwList1, 167, 10, [184.5, 4.2, 80.8], [9, 4.2, 80.8], 0.2),
       this.newXhwList2 && this.newXhwList2.length > 0 && this.handleXhw('xhwEnd2', this.newXhwList2, -36, 7, [-26, 4, 20.5], [-97, 4, 20.5], 0.15),
       this.newXhwList3 && this.newXhwList3.length > 0 && this.handleXhw('xhwEnd3', this.newXhwList3, -40.2, 5, [-26, 4, -69.3], [-97, 4, -69.3], 0.11),
-        this.startJxbAnimation()
-    )
+        this.startJxbAnimation(),
+        lineMesh &&(lineMesh.visible = true,lineMesh.material.map.offset.x-=0.03)
+    )||( lineMesh &&(lineMesh.visible = false))
     this.orbitControls.update()
     this.renderPass.sampleLevel = guiObj['抗锯齿Level']
     this.composer.render()
@@ -278,7 +280,7 @@ export class TEngine {
           this.huodunNum += 1
           setTimeout(() => {
             this.isPlay = true
-          }, 200)
+          }, 50)
         } else {
           let chachePoint1 = curve1.getPoint(chacheProgress + 0.001 * 2)
           this.chacheGroup.lookAt(chachePoint1.x, chachePoint1.y, chachePoint1.z)

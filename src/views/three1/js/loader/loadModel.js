@@ -3,9 +3,9 @@ import {Group, Mesh, Color} from "three";
 import Event from "../event/TObjectClick";
 import {MeshBasicMaterial, DoubleSide} from 'three'
 import {JxbAnimation} from "../effect/jxbAnimation";
-import {CSS2DObject} from "three/examples/jsm/renderers/CSS2DRenderer";
 import {Css2DLabel} from "../base/THelper";
 import {Aperture} from "../effect/aperture";
+import {tubeLine} from "../base/TBasicObject";
 
 let changeMaterialOpc = (model, ...nameList) => {
   nameList.forEach(name => {
@@ -18,26 +18,22 @@ let changeMaterialOpc = (model, ...nameList) => {
     })
   })
 }
+let setEmissive = (obj,...[[r,g,b],emissiveIntensity]) => {
+  obj.material.emissive = new Color(r/255,g/255,b/255)
+  obj.material.emissiveIntensity = emissiveIntensity
+  obj.material.emissiveMap = obj.material.map;
+}
 export let jxbAnimationList = []
 export let loadModelFun = function (modelObjs) {
   return async (res) => {
     let build = res.scene
     build.traverse(function (obj) {
       if (obj instanceof Mesh) {
-        if (obj.name === 'zbhj_dm1') {
-          obj.material.emissive = new Color(189 / 255, 163 / 255, 238 / 255)
-          obj.material.emissiveIntensity = 0.8;
-          obj.material.emissiveMap = obj.material.map;
-        } else if (obj.name === 'zbhj_dm2') {
-          obj.material.emissive = new Color(157 / 255, 147 / 255, 147 / 255)
-          obj.material.emissiveIntensity = 0.6;
-          obj.material.emissiveMap = obj.material.map;
-        } else {
-          obj.material.emissive = new Color(145 / 255, 135 / 255, 171 / 255)
-          obj.material.emissiveIntensity = 0.8;
-          obj.material.emissiveMap = obj.material.map;
+        switch (obj.name){
+          case 'zbhj_dm1':setEmissive(obj,[189,163,238],0.8);break
+          case 'zbhj_dm2':setEmissive(obj,[157,147,147],0.6);break
+          default: setEmissive(obj,[145,135,171],0.8)
         }
-
       }
     });
     build.getObjectByName('zbhj_dm2').castShadow = false
@@ -48,6 +44,7 @@ export let loadModelFun = function (modelObjs) {
 
     let font = await Font()
 
+    this.scene.add(await tubeLine)
 
     let cangchuqu = (await gltfModelPromise(modelObjs.cangchuqu)).scene
     cangchuqu.position.set(160, 0, 0)
@@ -57,7 +54,6 @@ export let loadModelFun = function (modelObjs) {
     this.scene.add(cangchuqu)
 
     let chache = (await gltfModelPromise(modelObjs.chache)).scene
-    // chache.position.set(20,0,20)
     chache.scale.set(1.1, 1.1, 1.1)
     this.chache = chache
     this.chache2 = chache.clone()
@@ -242,7 +238,7 @@ export let loadModelFun = function (modelObjs) {
     let huopinheList02 = [
       [-15.4, 1.5, -80.2+90], [-12.9, 1.5, -80.2+90], [-15.4, 1.5, -78.9+90], [-12.9, 1.5, -78.9+90], [-15.4, 1.5, -77.5+90], [-12.9, 1.5, -77.5+90],
       [-15.4, 2.2, -80.2+90], [-12.9, 2.2, -80.2+90], [-15.4, 2.2, -78.9+90], [-12.9, 2.2, -78.9+90], [-15.4, 2.2, -77.5+90], [-12.9, 2.2, -77.5+90],
-     [-15.4, 2.9, -80.2+90], [-12.9, 2.9, -80.2+90], [-15.4, 2.9, -78.9+90], [-12.9, 2.9, -78.9+90], [-15.4, 2.9, -77.5+90], [-12.9, 2.9, -77.5+90],
+      [-15.4, 2.9, -80.2+90], [-12.9, 2.9, -80.2+90], [-15.4, 2.9, -78.9+90], [-12.9, 2.9, -78.9+90], [-15.4, 2.9, -77.5+90], [-12.9, 2.9, -77.5+90],
     ]
     // jxbAnimation.call(this,jixiebi2,huopinhe,tuopan,huopinheList02,13,11)
     jxbAnimationList.push(new JxbAnimation(this,jixiebi2,huopinhe,tuopan,huopinheList02,13,11))

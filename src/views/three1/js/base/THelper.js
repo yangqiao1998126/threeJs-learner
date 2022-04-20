@@ -1,7 +1,5 @@
 import {
   AxesHelper,
-  GridHelper,
-  Object3D,
   PointLightHelper,
   SpotLightHelper,
   DirectionalLightHelper,
@@ -12,7 +10,7 @@ import {CSS2DObject} from "three/examples/jsm/renderers/CSS2DRenderer";
 
 export const helperList = []
 const axesHelper  = new AxesHelper(500)
-const gridHelper = new GridHelper(500, 20, 'rgb(200, 200, 200)', 'rgb(100, 100, 100)')
+// const gridHelper = new GridHelper(500, 20, 'rgb(200, 200, 200)', 'rgb(100, 100, 100)')
 
 export const pointLightHelper = new PointLightHelper(pointLight, pointLight.distance, pointLight.color)
 export const spotLightHelper = new SpotLightHelper(spotLight, spotLight.color)
