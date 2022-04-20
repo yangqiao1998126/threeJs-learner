@@ -2,9 +2,10 @@ import {Font,fontModel, gltfModelPromise} from "./TLoader";
 import {Group, Mesh, Color} from "three";
 import Event from "../event/TObjectClick";
 import {MeshBasicMaterial, DoubleSide} from 'three'
-import {JxbAnimation} from "../jxb/jxbAnimation";
+import {JxbAnimation} from "../effect/jxbAnimation";
 import {CSS2DObject} from "three/examples/jsm/renderers/CSS2DRenderer";
 import {Css2DLabel} from "../base/THelper";
+import {Aperture} from "../effect/aperture";
 
 let changeMaterialOpc = (model, ...nameList) => {
   nameList.forEach(name => {
@@ -46,6 +47,7 @@ export let loadModelFun = function (modelObjs) {
     this.scene.add(build)
 
     let font = await Font()
+
 
     let cangchuqu = (await gltfModelPromise(modelObjs.cangchuqu)).scene
     cangchuqu.position.set(160, 0, 0)
@@ -184,6 +186,8 @@ export let loadModelFun = function (modelObjs) {
       this.scene.add(fm)
       this.scene.add(shebei6Clone)
     }
+    new Aperture(this,4.5,4,[-65,0,70],0.069,0.009,)
+    new Aperture(this,4.5,4,[-65,0,-20],0.073,0.013,'/img/t5.png')
 
     //传送带 货品和相关
     let xhwEndList = [

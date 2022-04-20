@@ -3,9 +3,9 @@ import {
   Mesh,
   BoxBufferGeometry,
   MeshStandardMaterial,
-  PlaneBufferGeometry
+  PlaneBufferGeometry, CylinderGeometry
 } from 'three'
-import {pictureTexture} from "./TTextures";
+import {cylinderTexture, pictureTexture} from "./TTextures";
 
 export const basicObjectList = []
 
@@ -102,4 +102,30 @@ export const curve2 = new THREE.CatmullRomCurve3([
 // }))
 // line2.visible = false
 // mesh.visible = false
+
+//创建圆柱
+// let cylinder = new CylinderGeometry(4,4,2,64)
+let cylinderMaterials = [
+  //圆柱侧面材质，使用纹理贴图
+  new THREE.MeshBasicMaterial({
+    map: cylinderTexture,
+    side: THREE.DoubleSide,
+    transparent: true
+  }),
+  //圆柱顶材质
+  new THREE.MeshBasicMaterial({
+    transparent: true,
+    opacity: 0,
+    side: THREE.DoubleSide
+  }),
+  //圆柱底材质
+  new THREE.MeshBasicMaterial({
+    transparent: true,
+    opacity: 0,
+    side: THREE.DoubleSide
+  })
+]
+// export let cylinderMesh = new THREE.Mesh(cylinder, cylinderMaterials);
+// cylinderMesh.name = 'cylinderMesh'
+
 basicObjectList.push(mesh)

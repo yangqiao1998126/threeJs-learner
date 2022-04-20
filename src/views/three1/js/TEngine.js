@@ -40,7 +40,7 @@ import {pointLightHelper, spotLightHelper, DLightHelper} from './base/THelper'
 import {gltfModelPromise} from "./loader/TLoader";
 import Three1 from "../three1";
 import scene from "three/examples/jsm/offscreen/scene";
-import {curve, curve1, curve2} from "./base/TBasicObject";
+import {curve, curve1, curve2,cylinderMesh} from "./base/TBasicObject";
 import {loadModelFun, jxbAnimationList} from "./loader/loadModel";
 import TWEEN from "@tweenjs/tween.js";
 import {modelObjs, guiObj, guiFun} from "./constant/constant";
@@ -52,6 +52,8 @@ let progress = 0
 let chacheProgress = 0
 let prevTime = Date.now()
 let isPoint = false
+let cylinderRadius = 0;
+let cylinderOpacity= 1;
 
 export class TEngine {
   xhwNum = 0
@@ -130,6 +132,7 @@ export class TEngine {
   }
 
   requestAnimationFrameFun(stats) {
+    this.apertureList && this.apertureList.length > 0 && this.apertureList.forEach( i => i.changeMaterial())
     this.GUI()
     // if ( this.mixer ) {
     //   const time = Date.now();
