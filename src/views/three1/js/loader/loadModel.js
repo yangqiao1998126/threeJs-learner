@@ -231,23 +231,19 @@ export let loadModelFun = function (modelObjs) {
       [-15.4, 2.2, -80.2], [-12.9, 2.2, -80.2], [-15.4, 2.2, -78.9], [-12.9, 2.2, -78.9], [-15.4, 2.2, -77.5], [-12.9, 2.2, -77.5],
       [-15.4, 2.9, -80.2], [-12.9, 2.9, -80.2], [-15.4, 2.9, -78.9], [-12.9, 2.9, -78.9], [-15.4, 2.9, -77.5], [-12.9, 2.9, -77.5],
     ]
-    // jxbAnimation.call(this,jixiebi1,huopinhe,tuopan,huopinheList01,-77,-79)
     jxbAnimationList.push(new JxbAnimation(this,jixiebi1,huopinhe,tuopan,huopinheList01,-77,-79))
 
     let jixiebi2 = (await gltfModelPromise(modelObjs.jixiebi)).scene
-    let huopinheList02 = [
-      [-15.4, 1.5, -80.2+90], [-12.9, 1.5, -80.2+90], [-15.4, 1.5, -78.9+90], [-12.9, 1.5, -78.9+90], [-15.4, 1.5, -77.5+90], [-12.9, 1.5, -77.5+90],
-      [-15.4, 2.2, -80.2+90], [-12.9, 2.2, -80.2+90], [-15.4, 2.2, -78.9+90], [-12.9, 2.2, -78.9+90], [-15.4, 2.2, -77.5+90], [-12.9, 2.2, -77.5+90],
-      [-15.4, 2.9, -80.2+90], [-12.9, 2.9, -80.2+90], [-15.4, 2.9, -78.9+90], [-12.9, 2.9, -78.9+90], [-15.4, 2.9, -77.5+90], [-12.9, 2.9, -77.5+90],
-    ]
-    // jxbAnimation.call(this,jixiebi2,huopinhe,tuopan,huopinheList02,13,11)
+    let huopinheList02 = huopinheList01.map(([x,y,z]) => ([x,y,+z+90]))
     jxbAnimationList.push(new JxbAnimation(this,jixiebi2,huopinhe,tuopan,huopinheList02,13,11))
 
     window._event.emit('model-loading-finished')
     console.log("%c加载完成","background: rgba(252,234,187,1);background: -moz-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%,rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);background: -webkit-gradient(left top, right top, color-stop(0%, rgba(252,234,187,1)), color-stop(12%, rgba(175,250,77,1)), color-stop(28%, rgba(0,247,49,1)), color-stop(39%, rgba(0,210,247,1)), color-stop(51%, rgba(0,189,247,1)), color-stop(64%, rgba(133,108,217,1)), color-stop(78%, rgba(177,0,247,1)), color-stop(87%, rgba(247,0,189,1)), color-stop(100%, rgba(245,22,52,1)));background: -webkit-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%, rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);background: -o-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%, rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);background: -ms-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%, rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);background: linear-gradient(to right, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%, rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fceabb', endColorstr='#f51634', GradientType=1 );font-size:5em")
 
     Event(this)
-
+    setTimeout(() => {
+      this.isPlay= true
+    },1500)
   }
 }
 

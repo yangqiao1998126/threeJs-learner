@@ -43,21 +43,17 @@ import scene from "three/examples/jsm/offscreen/scene";
 import {curve1, curve2} from "./base/TBasicObject";
 import {loadModelFun, jxbAnimationList} from "./loader/loadModel";
 import TWEEN from "@tweenjs/tween.js";
-import {modelObjs, guiObj, guiFun} from "./constant/constant";
+import {modelObjs, guiObj, guiFun,xhwData} from "./constant/constant";
 import {WS} from "./event/webSocket";
 //图形界面控制器
-let gui = new dat.GUI()
-gui = guiFun(gui)
+let gui = guiFun(new dat.GUI())
+
 let progress = 0
 let chacheProgress = 0
-let prevTime = Date.now()
 let isPoint = false
-let cylinderRadius = 0;
-let cylinderOpacity= 1;
-
 export class TEngine {
   xhwNum = 0
-  isPlay = true
+  isPlay = false
   huodunNum = 0
   xhwList = []
   xhwList1 = []
@@ -85,9 +81,7 @@ export class TEngine {
     this.loadObjModel()
     dom.appendChild(this.renderer.domElement)
     dom.appendChild(statsDom)
-    if (process.env.NODE_ENV === 'development') {
-      new WS(this)
-    }
+    if (process.env.NODE_ENV === 'development')new WS(this)
 
   }
 
@@ -135,18 +129,13 @@ export class TEngine {
     this.apertureList && this.apertureList.length > 0 && this.apertureList.forEach( i => i.changeMaterial())
     let lineMesh = this.scene.getObjectByName('lineMesh')
     this.GUI()
-    // if ( this.mixer ) {
-    //   const time = Date.now();
-    //   this.mixer.update( ( time - prevTime ) * 0.001 );
-    //   prevTime = time;
-    // }
     this.isPlay && (
-      this.newXhwList0 && this.newXhwList0.length > 0 && this.handleXhw('xhwEnd0', this.newXhwList0, 160, 5, [184.5, 4.2, 93.5], [66, 4.2, 93.5]),
-      this.newXhwList1 && this.newXhwList1.length > 0 && this.handleXhw('xhwEnd1', this.newXhwList1, 167, 10, [184.5, 4.2, 80.8], [9, 4.2, 80.8], 0.2),
-      this.newXhwList2 && this.newXhwList2.length > 0 && this.handleXhw('xhwEnd2', this.newXhwList2, -36, 7, [-26, 4, 20.5], [-97, 4, 20.5], 0.15),
-      this.newXhwList3 && this.newXhwList3.length > 0 && this.handleXhw('xhwEnd3', this.newXhwList3, -40.2, 5, [-26, 4, -69.3], [-97, 4, -69.3], 0.11),
-        this.startJxbAnimation(),
-        lineMesh &&(lineMesh.visible = true,lineMesh.material.map.offset.x-=0.03)
+      xhwData.forEach(({distance,num,initPosition,endPostion,speed},index) => {
+        this[`newXhwList${index}`]?.length>0
+        && this.handleXhw(`xhwEnd${index}`,this[`newXhwList${index}`],distance,num,initPosition,endPostion,speed)
+      }),
+      this.startJxbAnimation(),
+      lineMesh &&(lineMesh.visible = true,lineMesh.material.map.offset.x-=0.03)
     )||( lineMesh &&(lineMesh.visible = false))
     this.orbitControls.update()
     this.renderPass.sampleLevel = guiObj['抗锯齿Level']

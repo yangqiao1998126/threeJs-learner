@@ -1,20 +1,19 @@
-import * as THREE from 'three';
-import {Mesh, MeshPhongMaterial, DoubleSide} from 'three'
+import {Mesh, MeshPhongMaterial, DoubleSide, CatmullRomCurve3, Vector3, TubeGeometry} from 'three'
 import {tubeTexture} from "./TTextures";
 
 
-export const curve1 = new THREE.CatmullRomCurve3([
-  new THREE.Vector3(20,0,20),
-  new THREE.Vector3(-8,0,20),
-  new THREE.Vector3(-8,0,-105),
-  new THREE.Vector3(200,0,-105),
-  new THREE.Vector3(200,0,80),
-  new THREE.Vector3(190,0,80),
-  new THREE.Vector3(190,0,110),
-  new THREE.Vector3(-8,0,110),
-  new THREE.Vector3(20,0,20),
+export const curve1 = new CatmullRomCurve3([
+  new Vector3(20,0,20),
+  new Vector3(-8,0,20),
+  new Vector3(-8,0,-105),
+  new Vector3(200,0,-105),
+  new Vector3(200,0,80),
+  new Vector3(190,0,80),
+  new Vector3(190,0,110),
+  new Vector3(-8,0,110),
+  new Vector3(20,0,20),
 ])
-const tubeGeometry1 = new THREE.TubeGeometry(curve1,100,1.5,100,false)
+const tubeGeometry1 = new TubeGeometry(curve1,100,1.5,100,false)
 export let tubeLine = tubeTexture.then(texture => {
   let tubeMaterial = new MeshPhongMaterial({
     map:texture,
@@ -29,16 +28,16 @@ export let tubeLine = tubeTexture.then(texture => {
 })
 // line.visible = false
 
-export const curve2 = new THREE.CatmullRomCurve3([
-  new THREE.Vector3(20,0,20),
-  new THREE.Vector3(-8,0,110),
-  new THREE.Vector3(190,0,110),
-  new THREE.Vector3(190,0,80),
-  new THREE.Vector3(200,0,80),
-  new THREE.Vector3(200,0,-105),
-  new THREE.Vector3(-8,0,-105),
-  new THREE.Vector3(-8,0,20),
-  new THREE.Vector3(20,0,20),
+export const curve2 = new CatmullRomCurve3([
+  new Vector3(20,0,20),
+  new Vector3(-8,0,110),
+  new Vector3(190,0,110),
+  new Vector3(190,0,80),
+  new Vector3(200,0,80),
+  new Vector3(200,0,-105),
+  new Vector3(-8,0,-105),
+  new Vector3(-8,0,20),
+  new Vector3(20,0,20),
 ])
 
 

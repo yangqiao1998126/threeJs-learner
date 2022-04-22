@@ -1,10 +1,9 @@
-import * as THREE from "three";
-
+import {Raycaster,Vector2} from 'three'
 // let sceneIsCube = false
 export default function Event(TE) {
   let SELECTED;
-  let raycaster = new THREE.Raycaster()
-  let mouse = new THREE.Vector2()
+  let raycaster = new Raycaster()
+  let mouse = new Vector2()
   function onMouseClick(event) {
     //将鼠标点击位置的屏幕坐标转换成threejs中的标准坐标
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1

@@ -14,7 +14,8 @@ const gltfLoader = new GLTFLoader()
 gltfLoader.setDRACOLoader( dracoLoader );
 
 export let Font = () => {
-  return new FontLoader().loadAsync('/model/STXingkai_Regular.json')
+  return new FontLoader()
+    .loadAsync('/model/STXingkai_Regular.json')
     .then(font => font)
 }
 export let fontModel = (font,text,size =3,color =0x282828 ) => {

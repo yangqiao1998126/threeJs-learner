@@ -1,6 +1,6 @@
 export const modelObjs = {
   dimain:'/model/glb1/dimian.glb',
-  "zhoubianjianzhu":'/model/glb1/zhoubianjianzhu.glb',
+  zhoubianjianzhu:'/model/glb1/zhoubianjianzhu.glb',
   cangchuqu:'/model/glb1/cangchuqu.glb',
   chache:'/model/glb1/chache.glb',
   longmenjia:'/model/glb1/longmenjia.glb',
@@ -66,3 +66,34 @@ export let guiFun = gui => {
   })
   return gui
 }
+export let xhwData = [
+  {
+    distance:160,
+    num:5,
+    initPosition:[184.5, 4.2, 93.5],
+    endPostion:[66, 4.2, 93.5],
+    speed:0.07
+  },
+  {
+    distance:167,
+    num:10,
+    initPosition:[184.5, 4.2, 80.8],
+    endPostion:[9, 4.2, 80.8],
+    speed:0.2
+  },
+  {
+    distance:-36,
+    num:7,
+    initPosition:[-26, 4, 20.5],
+    endPostion:[-97, 4, 20.5],
+    speed:0.15
+  },
+  {
+    distance:-40.2,
+    num:5,
+    initPosition:[-26, 4, -69.3],
+    endPostion:[-97, 4, -69.3],
+    speed:0.11
+  },
+
+]
