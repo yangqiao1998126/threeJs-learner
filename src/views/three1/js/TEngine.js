@@ -69,9 +69,11 @@ export class TEngine {
     let stats = Stats()
     const statsDom = stats.domElement
     statsDom.style.position = 'fixed'
-    statsDom.style.top = '0'
-    statsDom.style.right = '5px'
+    statsDom.style.top = ''
+    statsDom.style.bottom = '0px'
+    statsDom.style.right = '0px'
     statsDom.style.left = 'unset'
+    statsDom.style.zIndex = '100'
     const renderFun = () => {
       this.requestAnimationFrameFun(stats)
       this.wsConnecet && this.wsChacheEvent()

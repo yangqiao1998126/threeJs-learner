@@ -43,7 +43,7 @@ export let guiObj = {
 }
 export let guiFun = gui => {
   gui.domElement.parentNode.style.zIndex = 10
-  gui.domElement.style="position:absolute;top:0px;left:0px;"
+  gui.domElement.style="position:absolute;top:0;right:0;"
   gui.domElement.onclick = function (e){
     e.stopPropagation()
   }

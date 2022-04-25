@@ -1,0 +1,166 @@
+<template>
+  <div id="bottomLeft">
+      <div style="height: 100%">
+        <dv-charts :option="option" />
+      </div>
+  </div>
+</template>
+
+<script>
+import Echart from '@/common/echart'
+export default {
+  components: {
+    Echart
+  },
+  data(){
+    return {
+      option: {
+        legend: {
+          data: [
+            {
+              name: '数据1',
+              color: '#00baff'
+            },
+            {
+              name: '数据2',
+              color: '#ff5ca9'
+            },
+            {
+              name: '数据3',
+              color: '#3de7c9'
+            },
+            {
+              name: '数据4',
+              color: '#f5d94e'
+            }
+          ],
+          textStyle: {
+            fill: '#fff'
+          }
+        },
+        xAxis: {
+          data: [
+            '10/01', '10/02', '10/03', '10/04', '10/05', '10/06', '10/07'
+          ],
+          axisLine: {
+            style: {
+              stroke: '#999'
+            }
+          },
+          axisLabel: {
+            style: {
+              fill: '#999'
+            }
+          },
+          axisTick: {
+            show: false
+          }
+        },
+        yAxis: {
+          data: 'value',
+          splitLine: {
+            show: false
+          },
+          axisLine: {
+            style: {
+              stroke: '#999'
+            }
+          },
+          axisLabel: {
+            style: {
+              fill: '#999'
+            }
+          },
+          axisTick: {
+            show: false
+          },
+          min: 0,
+          max: 8
+        },
+        series: [
+          {
+            name: '数据1',
+            data: [
+              2.5, 3.5, 6.5, 6.5, 7.5, 6.5, 2.5
+            ],
+            type: 'bar',
+            barStyle: {
+              fill: 'rgba(0, 186, 255, 0.4)'
+            }
+          },
+          {
+            name: '数据2',
+            data: [
+              2.5, 3.5, 6.5, 6.5, 7.5, 6.5, 2.5
+            ],
+            type: 'line',
+            lineStyle: {
+              stroke: '#ff5ca9'
+            },
+            linePoint: {
+              radius: 4,
+              style: {
+                fill: '#ff5ca9',
+                stroke: 'transparent'
+              }
+            }
+          },
+          {
+            name: '数据3',
+            data: [
+              1.3, 2.3, 5.3, 5.3, 6.3, 5.3, 1.3
+            ],
+            type: 'line',
+            smooth: true,
+            lineArea: {
+              show: true,
+              gradient: ['rgba(55, 162, 218, 0.6)', 'rgba(55, 162, 218, 0)']
+            },
+            lineStyle: {
+              lineDash: [5, 5]
+            },
+            linePoint: {
+              radius: 4,
+              style: {
+                fill: '#00db95'
+              }
+            }
+          },
+          {
+            data: [
+              0.2, 1.2, 4.2, 4.2, 5.2, 4.2, 0.2
+            ],
+            type: 'line',
+            name: '数据4',
+            lineArea: {
+              show: true,
+              gradient: ['rgba(245, 217, 79, 0.8)', 'rgba(245, 217, 79, 0.2)']
+            },
+            lineStyle: {
+              stroke: '#f5d94e'
+            },
+            linePoint: {
+              radius: 4,
+              style: {
+                fill: '#f5d94e',
+                stroke: 'transparent'
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+$box-height: 210px;
+$box-width: 100%;
+#bottomLeft {
+  padding: 0px 16px;
+  height: $box-height;
+  width: $box-width;
+  border-radius: 5px;
+}
+</style>
