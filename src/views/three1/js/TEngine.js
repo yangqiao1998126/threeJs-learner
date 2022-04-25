@@ -69,8 +69,9 @@ export class TEngine {
     let stats = Stats()
     const statsDom = stats.domElement
     statsDom.style.position = 'fixed'
-    statsDom.style.top = '0'
-    statsDom.style.right = '5px'
+    statsDom.style.top = ''
+    statsDom.style.bottom = '0px'
+    statsDom.style.right = '0px'
     statsDom.style.left = 'unset'
     const renderFun = () => {
       this.requestAnimationFrameFun(stats)
@@ -81,7 +82,7 @@ export class TEngine {
     this.loadObjModel()
     dom.appendChild(this.renderer.domElement)
     dom.appendChild(statsDom)
-    if (process.env.NODE_ENV === 'development')new WS(this)
+    // if (process.env.NODE_ENV === 'development')new WS(this)
 
   }
 
