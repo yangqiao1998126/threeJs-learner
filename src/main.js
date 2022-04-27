@@ -3,6 +3,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import dataV from '@jiaminghi/data-view';
+import md5 from 'js-md5'
 import EventEmitter from "events";
 window._event = new EventEmitter()
 // 引入全局css
@@ -32,8 +33,11 @@ Vue.use(dataV);
 Vue.use(Loading);
 Vue.use(ElementUi);
 
-new Vue({
-  router,
-  store,
-  render: (h) => h(App),
-}).$mount('#app');
+if(md5(prompt("请输入"))=== 'fae0b27c451c728867a567e8c1bb4e53'){
+  new Vue({
+    router,
+    store,
+    render: (h) => h(App),
+  }).$mount('#app')
+}
+

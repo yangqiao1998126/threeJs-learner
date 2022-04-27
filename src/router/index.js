@@ -14,6 +14,11 @@ const routes = [{
     component:() => import('../views/three1/three1')
   },
   {
+    path:'/three2',
+    name:'three2',
+    component:() => import('../views/three1/three2')
+  },
+  {
     path:'/dataV',
     name:'dataV',
     component:() => import('../views/dataV/dataV')

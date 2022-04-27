@@ -55,6 +55,7 @@ export default {
   methods: {
     initChart () {
       // 初始化echart
+      // this.$el.style.width = window.innerWidth+'px'
       this.chart = this.$echarts.init(this.$el, 'tdTheme')
       this.chart.setOption(this.options, true)
     }

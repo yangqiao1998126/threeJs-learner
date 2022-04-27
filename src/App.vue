@@ -3,9 +3,10 @@
     <router-view/>
     <section v-if="this.$route.path==='/three1'" class="infoContainer" @click.stop>
       <component v-bind:is="currentComponent" :_style="style" :desc="desc"></component>
-      <div v-show="hidden" @click.stop class="dialog">
+      <div v-if="hidden" @click.stop class="dialog">
         <h2>{{ desc }}</h2>
         <div class="close" @click="hidden = false"></div>
+        <DialogCharts></DialogCharts>
       </div>
 
       <div ref="echartsContainer" :style="{left:isShowOpenIcon?'-30%':'0'}" class="echarts-container-left">
@@ -24,7 +25,7 @@
 <script>
 import tip from "./views/three1/components/tip";
 import EchartsContainer from "./views/three1/components/EchartsContainer";
-
+import DialogCharts from "./views/three1/components/charts/dialogCharts";
 export default {
   name: 'app',
   data() {
@@ -39,7 +40,8 @@ export default {
   },
   components: {
     EchartsContainer,
-    tip
+    tip,
+    DialogCharts
   },
   computed:{
 
@@ -94,20 +96,19 @@ export default {
 }
 
 .dialog {
-  z-index: 10;
+  z-index: 100;
   text-align: center;
-  padding-top: 35px;
   color: white;
   box-sizing: border-box;
+  padding: 35px 25px 60px;
   font-size: 14px;
   position: absolute;
-  top: 40vh;
+  top: 50vh;
   left: 55%;
   transform: translate(-50%, -50%);
   margin: 0 auto;
   width: 600px;
-  height: auto;
-  min-height: 500px;
+  height: 500px;
   background: url(./assets/main_bg.png) center/100% 100% no-repeat;
 
   .close {
