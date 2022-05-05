@@ -1,23 +1,22 @@
 export const modelObjs = {
-  dimain:'/model/glb1/dimian.glb',
-  zhoubianjianzhu:'/model/glb1/zhoubianjianzhu.glb',
-  cangchuqu:'/model/glb1/cangchuqu.glb',
-  chache:'/model/glb1/chache.glb',
-  longmenjia:'/model/glb1/longmenjia.glb',
-  huodun:'/model/glb1/huodun.glb',
-  tuopan:'/model/glb1/tuopan.glb',
-  dipan:'/model/glb1/dipan.glb',
-  huopinhe:'/model/glb1/huopinhe.glb',
-  shebei1:'/model/glb1/shebei1.glb',
-  shebei2:'/model/glb1/shebei2.glb',
-  shebei3:'/model/glb1/shebei3.glb',
-  shebei4:'/model/glb1/shebei4.glb',
-  shebei5:'/model/glb1/shebei5.glb',
-  shebei6:'/model/glb1/shebei6.glb',
-  shebei7:'/model/glb1/shebei7.glb',
-  suodao:'/model/glb1/suodao.glb',
-  wenjiangui2:'/model/glb1/wenjiangui2.glb',
-  jixiebi:'/model/glb1/jixiebi.glb',
+  buildings:'/model/glb1/zhoubianjianzhu.glb',
+  storageArea:'/model/glb1/cangchuqu.glb',
+  forklift:'/model/glb1/chache.glb',
+  gantry:'/model/glb1/longmenjia.glb',
+  goods:'/model/glb1/huodun.glb',
+  tray:'/model/glb1/tuopan.glb',
+  chassis:'/model/glb1/dipan.glb',
+  goodsBox:'/model/glb1/huopinhe.glb',
+  device1:'/model/glb1/shebei1.glb',
+  device2:'/model/glb1/shebei2.glb',
+  device3:'/model/glb1/shebei3.glb',
+  device4:'/model/glb1/shebei4.glb',
+  device5:'/model/glb1/shebei5.glb',
+  device6:'/model/glb1/shebei6.glb',
+  device7:'/model/glb1/shebei7.glb',
+  cableway:'/model/glb1/suodao.glb',
+  fileCabinet:'/model/glb1/wenjiangui2.glb',
+  mechanicalArm:'/model/glb1/jixiebi.glb',
   low_building_1:{
     mtlUrl:'/model/obj/low_building_1/low_building_1.mtl',
     objUrl:'/model/obj/low_building_1/low_building_1.obj'
@@ -38,7 +37,7 @@ export let guiObj = {
     "环境光强度":1,
   },
   "是否显示光源辅助线":true,
-  "抗锯齿Level":1
+  "抗锯齿Level":0
   // "轨道控制器旋转":false
 }
 export let guiFun = gui => {

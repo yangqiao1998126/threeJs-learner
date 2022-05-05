@@ -33,11 +33,16 @@ Vue.use(dataV);
 Vue.use(Loading);
 Vue.use(ElementUi);
 
-if(md5(prompt("请输入"))=== 'fae0b27c451c728867a567e8c1bb4e53'){
-  new Vue({
-    router,
-    store,
-    render: (h) => h(App),
-  }).$mount('#app')
-}
+new Vue({
+  router,
+  store,
+  render: (h) => h(App),
+}).$mount('#app')
+// if(md5(prompt("请输入"))=== 'fae0b27c451c728867a567e8c1bb4e53'){
+//   new Vue({
+//     router,
+//     store,
+//     render: (h) => h(App),
+//   }).$mount('#app')
+// }
 

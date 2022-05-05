@@ -1,63 +1,37 @@
 import dat from "dat.gui/src/dat";
 import 'dat.gui/src/dat/utils/css'
 import {
-  AmbientLight,
-  AxesHelper,
-  BoxBufferGeometry,
-  GridHelper,
-  Mesh,
-  MeshStandardMaterial,
   PerspectiveCamera,
   Scene,
-  Vector3,
   Vector2,
   WebGLRenderer,
   MOUSE,
   Color,
-  Matrix4,
-  Quaternion,
-  AnimationMixer,
   CubeTextureLoader,
-  Euler,
-  PlaneBufferGeometry,
-  MeshPhysicalMaterial,
-  MeshBasicMaterial,
-  DoubleSide,
-  Group,
-  Object3D
 } from "three"
-import Event from "./event/TObjectClick";
 import Stats from 'three/examples/jsm/libs/stats.module'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
 import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import {SSAARenderPass} from 'three/examples/jsm/postprocessing/SSAARenderPass.js'
-import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js'
 import {OutlinePass} from 'three/examples/jsm/postprocessing/OutlinePass.js'
 import {CSS2DRenderer} from 'three/examples/jsm/renderers/CSS2DRenderer.js'
-import {modelPromise} from "./loader/TLoader";
-import {spotLight, ambientLight, Dlight} from "./base/Tlights";
-import {pointLightHelper, spotLightHelper, DLightHelper} from './base/THelper'
+import {ambientLight, Dlight} from "./base/Tlights";
+import {pointLightHelper, DLightHelper} from './base/THelper'
 import {gltfModelPromise} from "./loader/TLoader";
-import Three1 from "../three1";
-import scene from "three/examples/jsm/offscreen/scene";
 import {curve1, curve2} from "./base/TBasicObject";
 import {loadModelFun, jxbAnimationList} from "./loader/loadModel";
 import TWEEN from "@tweenjs/tween.js";
 import {modelObjs, guiObj, guiFun,xhwData} from "./constant/constant";
 import {WS} from "./event/webSocket";
 //图形界面控制器
-let gui = guiFun(new dat.GUI())
+guiFun(new dat.GUI())
 
-let progress = 0
-let chacheProgress = 0
+let forkliftProgress = 0
 let isPoint = false
 export class TEngine {
-  xhwNum = 0
   isPlay = false
-  huodunNum = 0
+  goodsNum = 0
   xhwList = []
-  xhwList1 = []
-
   constructor(dom) {
     this.dom = dom
     this.initBaseFactor()
@@ -68,15 +42,10 @@ export class TEngine {
     // 初始性能监视器ss
     let stats = Stats()
     const statsDom = stats.domElement
-    statsDom.style.position = 'fixed'
-    statsDom.style.top = ''
-    statsDom.style.bottom = '0px'
-    statsDom.style.right = '0px'
-    statsDom.style.left = 'unset'
-    statsDom.style.zIndex = '100'
+    statsDom.style="position:fixed;top:'';bottom:0px;right:0px;left:unset;z-index:100;"
     const renderFun = () => {
       this.requestAnimationFrameFun(stats)
-      this.wsConnecet && this.wsChacheEvent()
+      this.wsConnecet && this.wsForkliftEvent()
       requestAnimationFrame(renderFun)
     }
     renderFun()
@@ -198,7 +167,7 @@ export class TEngine {
   }
 
   loadObjModel() {
-    gltfModelPromise(modelObjs.zhoubianjianzhu).then(loadModelFun.call(this, modelObjs))
+    gltfModelPromise(modelObjs.buildings).then(loadModelFun.call(this, modelObjs))
   }
 
   handleXhw(endXhwName, xhwList, distance, num, [x, y, z], endPosition, speed = 0.06) {
@@ -225,9 +194,9 @@ export class TEngine {
     }
   }
 
-  loadHuodun() {
-    for (let i = 0; i < this.huodunNum; i++) {
-      let hd = this.huodun.clone()
+  loadGoods() {
+    for (let i = 0; i < this.goodsNum; i++) {
+      let hd = this.goods.clone()
       hd.name = `获墩遍历生成${i}`
       if (this.scene.getObjectByName(`获墩遍历生成${i}`)) {
 
@@ -254,37 +223,37 @@ export class TEngine {
     }
     //叉车
     if (this.isPlay) {
-      if (this.chache && this.chache2 && this.chacheGroup) {
-        if (chacheProgress >= 1) {
-          chacheProgress = 0;
+      if (this.forklift && this.forklift2 && this.forkliftGroup) {
+        if (forkliftProgress >= 1) {
+          forkliftProgress = 0;
           isPoint = false;
-          this.huodunNum <= 2 ? this.chacheGroup.add(this.huodun) : ''
+          this.goodsNum <= 2 ? this.forkliftGroup.add(this.goods) : ''
         }
-        chacheProgress = (chacheProgress * 1000 + 0.003 * 1000) / 1000
-        let chachePoint = curve1.getPoint(chacheProgress)
-        let {x, y, z} = chachePoint
-        if (Math.abs(Math.abs(x).toFixed(3) - 190) <= 6 && Math.abs(Math.abs(z).toFixed(3) - 100) <= 4 && !isPoint && this.huodunNum <= 2) {
+        forkliftProgress = (forkliftProgress * 1000 + 0.003 * 1000) / 1000
+        let forkliftPoint = curve1.getPoint(forkliftProgress)
+        let {x, y, z} = forkliftPoint
+        if (Math.abs(Math.abs(x).toFixed(3) - 190) <= 6 && Math.abs(Math.abs(z).toFixed(3) - 100) <= 4 && !isPoint && this.goodsNum <= 2) {
           isPoint = true
           this.isPlay = false
           console.log('到达指定位置了',)
-          this.chacheGroup.remove(this.chacheGroup.getObjectByName('货墩1'))
-          this.huodunNum += 1
+          this.forkliftGroup.remove(this.forkliftGroup.getObjectByName('货墩1'))
+          this.goodsNum += 1
           setTimeout(() => {
             this.isPlay = true
           }, 50)
         } else {
-          let chachePoint1 = curve1.getPoint(chacheProgress + 0.001 * 2)
-          this.chacheGroup.lookAt(chachePoint1.x, chachePoint1.y, chachePoint1.z)
-          this.chacheGroup.position.set(chachePoint.x, chachePoint.y, chachePoint.z)
-          let chachePoint2 = curve2.getPoint(chacheProgress)
-          let chachePoint22 = curve2.getPoint(chacheProgress + 0.001 * 2)
-          this.chache2.lookAt(chachePoint22.x, chachePoint22.y, chachePoint22.z)
-          this.chache2.position.set(chachePoint2.x, chachePoint2.y, chachePoint2.z)
+          let forkliftPoint1 = curve1.getPoint(forkliftProgress + 0.001 * 2)
+          this.forkliftGroup.lookAt(forkliftPoint1.x, forkliftPoint1.y, forkliftPoint1.z)
+          this.forkliftGroup.position.set(forkliftPoint.x, forkliftPoint.y, forkliftPoint.z)
+          let forkliftPoint2 = curve2.getPoint(forkliftProgress)
+          let forkliftPoint22 = curve2.getPoint(forkliftProgress + 0.001 * 2)
+          this.forklift2.lookAt(forkliftPoint22.x, forkliftPoint22.y, forkliftPoint22.z)
+          this.forklift2.position.set(forkliftPoint2.x, forkliftPoint2.y, forkliftPoint2.z)
         }
 
       }
     }
-    this.loadHuodun()
+    this.loadGoods()
   }
 
   addObject(...object) {

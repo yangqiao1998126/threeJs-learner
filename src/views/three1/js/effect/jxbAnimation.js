@@ -4,11 +4,11 @@ import {Css2DLabel} from "../base/THelper";
 
 export class JxbAnimation {
 
-  constructor(engine,jixiebi,huopinhe,tuopan,huopinheList1,jixiebiGroupZ,tuopanZ) {
+  constructor(engine,mechanicalArm,goodsBox,tray,goodsBoxList1,mechanicalArmGroupZ,trayZ) {
     this.scene = engine.scene
-    this.jixiebiGroup = new Group()
-    this.jixiebiGroupAndTuopan(this.jixiebiGroup,huopinhe,jixiebi,tuopan,tuopanZ,huopinheList1,jixiebiGroupZ)
-    this.hphList  =huopinheList1.length-1
+    this.mechanicalArmGroup = new Group()
+    this.mechanicalArmGroupAndTray(this.mechanicalArmGroup,goodsBox,mechanicalArm,tray,trayZ,goodsBoxList1,mechanicalArmGroupZ)
+    this.hphList  =goodsBoxList1.length-1
     this.jxbNum = this.hphList
 
     //下臂动作
@@ -39,33 +39,33 @@ export class JxbAnimation {
     }
     return false
   }
-  jixiebiGroupAndTuopan(jixiebiGroup,huopinhe,jixiebi,tuopan,tuopanZ,huopinheList1,jixiebiGroupZ){
+  mechanicalArmGroupAndTray(mechanicalArmGroup,goodsBox,mechanicalArm,tray,trayZ,goodsBoxList1,mechanicalArmGroupZ){
     //机械臂
-    jixiebi.scale.set(1.5, 1.5, 1.5)
-    // jixiebiGroup.position.set(-22, 4.5, -77)
-    jixiebiGroup.position.set(-22, 4.5, jixiebiGroupZ)
-    jixiebiGroup.rotation.y = -Math.PI * 50 / 180
-    let hphJxb = huopinhe.clone()
+    mechanicalArm.scale.set(1.5, 1.5, 1.5)
+    // mechanicalArmGroup.position.set(-22, 4.5, -77)
+    mechanicalArmGroup.position.set(-22, 4.5, mechanicalArmGroupZ)
+    mechanicalArmGroup.rotation.y = -Math.PI * 50 / 180
+    let hphJxb = goodsBox.clone()
     hphJxb.position.set(3.8, 1.1, -6.6)
     // hphJxb.position.set(3.8, -0.28, -7.6)
     hphJxb.scale.set(1.7, 1.7, 1.7)
     hphJxb.visible = false
     this.hphJxb = hphJxb
-    jixiebiGroup.add(jixiebi)
-    jixiebiGroup.add(hphJxb)
-    jixiebiGroup.add(new Css2DLabel({textContent:'机械臂'},0,5,0).label)
-    this.jxbJia = jixiebiGroup.getObjectByName('jixiebi')
-    this.jxbGan = jixiebiGroup.getObjectByName('jixiebi004')
-    this.scene.add(jixiebiGroup)
-    let tuopan1 = tuopan.clone()
-    tuopan1.position.set(-14, 0.5, tuopanZ)
-    this.scene.add(tuopan1)
-    for (let i = 0; i < huopinheList1.length; i++) {
-      let hphClone = huopinhe.clone()
-      let [x, y, z] = huopinheList1[i]
+    mechanicalArmGroup.add(mechanicalArm)
+    mechanicalArmGroup.add(hphJxb)
+    mechanicalArmGroup.add(new Css2DLabel({textContent:'机械臂'},0,5,0).label)
+    this.jxbJia = mechanicalArmGroup.getObjectByName('jixiebi')
+    this.jxbGan = mechanicalArmGroup.getObjectByName('jixiebi004')
+    this.scene.add(mechanicalArmGroup)
+    let tray1 = tray.clone()
+    tray1.position.set(-14, 0.5, trayZ)
+    this.scene.add(tray1)
+    for (let i = 0; i < goodsBoxList1.length; i++) {
+      let hphClone = goodsBox.clone()
+      let [x, y, z] = goodsBoxList1[i]
       hphClone.scale.y = 1.6
       hphClone.position.set(x, y, z)
-      hphClone.name = `huopinheList-${i}`
+      hphClone.name = `goodsBoxList-${i}`
       this.scene.add(hphClone)
     }
   }
@@ -84,7 +84,7 @@ export class JxbAnimation {
         if(this.jxbNum === -1)this.tween1_down_jxbJia_jxbGan.stop()
       })
       .onComplete(() => {
-        this.removeHph(`huopinheList-${this.jxbNum}`)
+        this.removeHph(`goodsBoxList-${this.jxbNum}`)
         --this.jxbNum
         if (this.jxbNum >= -1) this.hphJxb.visible = true
       });
@@ -110,7 +110,7 @@ export class JxbAnimation {
       .to({angle: 180}, 1000)
       .onUpdate(() => {
         let angle = startVal1.angle.toFixed(2)
-        this.jixiebiGroup.rotation.y = -Math.PI * angle / 180
+        this.mechanicalArmGroup.rotation.y = -Math.PI * angle / 180
       })
       .onComplete((x) => {
 
@@ -123,7 +123,7 @@ export class JxbAnimation {
       .to({angle: 50}, 1000)
       .onUpdate(() => {
         let angle = startVal2.angle.toFixed(2)
-        this.jixiebiGroup.rotation.y = -Math.PI * angle / 180
+        this.mechanicalArmGroup.rotation.y = -Math.PI * angle / 180
       })
       .onComplete((x) => {
 

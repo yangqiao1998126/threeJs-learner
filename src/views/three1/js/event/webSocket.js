@@ -14,9 +14,9 @@ export class WS {
     this.lockReconnect = false; //重连--避免重复连接
     this.userClose = false; //主动断开连接 不需要重连
     this.init();
-    this.engine.wsChacheEvent = this.handleChache.bind(this)
+    this.engine.wsForkliftEvent = this.handleForklift.bind(this)
   }
-  handleChache() {
+  handleForklift() {
     if (this.wsCurveArr && (this.wsCurveArr.length > 1)) {
       this.progress = (this.progress * 1000 + 0.006 * 1000) / 1000;
       if (this.progress >= 1) {
@@ -24,8 +24,8 @@ export class WS {
       } else {
         let {x, y, z} = this.wsCurve.getPoint(this.progress);
         let lookAt = this.wsCurve.getPoint(this.progress + 0.003);
-        this.engine.wsObj.wsChache.lookAt(lookAt.x, lookAt.y, lookAt.z);
-        this.engine.wsObj.wsChache.position.set(x, y, z);
+        this.engine.wsObj.wsForklift.lookAt(lookAt.x, lookAt.y, lookAt.z);
+        this.engine.wsObj.wsForklift.position.set(x, y, z);
       }
     }
   }
@@ -50,7 +50,7 @@ export class WS {
     console.log(e.data);
     let [x1, y1, z1] = JSON.parse(e.data);
     if (!this.wsCurveArr.some(({x, y, z}) => x1 === x && y1 === y && z1 === z)) {
-      if(this.progress >= 1) this.progress = 0;this.send(JSON.stringify(this.engine.wsObj.wsChache.position));
+      if(this.progress >= 1) this.progress = 0;this.send(JSON.stringify(this.engine.wsObj.wsForklift.position));
       this.wsCurveArr.length ===2 &&this.wsCurveArr.shift()
       this.wsCurveArr.push(WS.vector(x1, y1, z1),)
       this.wsCurve = new CatmullRomCurve3(this.wsCurveArr)

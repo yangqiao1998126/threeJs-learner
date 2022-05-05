@@ -46,141 +46,141 @@ export let loadModelFun = function (modelObjs) {
 
     this.scene.add(await tubeLine)
 
-    let cangchuqu = (await gltfModelPromise(modelObjs.cangchuqu)).scene
-    cangchuqu.position.set(160, 0, 0)
-    cangchuqu.scale.set(1.4, 1.4, 1.4)
-    cangchuqu.rotateY(-Math.PI / 2)
-    changeMaterialOpc(cangchuqu, 'Cube_1', 'Cube033_1')
-    this.scene.add(cangchuqu)
+    let storageArea = (await gltfModelPromise(modelObjs.storageArea)).scene
+    storageArea.position.set(160, 0, 0)
+    storageArea.scale.set(1.4, 1.4, 1.4)
+    storageArea.rotateY(-Math.PI / 2)
+    changeMaterialOpc(storageArea, 'Cube_1', 'Cube033_1')
+    this.scene.add(storageArea)
 
-    let chache = (await gltfModelPromise(modelObjs.chache)).scene
-    chache.scale.set(1.1, 1.1, 1.1)
-    this.chache = chache
-    this.chache2 = chache.clone()
-    this.chache2.position.set(20, 0, 0)
-    this.chache2.add(new Css2DLabel({textContent:'叉车2'},0,5,0).label)
-    this.scene.add(this.chache2)
+    let forklift = (await gltfModelPromise(modelObjs.forklift)).scene
+    forklift.scale.set(1.1, 1.1, 1.1)
+    this.forklift = forklift
+    this.forklift2 = forklift.clone()
+    this.forklift2.position.set(20, 0, 0)
+    this.forklift2.add(new Css2DLabel({textContent:'叉车2'},0,5,0).label)
+    this.scene.add(this.forklift2)
 
-    let wsChache = this.chache.clone()
-    wsChache.scale.set(1.5,1.5,1.5)
-    wsChache.position.set(20,0,60)
-    wsChache.add(new Css2DLabel({textContent:'ws叉车'},0,5,0).label)
-    this.scene.add(wsChache)
+    let wsForklift = this.forklift.clone()
+    wsForklift.scale.set(1.5,1.5,1.5)
+    wsForklift.position.set(20,0,60)
+    wsForklift.add(new Css2DLabel({textContent:'ws叉车'},0,5,0).label)
+    this.scene.add(wsForklift)
     this.wsObj = {
-      wsChache,
+      wsForklift,
     }
 
-    let longmenjia = (await gltfModelPromise(modelObjs.longmenjia)).scene
-    longmenjia.position.set(100, 0, 0)
-    longmenjia.scale.set(1.1, 1.1, 1.1)
-    longmenjia.rotateY(-Math.PI / 2)
-    this.scene.add(longmenjia)
+    let gantry = (await gltfModelPromise(modelObjs.gantry)).scene
+    gantry.position.set(100, 0, 0)
+    gantry.scale.set(1.1, 1.1, 1.1)
+    gantry.rotateY(-Math.PI / 2)
+    this.scene.add(gantry)
 
-    let huodun = (await gltfModelPromise(modelObjs.huodun)).scene
-    let huodun1 = huodun.clone()
-    huodun1.position.set(20, 0, 35)
-    this.scene.add(huodun1)
+    let goods = (await gltfModelPromise(modelObjs.goods)).scene
+    let goods1 = goods.clone()
+    goods1.position.set(20, 0, 35)
+    this.scene.add(goods1)
 
     //获墩和叉车组合
-    let chacheGroup = new Group()
-    chacheGroup.add(this.chache)
-    chacheGroup.add(huodun)
-    this.chacheGroup = chacheGroup
-    huodun.translateZ(7)
-    huodun.translateY(1)
-    huodun.name = '货墩1'
-    this.huodun = huodun
-    this.scene.add(chacheGroup)
-    chacheGroup.add(new Css2DLabel({textContent:'叉车1'},0,5,0).label)
-    this.chacheGroup.position.x = 20
-    this.chacheGroup.position.y = 0
-    this.chacheGroup.position.z = 20
+    let forkliftGroup = new Group()
+    forkliftGroup.add(this.forklift)
+    forkliftGroup.add(goods)
+    this.forkliftGroup = forkliftGroup
+    goods.translateZ(7)
+    goods.translateY(1)
+    goods.name = '货墩1'
+    this.goods = goods
+    this.scene.add(forkliftGroup)
+    forkliftGroup.add(new Css2DLabel({textContent:'叉车1'},0,5,0).label)
+    this.forkliftGroup.position.x = 20
+    this.forkliftGroup.position.y = 0
+    this.forkliftGroup.position.z = 20
 
-    let tuopan = (await gltfModelPromise(modelObjs.tuopan)).scene
-    tuopan.position.set(20, 0, 42)
-    tuopan.scale.set(1.1, 1.1, 1.1)
-    this.scene.add(tuopan)
+    let tray = (await gltfModelPromise(modelObjs.tray)).scene
+    tray.position.set(20, 0, 42)
+    tray.scale.set(1.1, 1.1, 1.1)
+    this.scene.add(tray)
 
-    let dipan = (await gltfModelPromise(modelObjs.dipan)).scene
-    dipan.position.set(20, 0, 47)
-    dipan.scale.set(1.1, 1.1, 1.1)
-    dipan.rotateY(-Math.PI / 2)
-    this.scene.add(dipan)
+    let chassis = (await gltfModelPromise(modelObjs.chassis)).scene
+    chassis.position.set(20, 0, 47)
+    chassis.scale.set(1.1, 1.1, 1.1)
+    chassis.rotateY(-Math.PI / 2)
+    this.scene.add(chassis)
 
-    let huopinhe = (await gltfModelPromise(modelObjs.huopinhe)).scene
-    huopinhe.position.set(20, 0, 51)
-    huopinhe.scale.set(1.1, 1.1, 1.1)
-    huopinhe.rotateY(-Math.PI / 2)
-    this.scene.add(huopinhe)
+    let goodsBox = (await gltfModelPromise(modelObjs.goodsBox)).scene
+    goodsBox.position.set(20, 0, 51)
+    goodsBox.scale.set(1.1, 1.1, 1.1)
+    goodsBox.rotateY(-Math.PI / 2)
+    this.scene.add(goodsBox)
 
-    let shebeiyiList = [[60, 0, -60], [38, 0, -60], [60, 0, -40], [38, 0, -40], [60, 0, -20], [38, 0, -20]]
-    let shebei1 = (await gltfModelPromise(modelObjs.shebei1)).scene
-    shebei1.scale.set(1.1, 1.1, 1.1)
-    for (let i = 0; i < shebeiyiList.length; i++) {
-      let shebei1Clone = shebei1.clone()
-      shebei1Clone.name = `shebei1Clone${i}`
-      let [x, y, z] = shebeiyiList[i]
-      shebei1Clone.position.set(x, y, z)
-      shebei1Clone.rotateY(-Math.PI / 2)
+    let device1List = [[60, 0, -60], [38, 0, -60], [60, 0, -40], [38, 0, -40], [60, 0, -20], [38, 0, -20]]
+    let device1 = (await gltfModelPromise(modelObjs.device1)).scene
+    device1.scale.set(1.1, 1.1, 1.1)
+    for (let i = 0; i < device1List.length; i++) {
+      let device1Clone = device1.clone()
+      device1Clone.name = `device1Clone${i}`
+      let [x, y, z] = device1List[i]
+      device1Clone.position.set(x, y, z)
+      device1Clone.rotateY(-Math.PI / 2)
       let fm = fontModel(font,`设备1-${i}`,2.5)
       fm.position.set(x-4.3, y+10, z)
       this.scene.add(fm)
-      changeMaterialOpc(shebei1Clone, 'Cube039_1')
-      this.scene.add(shebei1Clone)
+      changeMaterialOpc(device1Clone, 'Cube039_1')
+      this.scene.add(device1Clone)
     }
 
-    let shebei3 = (await gltfModelPromise(modelObjs.shebei3)).scene
-    shebei3.position.set(45, 0, 35)
-    shebei3.scale.set(1.1, 1.1, 1.1)
-    shebei3.rotateY(-Math.PI / 2)
-    this.scene.add(shebei3)
+    let device3 = (await gltfModelPromise(modelObjs.device3)).scene
+    device3.position.set(45, 0, 35)
+    device3.scale.set(1.1, 1.1, 1.1)
+    device3.rotateY(-Math.PI / 2)
+    this.scene.add(device3)
     let {label}= new Css2DLabel({textContent:'设备3'},0,5,0)
-    shebei3.add(label)
+    device3.add(label)
 
 
-    let shebeierList = [[14, 0, -60], [14, 0, -40], [14, 0, -20]]
-    let shebei2 = (await gltfModelPromise(modelObjs.shebei2)).scene
-    shebei2.scale.set(1.1, 1.1, 1.1)
-    for (let i = 0; i < shebeierList.length; i++) {
-      let shebei2Clone = (await gltfModelPromise(modelObjs.shebei2)).scene
-      shebei2Clone.name = `shebei2Clone${i}`
-      let [x, y, z] = shebeierList[i]
-      shebei2Clone.position.set(x, y, z)
-      shebei2Clone.rotateY(-Math.PI / 2)
+    let device2List = [[14, 0, -60], [14, 0, -40], [14, 0, -20]]
+    let device2 = (await gltfModelPromise(modelObjs.device2)).scene
+    device2.scale.set(1.1, 1.1, 1.1)
+    for (let i = 0; i < device2List.length; i++) {
+      let device2Clone = (await gltfModelPromise(modelObjs.device2)).scene
+      device2Clone.name = `device2Clone${i}`
+      let [x, y, z] = device2List[i]
+      device2Clone.position.set(x, y, z)
+      device2Clone.rotateY(-Math.PI / 2)
       let fm = fontModel(font,`设备2-${i}`,2,0xfe2d2d)
       fm.position.set(x-5, y+9, z)
       this.scene.add(fm)
-      this.scene.add(shebei2Clone)
+      this.scene.add(device2Clone)
     }
 
-    let shebei5List = [[-45, 0, -70], [-45, 0, 20]]
-    let shebei5 = (await gltfModelPromise(modelObjs.shebei5)).scene
-    shebei5.scale.set(1.2, 1.2, 1.2)
-    for (let i = 0; i < shebei5List.length; i++) {
-      let shebei5Clone = shebei5.clone()
-      shebei5Clone.name = `shebei5Clone${i}`
-      let [x, y, z] = shebei5List[i]
-      shebei5Clone.position.set(x, y, z)
-      shebei5Clone.rotateY(-Math.PI / 2)
+    let device5List = [[-45, 0, -70], [-45, 0, 20]]
+    let device5 = (await gltfModelPromise(modelObjs.device5)).scene
+    device5.scale.set(1.2, 1.2, 1.2)
+    for (let i = 0; i < device5List.length; i++) {
+      let device5Clone = device5.clone()
+      device5Clone.name = `device5Clone${i}`
+      let [x, y, z] = device5List[i]
+      device5Clone.position.set(x, y, z)
+      device5Clone.rotateY(-Math.PI / 2)
       let {label}= new Css2DLabel({textContent:'传送带'+i},0,5,0)
-      shebei5Clone.add(label)
-      this.scene.add(shebei5Clone)
+      device5Clone.add(label)
+      this.scene.add(device5Clone)
     }
 
-    let shebei6List = [[-65, 0, -20], [-65, 0, 70]]
-    let shebei6 = (await gltfModelPromise(modelObjs.shebei6)).scene
-    shebei6.scale.set(1.2, 1.2, 1.2)
-    for (let i = 0; i < shebei6List.length; i++) {
-      let shebei6Clone = shebei6.clone()
-      shebei6Clone.name = `shebei6Clone${i}`
-      let [x, y, z] = shebei6List[i]
-      shebei6Clone.position.set(x, y, z)
-      shebei6Clone.rotateY(-Math.PI / 2)
-      changeMaterialOpc(shebei6Clone, 'Cube057_1', 'Cube058_1')
+    let device6List = [[-65, 0, -20], [-65, 0, 70]]
+    let device6 = (await gltfModelPromise(modelObjs.device6)).scene
+    device6.scale.set(1.2, 1.2, 1.2)
+    for (let i = 0; i < device6List.length; i++) {
+      let device6Clone = device6.clone()
+      device6Clone.name = `device6Clone${i}`
+      let [x, y, z] = device6List[i]
+      device6Clone.position.set(x, y, z)
+      device6Clone.rotateY(-Math.PI / 2)
+      changeMaterialOpc(device6Clone, 'Cube057_1', 'Cube058_1')
       let fm = fontModel(font,`设备6-${i}`,3.8,0x2200b1)
       fm.position.set(x-7.5, y+11, z)
       this.scene.add(fm)
-      this.scene.add(shebei6Clone)
+      this.scene.add(device6Clone)
     }
     new Aperture(this,4.5,4,[-65,0,70],0.069,0.009,)
     new Aperture(this,4.5,4,[-65,0,-20],0.073,0.013,'/img/t5.png')
@@ -197,8 +197,8 @@ export let loadModelFun = function (modelObjs) {
     //3. [-46,4,20.5],[-117,4,20.5] [-121.5,0,20.5]
     for (let i = 0; i < xhwEndList.length; i++) {
       let arr = []
-      let xhwClone = huopinhe.clone()
-      let endClone = huopinhe.clone()
+      let xhwClone = goodsBox.clone()
+      let endClone = goodsBox.clone()
       let [x, y, z] = xhwEndList[i][1]
       let [x1, y1, z1] = xhwEndList[i][0]
       endClone.scale.set(1.8, 1.8, 1.8)
@@ -214,28 +214,28 @@ export let loadModelFun = function (modelObjs) {
     }
 
     //索道
-    let suodao = (await gltfModelPromise(modelObjs.suodao)).scene
-    suodao.position.set(-45, 0, -65)
-    suodao.rotateY(-Math.PI / 2)
-    this.scene.add(suodao)
+    let cableway = (await gltfModelPromise(modelObjs.cableway)).scene
+    cableway.position.set(-45, 0, -65)
+    cableway.rotateY(-Math.PI / 2)
+    this.scene.add(cableway)
 
     //文件柜
-    let wenjiangui2 = (await gltfModelPromise(modelObjs.wenjiangui2)).scene
-    wenjiangui2.position.set(125, 0, 55)
-    wenjiangui2.rotateY(-Math.PI / 2)
-    this.scene.add(wenjiangui2)
+    let fileCabinet = (await gltfModelPromise(modelObjs.fileCabinet)).scene
+    fileCabinet.position.set(125, 0, 55)
+    fileCabinet.rotateY(-Math.PI / 2)
+    this.scene.add(fileCabinet)
 
-    let jixiebi1 = (await gltfModelPromise(modelObjs.jixiebi)).scene
-    let huopinheList01 = [
+    let mechanicalArm1 = (await gltfModelPromise(modelObjs.mechanicalArm)).scene
+    let goodsBoxList01 = [
       [-15.4, 1.5, -80.2], [-12.9, 1.5, -80.2], [-15.4, 1.5, -78.9], [-12.9, 1.5, -78.9], [-15.4, 1.5, -77.5], [-12.9, 1.5, -77.5],
       [-15.4, 2.2, -80.2], [-12.9, 2.2, -80.2], [-15.4, 2.2, -78.9], [-12.9, 2.2, -78.9], [-15.4, 2.2, -77.5], [-12.9, 2.2, -77.5],
       [-15.4, 2.9, -80.2], [-12.9, 2.9, -80.2], [-15.4, 2.9, -78.9], [-12.9, 2.9, -78.9], [-15.4, 2.9, -77.5], [-12.9, 2.9, -77.5],
     ]
-    jxbAnimationList.push(new JxbAnimation(this,jixiebi1,huopinhe,tuopan,huopinheList01,-77,-79))
+    jxbAnimationList.push(new JxbAnimation(this,mechanicalArm1,goodsBox,tray,goodsBoxList01,-77,-79))
 
-    let jixiebi2 = (await gltfModelPromise(modelObjs.jixiebi)).scene
-    let huopinheList02 = huopinheList01.map(([x,y,z]) => ([x,y,+z+90]))
-    jxbAnimationList.push(new JxbAnimation(this,jixiebi2,huopinhe,tuopan,huopinheList02,13,11))
+    let mechanicalArm2 = (await gltfModelPromise(modelObjs.mechanicalArm)).scene
+    let goodsBoxList02 = goodsBoxList01.map(([x,y,z]) => ([x,y,+z+90]))
+    jxbAnimationList.push(new JxbAnimation(this,mechanicalArm2,goodsBox,tray,goodsBoxList02,13,11))
 
     window._event.emit('model-loading-finished')
     console.log("%c加载完成","background: rgba(252,234,187,1);background: -moz-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%,rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);background: -webkit-gradient(left top, right top, color-stop(0%, rgba(252,234,187,1)), color-stop(12%, rgba(175,250,77,1)), color-stop(28%, rgba(0,247,49,1)), color-stop(39%, rgba(0,210,247,1)), color-stop(51%, rgba(0,189,247,1)), color-stop(64%, rgba(133,108,217,1)), color-stop(78%, rgba(177,0,247,1)), color-stop(87%, rgba(247,0,189,1)), color-stop(100%, rgba(245,22,52,1)));background: -webkit-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%, rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);background: -o-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%, rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);background: -ms-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%, rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);background: linear-gradient(to right, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%, rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fceabb', endColorstr='#f51634', GradientType=1 );font-size:5em")
