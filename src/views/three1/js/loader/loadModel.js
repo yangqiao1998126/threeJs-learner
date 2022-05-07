@@ -243,6 +243,7 @@ export let loadModelFun = function (modelObjs) {
     Event(this)
     setTimeout(() => {
       this.isPlay= true
+      this.renderEnabled = true
     },1500)
   }
 }

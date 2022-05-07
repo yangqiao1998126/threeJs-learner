@@ -21,17 +21,22 @@ import {gltfModelPromise} from "./loader/TLoader";
 import {curve1, curve2} from "./base/TBasicObject";
 import {loadModelFun, jxbAnimationList} from "./loader/loadModel";
 import TWEEN from "@tweenjs/tween.js";
-import {modelObjs, guiObj, guiFun,xhwData} from "./constant/constant";
+import {modelObjs, guiObj, guiFun, xhwData} from "./constant/constant";
 import {WS} from "./event/webSocket";
+import common from "dat.gui/src/dat/utils/common";
 //图形界面控制器
 guiFun(new dat.GUI())
 
 let forkliftProgress = 0
 let isPoint = false
+
 export class TEngine {
+  renderEnabled = true
+  timeOut
   isPlay = false
   goodsNum = 0
   xhwList = []
+
   constructor(dom) {
     this.dom = dom
     this.initBaseFactor()
@@ -42,17 +47,16 @@ export class TEngine {
     // 初始性能监视器ss
     let stats = Stats()
     const statsDom = stats.domElement
-    statsDom.style="position:fixed;top:'';bottom:0px;right:0px;left:unset;z-index:100;"
+    statsDom.style = "position:fixed;top:'';bottom:0px;right:0px;left:unset;z-index:100;"
     const renderFun = () => {
       this.requestAnimationFrameFun(stats)
-      this.wsConnecet && this.wsForkliftEvent()
       requestAnimationFrame(renderFun)
     }
     renderFun()
     this.loadObjModel()
     dom.appendChild(this.renderer.domElement)
     dom.appendChild(statsDom)
-    if (process.env.NODE_ENV === 'development')new WS(this)
+    if (process.env.NODE_ENV === 'development') new WS(this)
 
   }
 
@@ -79,7 +83,7 @@ export class TEngine {
     this.labelRender = new CSS2DRenderer()
     this.labelRender.setSize(dom.offsetWidth, dom.offsetHeight)
     this.labelRender.domElement.style.position = 'absolute'
-    this.labelRender.domElement.style.top='0px'
+    this.labelRender.domElement.style.top = '0px'
     document.body.appendChild(this.labelRender.domElement)
     // 初始orbitControls
     // this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement)
@@ -94,24 +98,27 @@ export class TEngine {
     this.orbitControls.maxZoom = 600
     this.orbitControls.maxZoom = 10
     this.orbitControls.maxPolarAngle = Math.PI / 2.2
+    this.orbitControls.addEventListener('change', () => {
+      this.timeRender()
+    })
   }
 
   requestAnimationFrameFun(stats) {
-    this.apertureList && this.apertureList.length > 0 && this.apertureList.forEach( i => i.changeMaterial())
-    let lineMesh = this.scene.getObjectByName('lineMesh')
-    this.GUI()
-    this.isPlay && (
-      xhwData.forEach(({distance,num,initPosition,endPostion,speed},index) => {
-        this[`newXhwList${index}`]?.length>0
-        && this.handleXhw(`xhwEnd${index}`,this[`newXhwList${index}`],distance,num,initPosition,endPostion,speed)
-      }),
-      this.startJxbAnimation(),
-      lineMesh &&(lineMesh.visible = true,lineMesh.material.map.offset.x-=0.03)
-    )||( lineMesh &&(lineMesh.visible = false))
-    this.orbitControls.update()
-    this.renderPass.sampleLevel = guiObj['抗锯齿Level']
-    this.composer.render()
-    this.labelRender.render(this.scene,this.camera)
+    if (!this.isPlay) {
+      this.renderEnabled && commonFun.apply(this)
+    } else {
+      this.apertureList?.length > 0 && this.apertureList.forEach(i => i.changeMaterial())
+      let lineMesh = this.scene.getObjectByName('lineMesh')
+      this.isPlay && (
+        xhwData.forEach(({distance, num, initPosition, endPostion, speed}, index) => {
+          this[`newXhwList${index}`]?.length > 0
+          && this.handleXhw(`xhwEnd${index}`, this[`newXhwList${index}`], distance, num, initPosition, endPostion, speed)
+        }),
+          this.startJxbAnimation(),
+        lineMesh && (lineMesh.visible = true, lineMesh.material.map.offset.x -= 0.03)
+      ) || (lineMesh && (lineMesh.visible = false))
+      commonFun.apply(this)
+    }
     stats.update()
   }
 
@@ -256,19 +263,37 @@ export class TEngine {
     this.loadGoods()
   }
 
-  deleteObj(obj,parentObj = this.scene){
-    if(!obj)return
+  deleteObj(obj, parentObj = this.scene) {
+    if (!obj) return
     obj.traverse((item) => {
-      if(item instanceof Mesh){
+      if (item instanceof Mesh) {
         item.geometry.dispose()
         item.material.dispose()
       }
     })
     parentObj.remove(obj)
   }
+
+  timeRender() {
+    this.renderEnabled = true
+    if (this.timeOut) clearTimeout(this.timeOut)
+    this.timeOut = setTimeout(() => {
+      this.renderEnabled = false
+    }, 3000)
+  }
+
   addObject(...object) {
     object.forEach(elem => {
       this.scene.add(elem)
     })
   }
+}
+
+function commonFun() {
+  this.GUI()
+  this.orbitControls.update()
+  this.renderPass.sampleLevel = guiObj['抗锯齿Level']
+  this.composer.render()
+  this.labelRender.render(this.scene, this.camera)
+  this.wsConnecet && this.wsForkliftEvent()
 }
