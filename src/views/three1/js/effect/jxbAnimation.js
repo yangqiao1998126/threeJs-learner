@@ -5,6 +5,7 @@ import {Css2DLabel} from "../base/THelper";
 export class JxbAnimation {
 
   constructor(engine,mechanicalArm,goodsBox,tray,goodsBoxList1,mechanicalArmGroupZ,trayZ) {
+    this.engine = engine
     this.scene = engine.scene
     this.mechanicalArmGroup = new Group()
     this.mechanicalArmGroupAndTray(this.mechanicalArmGroup,goodsBox,mechanicalArm,tray,trayZ,goodsBoxList1,mechanicalArmGroupZ)
@@ -34,7 +35,8 @@ export class JxbAnimation {
   }
   removeHph(name){
     if (this.scene.getObjectByName(name)) {
-      this.scene.remove(this.scene.getObjectByName(name))
+      this.engine.deleteObj(this.scene.getObjectByName(name))
+      // this.scene.remove(this.scene.getObjectByName(name))
       return true
     }
     return false

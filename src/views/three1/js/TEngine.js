@@ -7,7 +7,7 @@ import {
   WebGLRenderer,
   MOUSE,
   Color,
-  CubeTextureLoader,
+  CubeTextureLoader, Mesh,
 } from "three"
 import Stats from 'three/examples/jsm/libs/stats.module'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
@@ -236,7 +236,7 @@ export class TEngine {
           isPoint = true
           this.isPlay = false
           console.log('到达指定位置了',)
-          this.forkliftGroup.remove(this.forkliftGroup.getObjectByName('货墩1'))
+          this.deleteObj(this.forkliftGroup.getObjectByName('货墩1'), this.forkliftGroup)
           this.goodsNum += 1
           setTimeout(() => {
             this.isPlay = true
@@ -256,6 +256,16 @@ export class TEngine {
     this.loadGoods()
   }
 
+  deleteObj(obj,parentObj = this.scene){
+    if(!obj)return
+    obj.traverse((item) => {
+      if(item instanceof Mesh){
+        item.geometry.dispose()
+        item.material.dispose()
+      }
+    })
+    parentObj.remove(obj)
+  }
   addObject(...object) {
     object.forEach(elem => {
       this.scene.add(elem)
